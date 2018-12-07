@@ -100,9 +100,31 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="intro" class="control-label col-md-3 col-sm-3 col-xs-12">简介</label>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">文件类型</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <textarea name="" id="intro" rows="10" class="form-control"></textarea>
+                  <input type="radio" name="type" id="file_type1" value="txt" checked style="margin-top: 10px"> <label for="file_type1">文字</label>
+                  <br>
+                  <input type="radio" name="type" id="file_type2" value="ppt" > <label for="file_type2">PPT</label>
+                  <br>
+                  <input type="radio" name="type" id="file_type3" value="video" > <label for="file_type3">视频</label>
+                </div>
+              </div>
+              <div class="form-group toggleShow">
+                <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <textarea name="" id="detail" rows="10" class="form-control"></textarea>
+                </div>
+              </div>
+              <div class="form-group toggleShow" style="display: none">
+                <label for="file_upload" class="control-label col-md-3 col-sm-3 col-xs-12">文件上传</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="file" id="file_upload" style="padding-top: 5px;">
+                </div>
+              </div>
+              <div class="form-group toggleShow" style="display: none">
+                <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="file" id="video_upload" style="padding-top: 5px;">
                 </div>
               </div>
               <div calss="btns col-xs-12" style="text-align: center;margin-top: 20px;">
