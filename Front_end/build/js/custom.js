@@ -50,7 +50,10 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
     $FOOTER = $('footer');
 
 	
-	
+//top_nav
+function init_top_nav(){
+	$('.top_nav_user').load('./template/top_nav.html');
+}
 // Sidebar
 function init_sidebar() {
 // TODO: This is some kind of easy fix, maybe we can improve this
@@ -5040,6 +5043,7 @@ if (typeof NProgress != 'undefined') {
 		init_CustomNotification();
 		init_autosize();
 		init_autocomplete();
+		init_top_nav();
 				
 	});	
 	
