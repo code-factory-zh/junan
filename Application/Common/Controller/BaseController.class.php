@@ -263,8 +263,10 @@
 		protected function requests($param = '') {
 
 			if (IS_POST) {
-				$r = file_get_contents("php://input");
-				$r = json_decode($r, true);
+				$r = json_decode(file_get_contents("php://input"), true);
+				if (is_null($r)) {
+					$r = I('post.');
+				}
 			} else {
 				$r = I();
 			}
@@ -458,7 +460,10 @@
 
 			$arr = json_decode(file_get_contents("php://input"), true);
 			if (is_null($arr)) {
-				$this -> e("数据格式有误", 3);
+				$arr = I();
+				if (!count($arr)) {
+					$this -> e("数据格式有误", 3);
+				}
 			}
 			return 0;
 		}
