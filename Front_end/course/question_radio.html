@@ -74,7 +74,7 @@
         <!-- 页面内容 -->
         <div class="right_col" role="main">
             <div id="add_edit_course">
-                <h3 class="title">新增判断题</h3>
+                <h3 class="title">新增单选题</h3>
                 <form action="" class="form-horizontal form-label-left">
                     <div class="form-group">
                         <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">题目名称</label>
@@ -92,10 +92,18 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">答案</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12" id="answers">
+                            <div class="every_answers">
+                                <input type="radio" name="which" checked value="1">
+                                <input type="text" name="answer1" class="form-control" placeholder="请输入答案">
+                                <span class="glyphicon glyphicon-trash" onclick="del_answer(1)"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 hidden-xs"></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="radio" name="answer" id="bingo" style="margin: 10px 5px 0 0;" checked><label for="bingo">正确</label>
-                            <br>
-                            <input type="radio" name="answer" id="false" style="margin: 0 5px 0 0;"><label for="false">错误</label>
+                            <button type="button" class="btn btn-sm btn-success" onclick="add_answer()">新增答案</button>
                         </div>
                     </div>
                     <div class="btns col-xs-12" style="text-align: center;margin-top: 20px;">
@@ -158,6 +166,7 @@
 
 <!-- Custom Theme Scripts -->
 <script src="../build/js/custom.js"></script>
+<script src="../build/js/question_radio.js"></script>
 
 </body>
 </html>
