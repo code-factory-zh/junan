@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6c84886d-71e7-4d6a-a1d3-687d770b1cec" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Front_end/build/js/question_checkbox.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Front_end/course/question_checkbox.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Front_end/course/question_judge.html" afterPath="$PROJECT_DIR$/Front_end/course/question_judge.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Front_end/build/css/custom.css" afterPath="$PROJECT_DIR$/Front_end/build/css/custom.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Front_end/build/js/question_radio.js" afterPath="$PROJECT_DIR$/Front_end/build/js/question_radio.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Front_end/course/组件.html" afterPath="$PROJECT_DIR$/Front_end/course/组件.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,21 +19,31 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="question.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Front_end/course/question.html">
+      <file leaf-file-name="question_checkbox.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Front_end/course/question_checkbox.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="83" column="52" lean-forward="true" selection-start-line="83" selection-start-column="52" selection-end-line="83" selection-end-column="52" />
+            <state relative-caret-position="562">
+              <caret line="103" column="89" lean-forward="true" selection-start-line="103" selection-start-column="89" selection-end-line="103" selection-end-column="89" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="question_radio.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Front_end/course/question_radio.html">
+      <file leaf-file-name="question_checkbox.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Front_end/build/js/question_checkbox.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="92" column="44" lean-forward="true" selection-start-line="92" selection-start-column="44" selection-end-line="92" selection-end-column="44" />
+            <state relative-caret-position="250">
+              <caret line="10" column="38" lean-forward="true" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="组件.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Front_end/course/组件.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="554">
+              <caret line="230" column="31" lean-forward="true" selection-start-line="230" selection-start-column="31" selection-end-line="230" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -38,76 +52,9 @@
       <file leaf-file-name="custom.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Front_end/build/css/custom.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="4277" column="17" lean-forward="true" selection-start-line="4277" selection-start-column="17" selection-end-line="4277" selection-end-column="17" />
+            <state relative-caret-position="557">
+              <caret line="4293" column="52" lean-forward="true" selection-start-line="4293" selection-start-column="52" selection-end-line="4293" selection-end-column="52" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="question_radio.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Front_end/build/js/question_radio.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="chapter_add_edit.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Front_end/build/js/chapter_add_edit.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="8" column="20" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="question_judge.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Front_end/course/question_judge.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="362">
-              <caret line="99" column="26" lean-forward="true" selection-start-line="99" selection-start-column="26" selection-end-line="99" selection-end-column="26" />
-              <folding>
-                <element signature="n#style#0;n#input#0;n#div#0;n#div#2;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#input#1;n#div#0;n#div#2;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#3;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="course_add_edit.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Front_end/course/course_add_edit.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="98" column="38" lean-forward="true" selection-start-line="98" selection-start-column="38" selection-end-line="98" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="chapter_add.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Front_end/course/chapter_add.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="94" column="22" lean-forward="true" selection-start-line="94" selection-start-column="22" selection-end-line="94" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="组件.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Front_end/course/组件.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="558">
-              <caret line="76" column="48" lean-forward="false" selection-start-line="76" selection-start-column="48" selection-end-line="76" selection-end-column="55" />
-              <folding>
-                <marker date="1544245911606" expanded="false" signature="5975:6011" ph="..." />
-                <marker date="1544245911606" expanded="false" signature="6632:6639" ph="×" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -127,7 +74,12 @@
       <find>control-label col-md-3</find>
       <find>class=&quot;dropdown-item&quot;</find>
       <find>add_edit_course</find>
+      <find>answers_left</find>
+      <find>modal</find>
     </findStrings>
+    <replaceStrings>
+      <replace>answers</replace>
+    </replaceStrings>
     <dirStrings>
       <dir>G:\git_workspace\junan\Front_end\course</dir>
     </dirStrings>
@@ -142,14 +94,16 @@
         <option value="$PROJECT_DIR$/Application/Index/Controller/IndexController.class.php" />
         <option value="$PROJECT_DIR$/Public/index.php" />
         <option value="$PROJECT_DIR$/Application/Manage/Controller/IndexController.class.php" />
-        <option value="$PROJECT_DIR$/Front_end/course/组件.html" />
         <option value="$PROJECT_DIR$/Front_end/course/question.html" />
         <option value="$PROJECT_DIR$/Front_end/course/course_add_edit.html" />
-        <option value="$PROJECT_DIR$/Front_end/build/css/custom.css" />
-        <option value="$PROJECT_DIR$/Front_end/build/js/question_radio.js" />
         <option value="$PROJECT_DIR$/Front_end/course/question_radio.html" />
         <option value="$PROJECT_DIR$/Front_end/course/chapter_add.html" />
         <option value="$PROJECT_DIR$/Front_end/course/question_judge.html" />
+        <option value="$PROJECT_DIR$/Front_end/build/js/question_radio.js" />
+        <option value="$PROJECT_DIR$/Front_end/course/question_checkbox.html" />
+        <option value="$PROJECT_DIR$/Front_end/build/js/question_checkbox.js" />
+        <option value="$PROJECT_DIR$/Front_end/build/css/custom.css" />
+        <option value="$PROJECT_DIR$/Front_end/course/组件.html" />
       </list>
     </option>
   </component>
@@ -225,72 +179,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Front_end" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Front_end" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="junan" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Front_end" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="build" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="custom.css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NestingTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -305,6 +193,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\git_workspace\junan\Front_end\build\js" />
       <recent name="G:\git_workspace\junan\Front_end\course" />
       <recent name="$PROJECT_DIR$/Application" />
     </key>
@@ -398,12 +287,12 @@
       <option name="presentableId" value="Default" />
       <updated>1543509718332</updated>
       <workItem from="1543509720762" duration="1085000" />
-      <workItem from="1544240612611" duration="11223000" />
+      <workItem from="1544240612611" duration="14974000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12308000" />
+    <option name="totallyTimeSpent" value="16059000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -487,17 +376,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Front_end/course/组件.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="76" column="48" lean-forward="false" selection-start-line="76" selection-start-column="48" selection-end-line="76" selection-end-column="55" />
-          <folding>
-            <marker date="1544245911606" expanded="false" signature="5975:6011" ph="..." />
-            <marker date="1544245911606" expanded="false" signature="6632:6639" ph="×" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Front_end/course/question.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -514,30 +392,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Front_end/build/css/custom.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="4277" column="17" lean-forward="true" selection-start-line="4277" selection-start-column="17" selection-end-line="4277" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Front_end/build/js/question_radio.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Front_end/course/question_radio.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="92" column="44" lean-forward="true" selection-start-line="92" selection-start-column="44" selection-end-line="92" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Front_end/course/chapter_add.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="325">
@@ -548,13 +402,61 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Front_end/course/question_judge.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="99" column="26" lean-forward="true" selection-start-line="99" selection-start-column="26" selection-end-line="99" selection-end-column="26" />
+        <state relative-caret-position="262">
+          <caret line="95" column="74" lean-forward="true" selection-start-line="95" selection-start-column="74" selection-end-line="95" selection-end-column="74" />
           <folding>
             <element signature="n#style#0;n#input#0;n#div#0;n#div#2;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#input#1;n#div#0;n#div#2;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#3;n#form#0;n#div#0;n#div#2;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Front_end/build/js/question_radio.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="10" column="38" lean-forward="true" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Front_end/course/question_radio.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="84" column="44" lean-forward="true" selection-start-line="84" selection-start-column="44" selection-end-line="84" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Front_end/build/css/custom.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="557">
+          <caret line="4293" column="52" lean-forward="true" selection-start-line="4293" selection-start-column="52" selection-end-line="4293" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Front_end/course/question_checkbox.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="562">
+          <caret line="103" column="89" lean-forward="true" selection-start-line="103" selection-start-column="89" selection-end-line="103" selection-end-column="89" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Front_end/build/js/question_checkbox.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="10" column="38" lean-forward="true" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Front_end/course/组件.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="554">
+          <caret line="230" column="31" lean-forward="true" selection-start-line="230" selection-start-column="31" selection-end-line="230" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>

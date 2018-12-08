@@ -2,7 +2,7 @@ $(function(){
 })
 function add_answer() {
     var num = $('#answers').children().length; // 已经有几个every_answers了
-    $('#answers').append('<div class="every_answers"><input type="radio" name="which" value="' + (num + 1) + '"><input type="text" name="answer' + (num + 1) + '" class="form-control" placeholder="请输入答案"><span class="glyphicon glyphicon-trash" onclick="del_answer('+(num+1)+')"></span></div>')
+    $('#answers').append('<div class="every_answers"><input type="checkbox" name="which" value="' + (num + 1) + '"><input type="text" name="answer' + (num + 1) + '" class="form-control" placeholder="请输入答案"><span class="glyphicon glyphicon-trash" onclick="del_answer('+(num+1)+')"></span></div>')
 }
 // 删除第i个答案
 function del_answer(i){
