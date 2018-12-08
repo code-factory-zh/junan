@@ -79,19 +79,19 @@
               <div class="form-group">
                 <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">课程名称</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="course_name" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请输入课程名称">
+                  <input type="text" name="name" id="course_name" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请输入课程名称">
                 </div>
               </div>
               <div class="form-group">
                 <label for="course_price" class="control-label col-md-3 col-sm-3 col-xs-12">课程价格</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="course_price" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填写课程价格">
+                  <input type="text" name="price" id="course_price" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填写课程价格">
                 </div>
               </div>
               <div class="form-group">
                 <label for="gangwei" class="control-label col-md-3 col-sm-3 col-xs-12">岗位</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <select id="gangwei" class="form-control">
+                  <select id="gangwei" class="form-control" name="gangwei">
                     <option value="">请选择岗位</option>
                   </select>
                 </div>
@@ -99,7 +99,7 @@
               <div class="form-group">
                 <label for="intro" class="control-label col-md-3 col-sm-3 col-xs-12">简介</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <textarea name="" id="intro" rows="10" class="form-control"></textarea>
+                  <textarea name="intro" id="intro" rows="10" class="form-control"></textarea>
                 </div>
               </div>
               <div class="btns col-xs-12" style="text-align: center;margin-top: 20px;">
@@ -163,6 +163,6 @@
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.js"></script>
     <!-- 新增、编辑课程js -->
-    <script src="../build/js/course_add_edit.js"></script>
+    <script src="./js/course_add_edit.js"></script>
   </body>
 </html>

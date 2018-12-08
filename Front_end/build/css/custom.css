@@ -500,7 +500,8 @@ body {
 }
 .main_container .top_nav {
     display: block;
-    margin-left: 230px
+    margin-left: 230px;
+    height: 58px;
 }
 .no-padding {
     padding: 0 !important
@@ -4278,7 +4279,7 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     float: right;
 }
 #add_edit_course h3.title{
-    padding: 60px 0 20px 0;
+    padding: 0 0 20px 0;
 }
 #add_edit_course .every_answers{
     padding: 0 30px 0 35px;
