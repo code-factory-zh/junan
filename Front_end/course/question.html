@@ -73,24 +73,24 @@
 
         <!-- 页面内容 -->
         <div class="right_col" role="main">
+            <div class="dropdown">
+              <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" id="add_course">新增题目</button>
+              <ul class="dropdown-menu">
+                  <li>
+                      <a href="question_judge.html">新增判断题</a>
+                  </li>
+                  <li>
+                      <a href="question_radio.html">新增单选题</a>
+                  </li>
+                  <li>
+                      <a href="question_checkbox.html">新增复选题</a>
+                  </li>
+                  <li>
+                      <a href="question_fill_in.html">新增填空题</a>
+                  </li>
+              </ul>
+          </div>
           <div id="course_list">
-              <div class="dropdown">
-                  <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" id="add_course">新增题目</button>
-                  <ul class="dropdown-menu">
-                      <li>
-                          <a href="question_judge.html">新增判断题</a>
-                      </li>
-                      <li>
-                          <a href="question_radio.html">新增单选题</a>
-                      </li>
-                      <li>
-                          <a href="question_checkbox.html">新增复选题</a>
-                      </li>
-                      <li>
-                          <a href="question_fill_in.html">新增填空题</a>
-                      </li>
-                  </ul>
-              </div>
               <table class="full_width_table">
                  <thead>
                    <tr>
