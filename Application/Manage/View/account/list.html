@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="images/favicon.ico" type="image/ico" />
+	  <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
     <title>后台管理系统</title>
 
@@ -18,7 +18,7 @@
     <link href="/static/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="/static/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-  
+	
     <!-- bootstrap-progressbar -->
     <link href="/static/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
@@ -46,7 +46,7 @@
               <div class="menu_section">
                 <ul class="nav side-menu">
                   <li><a href="index.html"><i class="fa fa-home"></i> 接入公司管理 </a></li>
-                  <li class="current-page"><a href="course.html"><i class="fa fa-graduation-cap"></i> 课程管理 </a></li>
+                  <li><a href="course.html"><i class="fa fa-graduation-cap"></i> 课程管理 </a></li>
                   <li><a href="question.html"><i class="fa fa-book"></i> 题目管理 </a></li>
                   <li><a href="exam.html"><i class="fa fa-desktop"></i> 考试管理 </a></li>
                   <li><a href="certificate.html"><i class="fa fa-trophy"></i> 证书管理 </a></li>
@@ -73,37 +73,26 @@
 
         <!-- 页面内容 -->
         <div class="right_col" role="main">
-          <div id="add_edit_course">
-            <h3 class="title">添加子帐号</h3>
-            <form action="" method="post" class="form-horizontal form-label-left" id="form" url="/manage/account/edit">
-              <div class="form-group">
-                <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">姓名</label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="course_name" name="name" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填写姓名">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="course_price" class="control-label col-md-3 col-sm-3 col-xs-12">手机</label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" name="mobile" id="course_price" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填手机">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="gangwei" class="control-label col-md-3 col-sm-3 col-xs-12">岗位</label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <select id="gangwei" name="job_id" class="form-control">
-                    <option value="">请选择岗位</option>
-                    <foreach name="jobs" key="k" item="v">
-                        <option value="{$k}">{$v}</option>
-                    </foreach>
-                  </select>
-                </div>
-              </div>
-              <div class="btns col-xs-12" style="text-align: center;margin-top: 20px;">
-                <button class="btn btn-default btn-sm" type="button">取消</button>
-                <button class="btn btn-success btn-sm" type="submit">保存</button>
-              </div>
-            </form>
+          <div id="course_list">
+              <a href="/manage/account/edit"><button class="btn btn-success btn-sm fr" id="add_course">新增子帐号</button></a>
+              <table class="full_width_table">
+                 <thead>
+                   <tr>
+                     <th>帐号名称</th>
+                     <th>手机</th>
+                     <th>岗位</th>
+                     <th>报读课程</th>
+                   </tr>
+                 </thead>
+                 <foreach name="list" key="k" item="v">
+                 <tr>
+                   <td>{$v.account_name}</td>
+                   <td>{$v.mobile}</td>
+                   <td>{$v.job_name}</td>
+                   <td>{$v.course_name}</td>
+                 </tr>
+                 </foreach>
+               </table>
           </div>
         </div>
         <!-- /页面内容 -->
@@ -159,27 +148,6 @@
 
     <!-- Custom Theme Scripts -->
     <script src="/static/build/js/custom.js"></script>
-    <!-- 新增、编辑课程js -->
-    <script src="/static/build/js/course_add_edit.js"></script>
 
-    <script>
-        $("#form").submit(function () {
-
-            $.ajax({
-                url: $(this).attr('action'),
-                type: 'POST',
-                dataType: 'JSON',
-                data: $(this).serialize(),
-                success: function (e) {
-                    if (e.code != 0) {
-                        alert(e.msg)
-                    } else {
-                        window.location.href = '/manage/account/list';
-                    }
-                }
-            })
-            return false
-        })
-    </script>
   </body>
 </html>

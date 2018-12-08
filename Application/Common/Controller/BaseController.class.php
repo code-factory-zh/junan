@@ -61,6 +61,7 @@
 		public function _initialize() {
 
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
+			$this -> company_id = 1;
 		}
 
 		/**

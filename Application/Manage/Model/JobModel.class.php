@@ -26,4 +26,5 @@ class JobModel extends BaseModel {
 		$where['is_deleted'] = 0;
 		return $this -> where($where) -> getField($fields);
 	}
+
 }
