@@ -1,7 +1,7 @@
 <?php
 
 /**
- * QuestionÄ£¿é»ùÀà
+ * Questionæ¨¡å—åŸºç±»
  * @Auther Cuiruijun
  * @Date 2018/12/9
  */
@@ -12,12 +12,12 @@ use Manage\Model\QuestionsModel;
 
 class QuestionController extends BaseController {
 
-    // Õë¶ÔHTTP½Ó¿ÚµÄ¹Ì¶¨TOKEN
+    // é’ˆå¯¹HTTPæ¥å£çš„å›ºå®šTOKEN
     CONST HTTP_TOKEN_N1 = '8FA02B017FCDE7836A6FDB5D00AC638F';
 
     protected $base_url = 'http://192.168.1.220';
 
-    // Éú³ÉÒ»¸ö±»×éºÏºÃµÄJSONÊı¾İ
+    // ç”Ÿæˆä¸€ä¸ªè¢«ç»„åˆå¥½çš„JSONæ•°æ®
     protected function postFetch(&$data) {
         $data['token'] = self::HTTP_TOKEN_N1;
         return $data;
@@ -29,7 +29,7 @@ class QuestionController extends BaseController {
     }
 
     /**
-     * ĞÂÔö»òĞŞ¸ÄÌâÄ¿
+     * æ–°å¢æˆ–ä¿®æ”¹é¢˜ç›®
      *
      * {
         "course_id": 1,
@@ -76,7 +76,7 @@ class QuestionController extends BaseController {
     }
 
     /*
-     * »ñÈ¡ËùÓĞ¿Î³ÌÁĞ±í
+     * è·å–æ‰€æœ‰è¯¾ç¨‹åˆ—è¡¨
      *
      * **/
     public function course()
@@ -87,7 +87,7 @@ class QuestionController extends BaseController {
     }
 
     /*
-     * É¾³ıÌâÄ¿
+     * åˆ é™¤é¢˜ç›®
      *
      * @param int $id
      * **/
@@ -101,7 +101,7 @@ class QuestionController extends BaseController {
             $this->el($record, 'The record does not exist');
         }
 
-        //É¾³ı
+        //åˆ é™¤
         $result = $Question->del($id);
         if ($result) {
             $this->e();
@@ -111,7 +111,7 @@ class QuestionController extends BaseController {
     }
 
     /*
-     *»ñÈ¡ÁĞ±í
+     *è·å–åˆ—è¡¨
      * **/
     public function index() {
         $params = $this->_get($_GET);
@@ -134,8 +134,8 @@ class QuestionController extends BaseController {
         var_dump("ddddd");exit;
     }
 
-    // Éú³É×ÖÄ¸Ëæ»úÊı
-    // @param MD5Ö®ºóµÄÃÜÂë
+    // ç”Ÿæˆå­—æ¯éšæœºæ•°
+    // @param MD5ä¹‹åçš„å¯†ç 
     public function fetchRandPwd(&$pwdMD5, $len = 6) {
 
         $str = '';
