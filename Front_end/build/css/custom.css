@@ -167,7 +167,7 @@ html , body{
 .nav-sm .container.body .right_col {
     padding: 10px 20px;
     margin-left: 70px;
-    z-index: 2
+    z-index: 2;
 }
 .nav-sm .navbar.nav_title {
     width: 70px
@@ -4328,3 +4328,99 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     color: #26B99A;
 }
 /* /面包屑颜色设置 */
+/* 添加课程弹窗 */
+.right_col #add_course_win{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: #F7F7F7;
+    display: none;
+    padding: 10px 20px 0;
+}
+.add_course_win .line{
+    position: relative;
+    padding-right: 30px;
+}
+.add_course_win .line span{
+    position: absolute;
+    right: 0;
+    top: 7px;
+    font-size: 18px;
+    cursor: pointer;
+}
+/* /添加课程弹窗 */
+/* 购买课程页面 */
+.right_col .buy_course .line{
+    font-size: 14px;
+    line-height: 30px;
+    position: relative;
+}
+.right_col .buy_course .course_name{
+    font-size: 17px;
+    margin-top: 20px;
+}
+.right_col .buy_course span.middle{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    -webkit-transform: translate(-50%);
+    -moz-transform: translate(-50%);
+    -ms-transform: translate(-50%);
+    -o-transform: translate(-50%);
+}
+.right_col .buy_course .line .remove_icon{
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    top: 7px;
+}
+.buy_course .pay_btn{
+    margin-top: 50px;
+}
+.abs_mid_win{
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0,0,0,0.3);
+}
+.abs_win{
+    width: 330px;
+    background: #fff;
+    border-radius: 3px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+}
+.abs_win .title{
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+    line-height: 45px;
+    border-bottom: 1px solid #f2f2f2;
+}
+.abs_win .title .icon{
+    font-size: 14px;
+    cursor: pointer;
+    margin: 14px 10px 0 0;
+}
+.abs_win .code{
+    height: 250px;
+    padding-top: 60px;
+}
+.abs_win .code img{
+    width: 90px;
+    height: 90px;
+    display: block;
+    margin: 0 auto;
+}
+/* /购买课程页面 */
