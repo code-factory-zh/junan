@@ -4305,6 +4305,15 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
 #add_edit_course .every_answers:not(:last-child){
     margin-bottom: 10px;
 }
+#add_edit_course .tixing .line{
+    padding-bottom: 10px;
+}
+#add_edit_course .tixing .input_num{
+    width: 60px;
+    margin: 0 10px;
+    height: 26px;
+    padding-left: 5px;
+}
 /* 分页的颜色设置 */
 .page-item>a{
     color: #26B99A !important;
