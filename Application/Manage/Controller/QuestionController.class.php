@@ -12,6 +12,9 @@ use Manage\Model\QuestionsModel;
 
 class QuestionController extends BaseController {
 
+    private $question;
+    private $course;
+
     // 针对HTTP接口的固定TOKEN
     CONST HTTP_TOKEN_N1 = '8FA02B017FCDE7836A6FDB5D00AC638F';
 
@@ -24,8 +27,10 @@ class QuestionController extends BaseController {
     }
 
     public function _initialize() {
-
         parent::_initialize();
+
+        $this -> question = new \Manage\Model\QuestionsModel;
+        $this -> course = new \Manage\Model\CourseModel;
     }
 
     /**
@@ -45,34 +50,52 @@ class QuestionController extends BaseController {
      * **/
     public function operate()
     {
-        $data = $this->postFetch($_POST);
-        $this->_post($data, ['course_id', 'type', 'title', 'answer', 'option']);
+        if (IS_POST) {
+            $data = $this->postFetch($_POST);var_dump($data);die;
+            $this->_post($data, ['course_id', 'type', 'title', 'answer', 'option']);
 
-        $data['created_time'] = time();
-        $data['updated_time'] = time();
-        $data['option'] = json_encode($data['option']);
+            $data['created_time'] = time();
+            $data['updated_time'] = time();
+            $data['option'] = json_encode($data['option']);
 
-        $Question = M('Questions');
-        $final = $Question->create($data);
+            $Question = M('Questions');
+            $final = $Question->create($data);
 
-        if (!empty($final['id'])) {
-            $model = new QuestionsModel();
-            $record = $model->getOne('is_deleted = 0 AND id = ' . $final['id']);
-            if (empty($record)) {
-                $this->el(0, 'The record does not exist');
+            if (!empty($final['id'])) {
+                $model = new QuestionsModel();
+                $record = $model->getOne('is_deleted = 0 AND id = ' . $final['id']);
+                if (empty($record)) {
+                    $this->el(0, 'The record does not exist');
+                }
+
+                unset($final['created_time']);
+                $result = $Question->save($final);
+            } else {
+                $result = $Question->add($final);
             }
 
-            unset($final['created_time']);
-            $result = $Question->save($final);
-        } else {
-            $result = $Question->add($final);
+            if ($result) {
+                $this->e();
+            } else {
+                $this->el($result, 'fail');
+            }
         }
 
-        if ($result) {
-            $this->e();
+        //参数
+        if (!empty($_GET['id'])) {
+            $exist = $this -> question -> getOne('id = ' . $_GET['id']);
+            $data['record'] = $exist;
+            $data['type'] = $exist['type'];
         } else {
-            $this->el($result, 'fail');
+            $data['type'] = $_GET['type'];
         }
+
+        $types = [1 => '单选', 2 => '复选', 3 => '判断', 4 => '填空'];
+        $data['type_name'] = $types[$data['type']];
+
+        $data['course'] = $this -> course -> getList();
+        $this->assign($data);
+        $this->display();
     }
 
     /*
@@ -115,23 +138,21 @@ class QuestionController extends BaseController {
      * **/
     public function index()
     {
-        if (IS_GET) {
-            $params = $this->_get($_GET);
+        $params = $this->_get($_GET);
 
-            $Question = new QuestionsModel();
-            $list = $Question->getAll('*', 'is_deleted = 0', $params['page'], $params['pageNum']);
+        $Question = new QuestionsModel();
+        $list = $Question->getAll('*', 'is_deleted = 0', $params['page'], $params['pageNum']);
 
-            $Course = new CourseModel();
-            $courseList = $Course->getList();
-            foreach ($list as &$val) {
-                $val['course_id'] = $courseList[$val['course_id']];
-                $val['option'] = json_decode($val['option'], true);
-            }
-
-            $this->e(0, $list);
+        $Course = new CourseModel();
+        $courseList = $Course->getList();
+        foreach ($list as &$val) {
+            $val['course_id'] = $courseList[$val['course_id']];
+            $option = json_decode($val['option'], true);
+            $val['option'] = implode('|', $option);
         }
 
-        $this->display();
+        $this->assign(['data' => $list]);
+        $this->display('question/list');
     }
 
 
