@@ -113,20 +113,25 @@ class QuestionController extends BaseController {
     /*
      *获取列表
      * **/
-    public function index() {
-        $params = $this->_get($_GET);
+    public function index()
+    {
+        if (IS_GET) {
+            $params = $this->_get($_GET);
 
-        $Question = new QuestionsModel();
-        $list = $Question->getAll('*', 'is_deleted = 0', $params['page'], $params['pageNum']);
+            $Question = new QuestionsModel();
+            $list = $Question->getAll('*', 'is_deleted = 0', $params['page'], $params['pageNum']);
 
-        $Course = new CourseModel();
-        $courseList = $Course->getList();
-        foreach ($list as &$val) {
-            $val['course_id'] = $courseList[$val['course_id']];
-            $val['option'] = json_decode($val['option'], true);
+            $Course = new CourseModel();
+            $courseList = $Course->getList();
+            foreach ($list as &$val) {
+                $val['course_id'] = $courseList[$val['course_id']];
+                $val['option'] = json_decode($val['option'], true);
+            }
+
+            $this->e(0, $list);
         }
 
-        $this->e(0, $list);
+        $this->display();
     }
 
 

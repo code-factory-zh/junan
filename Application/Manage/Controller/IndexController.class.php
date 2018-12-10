@@ -26,7 +26,7 @@ class IndexController extends BaseController {
 	}
 
 	public function index(){
-	    var_dump("asdsd");exit;
+	    $this->display('index');
     }
 
     public function test(){
