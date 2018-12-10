@@ -54,6 +54,7 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
 function init_top_nav(){
 	$('.top_nav_user').load('./template/top_nav.html');
 }
+
 // Sidebar
 function init_sidebar() {
 // TODO: This is some kind of easy fix, maybe we can improve this
@@ -5045,7 +5046,6 @@ if (typeof NProgress != 'undefined') {
 		init_autocomplete();
 		// 头部导航栏引用
 		init_top_nav();
-				
-	});	
+	});
 	
 
