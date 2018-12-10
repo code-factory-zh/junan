@@ -13,6 +13,7 @@ class QuestionsModel extends BaseModel {
     /*protected $fields = array('id', 'course_id', 'type', 'title', 'answer', 'option', 'created_time', 'updateed_time', 'is_deleted');
     protected $pk     = 'id';*/
 
+    
     //删除记录
     public function del($id) {
         return $this->where('id = ' . $id)->save(['is_deleted' => 1]);
