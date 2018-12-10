@@ -49,7 +49,7 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
     $NAV_MENU = $('.nav_menu'),
     $FOOTER = $('footer');
 
-	
+
 //top_nav
 function init_top_nav(){
 	$('.top_nav_user').load('./template/top_nav.html');
@@ -5043,6 +5043,7 @@ if (typeof NProgress != 'undefined') {
 		init_CustomNotification();
 		init_autosize();
 		init_autocomplete();
+		// 头部导航栏引用
 		init_top_nav();
 				
 	});	
