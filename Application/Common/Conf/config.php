@@ -1,6 +1,6 @@
 <?php
 return array(
-	'MODULE_ALLOW_LIST' => ['Manage', 'Open'],
+	'MODULE_ALLOW_LIST' => ['Manage'],
 	'DEFAULT_MODULE' => 'Manage',
 	'DEFAULT_GROUP' => 'Manage',
 
@@ -10,10 +10,9 @@ return array(
 
 	// Mysql信息
 	'DB_TYPE'   => 'mysqli',
-
-	'DB_HOST' => '192.168.1.220',
-	'DB_NAME' => 'Aquatic',
+	'DB_HOST' => 'rm-8vb866v4t334z1d53do.mysql.zhangbei.rds.aliyuncs.com',
+	'DB_NAME' => 'junan',
 	'DB_USER' => 'root',
-	'DB_PWD' => 'linuxmysql',
+	'DB_PWD' => 'Joinersafe111111',
 	'DB_PORT'   => 3306, // 端口
 );
