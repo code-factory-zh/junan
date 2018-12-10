@@ -74,7 +74,7 @@
         <!-- 页面内容 -->
         <div class="right_col" role="main">
             <div id="add_edit_course">
-                <h3 class="title">新增单选题</h3>
+                <h3 class="title"><if condition="$record.id != ''">修改<else />新增</if>{$type_name}</h3>
                 <form action="" class="form-horizontal form-label-left" method="post">
                     <div class="form-group">
                         <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">题目名称</label>
@@ -97,7 +97,7 @@
                     <if condition="$type == 1">
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">答案</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12" id="answers">
                                 <div class="every_answers">
                                     <input type="radio" name="which" checked value="1">
                                     <input type="text" name="answer1" class="form-control" placeholder="请输入答案">
@@ -114,7 +114,7 @@
                     <elseif condition="$type == 2"/>
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">答案</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12" id="answers">
                                 <div class="every_answers">
                                     <input type="checkbox" name="which" checked value="1">
                                     <input type="text" name="answer1" class="form-control" placeholder="请输入答案">
@@ -147,9 +147,11 @@
                     </if>
 
                     <div class="btns col-xs-12" style="text-align: center;margin-top: 20px;">
-                        <a href="/manage/question/list"><button class="btn btn-default btn-sm" type="button">取消</button></a>
+                        <a href="../question/index"><button class="btn btn-default btn-sm" type="button">取消</button></a>
                         <button class="btn btn-success btn-sm" type="submit">保存</button>
                     </div>
+                    <input type="hidden" name="type" value="{$type}">
+                    <input type="hidden" name="id" value="{$record.id}">
                 </form>
             </div>
         </div>
@@ -206,9 +208,33 @@
 
 <!-- Custom Theme Scripts -->
 <script src="/static/build/js/custom.js"></script>
-<script src="/static/build/js/question_radio.js"></script>
-<script src="/static/build/js/question_checkbox.js"></script>
-<script src="/static/build/js/question_fill_in.js"></script>
+<if condition="$type == 1">
+    <script src="/static/build/js/question_radio.js"></script>
+<elseif condition="$type == 2" />
+    <script src="/static/build/js/question_checkbox.js"></script>
+<elseif condition="$type == 4" />
+    <script src='/static/build/js/jquery-autoHeightTextarea.js'></script>
+    <script src="/static/build/js/question_fill_in.js"></script>
+</if>
+
+<script>
+    $("#form").submit(function () {
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            dataType: 'JSON',
+            data: $(this).serialize(),
+            success: function (e) {
+                if (e.code != 0) {
+                    alert(e.msg)
+                } else {
+                    window.location.href = '/manage/question/list';
+                }
+            }
+        })
+        return false
+    })
+</script>
 
 </body>
 </html>

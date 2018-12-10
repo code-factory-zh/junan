@@ -51,7 +51,7 @@ class QuestionController extends BaseController {
     public function operate()
     {
         if (IS_POST) {
-            $data = $this->postFetch($_POST);
+            $data = $this->postFetch($_POST);var_dump($data);die;
             $this->_post($data, ['course_id', 'type', 'title', 'answer', 'option']);
 
             $data['created_time'] = time();
@@ -89,6 +89,9 @@ class QuestionController extends BaseController {
         } else {
             $data['type'] = $_GET['type'];
         }
+
+        $types = [1 => '单选', 2 => '复选', 3 => '判断', 4 => '填空'];
+        $data['type_name'] = $types[$data['type']];
 
         $data['course'] = $this -> course -> getList();
         $this->assign($data);
@@ -133,7 +136,7 @@ class QuestionController extends BaseController {
     /*
      *获取列表
      * **/
-    public function list()
+    public function index()
     {
         $params = $this->_get($_GET);
 
@@ -149,7 +152,7 @@ class QuestionController extends BaseController {
         }
 
         $this->assign(['data' => $list]);
-        $this->display();
+        $this->display('question/list');
     }
 
 
