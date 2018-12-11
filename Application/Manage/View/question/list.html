@@ -47,7 +47,7 @@
                         <ul class="nav side-menu">
                             <li><a href="index.html"><i class="fa fa-home"></i> 接入公司管理 </a></li>
                             <li><a href="course.html"><i class="fa fa-graduation-cap"></i> 课程管理 </a></li>
-                            <li><a href="question.html"><i class="fa fa-book"></i> 题目管理 </a></li>
+                            <li class="current-page"><a href="{$Think.server.script_name}/manage/question/index"><i class="fa fa-book"></i> 题目管理 </a></li>
                             <li><a href="exam.html"><i class="fa fa-desktop"></i> 考试管理 </a></li>
                             <li><a href="certificate.html"><i class="fa fa-trophy"></i> 证书管理 </a></li>
                         </ul>
@@ -106,7 +106,7 @@
                     <foreach name="data" key="k" item="v">
                         <tr>
                             <td>{$v.course_id}</td>
-                            <td>{$v.type}</td>
+                            <td><if condition="$v.type == 1">单选<elseif condition="$v.type == 2"/>复选<elseif condition="$v.type == 3"/>判断<elseif condition="$v.type == 4"/>填空</if></td>
                             <td>{$v.title}</td>
                             <td>{$v.answer}</td>
                             <td>{$v.option}</td>

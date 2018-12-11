@@ -47,7 +47,7 @@
                         <ul class="nav side-menu">
                             <li><a href="index.html"><i class="fa fa-home"></i> 接入公司管理 </a></li>
                             <li><a href="course.html"><i class="fa fa-graduation-cap"></i> 课程管理 </a></li>
-                            <li class="current-page"><a href="question.html"><i class="fa fa-book"></i> 题目管理 </a></li>
+                            <li class="current-page"><a href="{$Think.server.script_name}/manage/question/index"><i class="fa fa-book"></i> 题目管理 </a></li>
                             <li><a href="exam.html"><i class="fa fa-desktop"></i> 考试管理 </a></li>
                             <li><a href="certificate.html"><i class="fa fa-trophy"></i> 证书管理 </a></li>
                         </ul>
@@ -75,11 +75,11 @@
         <div class="right_col" role="main">
             <div id="add_edit_course">
                 <h3 class="title"><if condition="$record.id != ''">修改<else />新增</if>{$type_name}</h3>
-                <form action="" class="form-horizontal form-label-left" method="post">
+                <form action="" class="form-horizontal form-label-left" method="post" id="form">
                     <div class="form-group">
                         <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">题目名称</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="course_name" name="title" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请输入题目名称">
+                            <input type="text" id="course_name" name="title" value="{$record.title}" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请输入题目名称">
                         </div>
                     </div>
                     <div class="form-group">
@@ -88,7 +88,7 @@
                             <select id="gangwei" name="course_id" class="form-control">
                                 <option value="">请选择科目</option>
                                 <foreach name="course" key="k" item="v">
-                                    <option value="{$k}">{$v}</option>
+                                    <option value="{$k}" <if condition="$record.course_id == $k">selected</if>>{$v}</option>
                                 </foreach>
                             </select>
                         </div>
@@ -98,11 +98,21 @@
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">答案</label>
                             <div class="col-md-6 col-sm-6 col-xs-12" id="answers">
-                                <div class="every_answers">
-                                    <input type="radio" name="which" checked value="1">
-                                    <input type="text" name="answer1" class="form-control" placeholder="请输入答案">
-                                    <span class="glyphicon glyphicon-trash" onclick="del_answer(1)"></span>
-                                </div>
+                                <if condition="$record.id != ''">
+                                    <foreach name="record.option" key="k" item="value">
+                                        <div class="every_answers">
+                                            <input type="radio" name="which" <if condition="$record.answer == $k+1">checked</if> value="{$k+1}">
+                                            <input type="text" name="answer{$k+1}" value="{$value}" class="form-control" placeholder="请输入答案">
+                                            <span class="glyphicon glyphicon-trash" onclick="del_answer({$k+1})"></span>
+                                        </div>
+                                    </foreach>
+                                <else/>
+                                    <div class="every_answers">
+                                        <input type="radio" name="which" checked value="1">
+                                        <input type="text" name="answer1" class="form-control" placeholder="请输入答案">
+                                        <span class="glyphicon glyphicon-trash" onclick="del_answer(1)"></span>
+                                    </div>
+                                </if>
                             </div>
                         </div>
                         <div class="form-group">
@@ -115,11 +125,21 @@
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">答案</label>
                             <div class="col-md-6 col-sm-6 col-xs-12" id="answers">
-                                <div class="every_answers">
-                                    <input type="checkbox" name="which" checked value="1">
-                                    <input type="text" name="answer1" class="form-control" placeholder="请输入答案">
-                                    <span class="glyphicon glyphicon-trash" onclick="del_answer(1)"></span>
-                                </div>
+                                <if condition="$record.id != ''">
+                                    <foreach name="record.option" key="k" item="value">
+                                        <div class="every_answers">
+                                            <input type="checkbox" name="which" <if condition="$value.answer == 2">checked</if> value="{$k+1}">
+                                            <input type="text" name="answer{$k+1}" value="{$value.value}" class="form-control" placeholder="请输入答案">
+                                            <span class="glyphicon glyphicon-trash" onclick="del_answer({$k+1})"></span>
+                                        </div>
+                                    </foreach>
+                                    <else/>
+                                    <div class="every_answers">
+                                        <input type="checkbox" name="which" checked value="1">
+                                        <input type="text" name="answer1" class="form-control" placeholder="请输入答案">
+                                        <span class="glyphicon glyphicon-trash" onclick="del_answer(1)"></span>
+                                    </div>
+                                </if>
                             </div>
                         </div>
                         <div class="form-group">
@@ -129,19 +149,19 @@
                             </div>
                         </div>
                     <elseif condition="$type == 3"/>
-                        <div class="form-group">
+                        <div class="form-group" id="radio">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12">答案</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="radio" value="bingo" name="answer" id="bingo" style="margin: 10px 5px 0 0;" checked><label for="bingo">正确</label>
+                                <input type="radio" value="1" name="answer" id="bingo" style="margin: 10px 5px 0 0;" <if condition="$record.id == '' || $record.id == 1">checked</if>><label for="bingo">正确</label>
                                 <br>
-                                <input type="radio" value="false" name="answer" id="false" style="margin: 0 5px 0 0;"><label for="false">错误</label>
+                                <input type="radio" value="2" name="answer" id="false" <if condition="$record.answer == 2">checked</if> style="margin: 0 5px 0 0;"><label for="false">错误</label>
                             </div>
                         </div>
                     <elseif condition="$type == 4"/>
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="answer">答案</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <textarea name="answer" id="answer" class="form-control"></textarea>
+                                <textarea name="answer" id="answer" class="form-control" >{$record.answer}</textarea>
                             </div>
                         </div>
                     </if>
@@ -219,16 +239,70 @@
 
 <script>
     $("#form").submit(function () {
+        var option = [];
+        var answer = '';
+        var type = "{$type}";
+
+        //判断
+        if (type == 1) {
+            $('#answers>.every_answers').each(function (index) {
+                var o = $(this).find('input[type="text"]').val();
+                if (o != '') {
+                    option.push(o);
+
+                    if ($(this).find('input[name="which"]:checked').val() != undefined) {
+                        answer = index + 1;
+                    }
+                } else {
+                    alert('请把未填写的单选框删除');return false;
+                }
+            })
+
+            if (answer == '') {
+                alert('单选答案不能为空');return false;
+            }
+        }else if (type == 2){
+            var answer = [];
+            $('#answers>.every_answers').each(function (index) {
+                var o = $(this).find('input[type="text"]').val();
+                if (o != '') {
+                    option.push(o);
+
+                    if ($(this).find('input[name="which"]:checked').val() != undefined) {
+                        answer.push(index+1);
+                    }
+                } else {
+                    alert('请把未填写的复选框删除');
+                    return false;
+                }
+            })
+
+            if (answer == []) {
+                alert('复选答案不能为空');
+                return false;
+            }
+        }else if (type == 3) {
+            option = ['正确', '错误'];
+            answer = $('#radio').find("input[name='answer']:checked").val();
+        } else if (type == 4) {
+            option = '';
+            answer = $('#answer').val();
+        }
+
+        var id = $('input[name="id"]').val();
+        var title = $('#course_name').val();
+        var course_id = $('#gangwei').val();
+
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
             dataType: 'JSON',
-            data: $(this).serialize(),
+            data: {type:type, option:option, answer:answer, id:id, title:title, course_id:course_id},
             success: function (e) {
                 if (e.code != 0) {
                     alert(e.msg)
                 } else {
-                    window.location.href = '/manage/question/list';
+                    window.location.href = '../question/index';
                 }
             }
         })

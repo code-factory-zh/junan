@@ -51,8 +51,27 @@ class QuestionController extends BaseController {
     public function operate()
     {
         if (IS_POST) {
-            $data = $this->postFetch($_POST);var_dump($data);die;
-            $this->_post($data, ['course_id', 'type', 'title', 'answer', 'option']);
+            $data = $this->postFetch($_POST);
+            $this->_post($data, ['course_id', 'type', 'title', 'answer']);
+
+            if ($data['type'] == 1 || $data['type'] == 3) {
+                if (strlen($data['answer']) != 1) {
+                    $this->el(0, '答案只能有一个');
+                }
+            }elseif ($data['type'] == 2) {
+                if (!count($data['answer'])) {
+                    $this->el(0, '复选答案至少要有一个');
+                }
+                $data['answer'] = json_encode($data['answer']);
+            } elseif ($data['type'] == 4) {
+                if (strlen($data['answer']) == '') {
+                    $this->el(0, '答案不能为空');
+                }
+            }
+
+            if (!$data['course_id']) {
+                $this->el(0, '科目不能为空');
+            }
 
             $data['created_time'] = time();
             $data['updated_time'] = time();
@@ -86,6 +105,25 @@ class QuestionController extends BaseController {
             $exist = $this -> question -> getOne('id = ' . $_GET['id']);
             $data['record'] = $exist;
             $data['type'] = $exist['type'];
+            if ($exist['type'] < 3) $data['record']['option'] = json_decode($data['record']['option'], true);
+            if ($exist['type'] == 2) {
+                $data['record']['answer'] = json_decode($data['record']['answer'], true);
+                $answer = [];var_dump($data['record']['answer']);
+                foreach ($data['record']['answer'] as $v) {
+                    $answer[$v] = $v;
+                }
+
+                $option = [];
+                foreach ($data['record']['option'] as $key => $value) {
+                    $tmp['value'] = $value;
+                    $tmp['answer'] = 1;
+                    if (isset($answer[$key+1])) {
+                        $tmp['answer'] = 2;
+                    }
+                    $option[] = $tmp;
+                }
+                $data['record']['option'] = $option;
+            }
         } else {
             $data['type'] = $_GET['type'];
         }
@@ -96,17 +134,6 @@ class QuestionController extends BaseController {
         $data['course'] = $this -> course -> getList();
         $this->assign($data);
         $this->display();
-    }
-
-    /*
-     * 获取所有课程列表
-     *
-     * **/
-    public function course()
-    {
-        $Course = new CourseModel();
-        $list = $Course->getList();
-        $this->e(0, $list);
     }
 
     /*
