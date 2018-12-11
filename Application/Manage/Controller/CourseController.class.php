@@ -46,21 +46,22 @@ class CourseController extends BaseController {
 //			$this->_post($data, ['name']);
 
 			if (!$data['name']) {
-				$this->el(0, '岗位名称不能为空!');
+				$this->el(0, '课程名称不能为空!');
 			}
 
 			$data['updated_time'] = time();
+//			$data['amount'] = intval($data['amount']);
 			if(!$data['id']){
 				$data['created_time'] = time();
 				//新增
-				if($result = $this->job->add($data)){
+				if($result = $this->course->add($data)){
 					$this->e();
 				}else{
 					$this->el($result, 'fail');
 				}
 			}else{
 				//修改
-				if($result = $this->job->save($data)){
+				if($result = $this->course->save($data)){
 					$this->e();
 				}else{
 					$this->el($result, 'fail');
