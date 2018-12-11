@@ -18,7 +18,7 @@
     <link href="/static/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="/static/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-	
+
     <!-- bootstrap-progressbar -->
     <link href="/static/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
@@ -74,24 +74,22 @@
         <!-- 页面内容 -->
         <div class="right_col" role="main">
           <div id="course_list">
-
+            <a href="./edit"><button class="btn btn-success btn-sm fr" id="add_course">新增工种</button></a>
               <table class="full_width_table">
                  <thead>
                    <tr>
-                     <th>接入公司</th>
-                     <th>账号</th>
+                     <th>岗位名称</th>
                      <th>创建时间</th>
                      <th>操作</th>
                    </tr>
                  </thead>
                  <foreach name="list" key="k" item="v">
                  <tr>
-                   <td>{$v.company_name}</td>
-                   <td>{$v.code}</td>
+                   <td>{$v.name}</td>
                    <td>{$v.created_time|date='Y年m月d日 H时i分',###}</td>
                    <td>
-                      <button id="butt" class="btn btn-success btn-sm">开启</button>
-                      <button class="btn btn-success btn-sm">禁止</button>
+                      <a href="job/edit?id={$v.id}"><button class="btn btn-success btn-sm">编辑</button></a>
+                      <!--<button class="btn btn-success btn-sm">删除</button>-->
                    </td>
                  </tr>
                  </foreach>
@@ -155,10 +153,10 @@
       $("#butt").click(function () {
 
         $.ajax({
-          url: 'index.php/manage/company/changeStatus',
+          url: 'index.php/manage/company/changeStatus/',
           type: 'POST',
           dataType: 'JSON',
-          data: $(this).serialize(),
+          data: {"status":1},
           success: function (e) {
             if (e.code != 0) {
               alert(e.msg)
