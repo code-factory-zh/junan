@@ -13,6 +13,6 @@ class CourseModel extends BaseModel {
 
     public function getList()
     {
-        return $this->where('is_deleted = 0')->getField('id, name');
+        return $this->where('is_deleted = 0')->getField('id, name, job_id, amount, detail, created_time');
     }
 }
