@@ -64,30 +64,6 @@ class JobController extends BaseController {
 					$this->el($result, 'fail');
 				}
 			}
-
-
-
-			$Question = M('Questions');
-			$final = $Question->create($data);
-
-			if (!empty($final['id'])) {
-				$model = new QuestionsModel();
-				$record = $model->getOne('is_deleted = 0 AND id = ' . $final['id']);
-				if (empty($record)) {
-					$this->el(0, 'The record does not exist');
-				}
-
-				unset($final['created_time']);
-				$result = $Question->save($final);
-			} else {
-				$result = $Question->add($final);
-			}
-
-			if ($result) {
-				$this->e();
-			} else {
-				$this->el($result, 'fail');
-			}
 		}
 
 		//参数
