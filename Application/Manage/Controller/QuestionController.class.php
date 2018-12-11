@@ -108,7 +108,7 @@ class QuestionController extends BaseController {
             if ($exist['type'] < 3) $data['record']['option'] = json_decode($data['record']['option'], true);
             if ($exist['type'] == 2) {
                 $data['record']['answer'] = json_decode($data['record']['answer'], true);
-                $answer = [];var_dump($data['record']['answer']);
+                $answer = [];
                 foreach ($data['record']['answer'] as $v) {
                     $answer[$v] = $v;
                 }
