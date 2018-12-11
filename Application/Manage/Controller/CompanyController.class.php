@@ -42,7 +42,7 @@ class CompanyController extends BaseController {
 	 * @return  array
 	 */
 	public function changeStatus(){
-
+		var_dump($_POST);
 	}
 
 }
