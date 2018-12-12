@@ -23,11 +23,19 @@ class AccountModel extends BaseModel {
 	 */
 	public function getAccount() {
 
-		return $this -> field('a.name account_name, cac.account_id, a.mobile, c.name course_name, aj.job_id') ->
+		return $this -> field('a.id account_id, a.name account_name, a.mobile, aj.job_id') ->
+		table('account a') ->
+		join('LEFT JOIN account_job aj ON a.id = aj.account_id') ->
+		select();
+	}
+
+
+	public function getCourses($fields = 'c.id course_id, cac.account_id, c.name course_name') {
+
+		return $this -> field($fields) ->
 		table('company_account_course cac') ->
-		join('LEFT JOIN account_job aj ON aj.account_id = cac.account_id') ->
-		join('LEFT JOIN course c ON c.id = cac.course_id') ->
-		join('LEFT JOIN account a ON a.id = cac.account_id') ->
+		join('left join course c on cac.course_id = c.id') ->
+		where(['c.is_deleted' => 0, 'cac.status' => 0]) ->
 		select();
 	}
 }
