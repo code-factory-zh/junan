@@ -21,4 +21,22 @@
 		{
 			return $this->where($where)->find();
 		}
+
+		/**
+		 * 根据条件删除
+		 * @param $where array 删除条件
+		 * @return mixed
+		 */
+		public function del($where){
+			return $this->where($where)->delete();
+		}
+
+		/**
+		 * 根据条件获取列表
+		 * @param $where array 删除条件
+		 * @return mixed
+		 */
+		public function getList($where = NULL, $order = NULL, $page = NULL , $page_size = NULL){
+
+		}
 	}

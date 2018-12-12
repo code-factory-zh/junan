@@ -76,4 +76,24 @@ class JobController extends BaseController {
 		$this->display();
 	}
 
+	/**
+	 * 删除岗位
+	 * @author cuiruijun
+	 * @date   2018/12/10 下午11:59
+	 * @url    manage/job/del
+	 * @return  array
+	 */
+	public function del()
+	{
+		//参数
+		if (!empty($_GET['id'])){
+			$result = $this->job->del('id = ' . $_GET['id']);
+			if($result){
+				$this->e();
+			}else{
+				$this->el($result, '删除失败');
+			}
+		}
+	}
+
 }

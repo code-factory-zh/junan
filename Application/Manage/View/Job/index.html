@@ -88,8 +88,8 @@
                    <td>{$v.name}</td>
                    <td>{$v.created_time|date='Y年m月d日 H时i分',###}</td>
                    <td>
-                      <a href="job/edit?id={$v.id}"><button class="btn btn-success btn-sm">编辑</button></a>
-                      <!--<button class="btn btn-success btn-sm">删除</button>-->
+                      <a href="/manage/job/edit?id={$v.id}"><button class="btn btn-success btn-sm">编辑</button></a>
+                     <a onclick="confirm('确认删除么？')" href="/manage/job/del?id={$v.id}"><button class="btn btn-success btn-sm">删除</button></a>
                    </td>
                  </tr>
                  </foreach>
