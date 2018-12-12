@@ -17,7 +17,7 @@ class CourseDetailModel extends BaseModel {
      */
     public function getChapter($where, $field = '*')
     {
-        return $this -> where($where) -> getField($field);
+        return $this -> where($where) -> order('sort asc') -> getField($field);
     }
 
     /**

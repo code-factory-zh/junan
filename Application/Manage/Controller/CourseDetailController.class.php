@@ -52,12 +52,14 @@ class CourseDetailController extends BaseController
             $data['course_id'] = $a['course_id'];
             $id = $_GET['id'];
         }
-        //var_dump($_FILES);die;
-        if (IS_POST) {var_dump($_FILES);die;
-            $this -> _post($p, ['chapter', 'type', 'course_id', 'sort', 'detail', 'course_id']);
+
+        if (IS_POST) {
+            $this -> _post($p, ['chapter', 'type', 'course_id', 'sort', 'course_id']);
 
             if ($p['type'] != 1) {
-                $p['content'] = $p['detail'];
+                if (empty($p['content'])) {
+                    $this->e('请上传文件');
+                }
                 $p['detail'] = '';
             }
 
@@ -105,19 +107,25 @@ class CourseDetailController extends BaseController
      */
     public function upload()
     {
-        $this -> _get($a, ['type']);
-        if ($a['type'] == 2) {
+        if (empty($_GET['type'])) {
+            $this->e();
+        }
+
+        if ($_GET['type'] == 2) {
             $type = 'file';
-        } elseif ($a['type'] == 3) {
+        } elseif ($_GET['type'] == 3) {
             $type = 'media';
         }
 
-        $file = $_FILES;
-        var_dump($file);die;
-        if (empty($file)) {
+        if (empty($_FILES['file'])) {
             $this->e('上传文件不能为空');
         }
 
-        ajax_upload('/upload/'. $type .'/', $_FILES['file']['name']);
+        $result = $this -> upload -> ajaxUpload('/'. $type .'/', $_FILES['file']['name'], $type);
+        if (isset($result['name'])) {
+            $this->e(0, $result);
+        } else {
+            $this->e($result);
+        }
     }
 }
