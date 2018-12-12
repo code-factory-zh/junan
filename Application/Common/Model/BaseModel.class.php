@@ -39,4 +39,13 @@
 		public function getList($where = NULL, $order = NULL, $page = NULL , $page_size = NULL){
 
 		}
+
+		/**
+		 * 更新数据
+		 * @DateTime 2018-12-11
+		 */
+		public function updateData($where, $data)
+		{
+			return $this->where($where)->save($data);
+		}
 	}

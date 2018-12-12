@@ -49,10 +49,7 @@ class CourseController extends BaseController {
 				$this->el(0, '课程名称不能为空!');
 			}
 
-			$data['updated_time'] = time();
-//			$data['amount'] = intval($data['amount']);
 			if(!$data['id']){
-				$data['created_time'] = time();
 				//新增
 				if($result = $this->course->add($data)){
 					$this->e();
@@ -70,8 +67,8 @@ class CourseController extends BaseController {
 		}
 
 		//参数
-		if (!empty($_GET['id'])){
-			$course_info = $this->course->getOne('id = ' . $_GET['id']);
+		if (!empty(I('get.id'))){
+			$course_info = $this->course->getOne('id = ' . I('get.id'));
 		}
 
 		$data['list'] = $course_info;

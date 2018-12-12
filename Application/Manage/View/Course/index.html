@@ -93,7 +93,7 @@
                    <td>{$v.created_time|date='Y年m月d日 H时i分',###}</td>
                    <td>
                       <a href="/manage/course/edit?id={$v.id}"><button class="btn btn-success btn-sm">基础编辑</button></a>
-                      <a href="/manage/course/edit?id={$v.id}"><button class="btn btn-success btn-sm">章节详情</button></a>
+                      <a href="/manage/course_detail/list?course_id={$v.id}"><button class="btn btn-success btn-sm">章节详情</button></a>
                       <!--<button class="btn btn-success btn-sm">删除</button>-->
                    </td>
                  </tr>
@@ -154,24 +154,6 @@
 
     <!-- Custom Theme Scripts -->
     <script src="/static/build/js/custom.js"></script>
-    <script>
-      $("#butt").click(function () {
 
-        $.ajax({
-          url: 'manage/company/changeStatus/',
-          type: 'POST',
-          dataType: 'JSON',
-          data: {"status":1},
-          success: function (e) {
-            if (e.code != 0) {
-              alert(e.msg)
-            } else {
-              window.location.href = '/manage/company/list';
-            }
-          }
-        })
-        return false
-      })
-    </script>
   </body>
 </html>

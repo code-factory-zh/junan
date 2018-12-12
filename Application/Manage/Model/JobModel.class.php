@@ -27,4 +27,16 @@ class JobModel extends BaseModel {
 		return $this -> where($where) -> getField($fields);
 	}
 
+
+	public function _before_insert(&$data, $options)
+	{
+		$data['created_time'] = time();
+		$data['updated_time'] = time();
+	}
+
+	public function _before_update(&$data, $options)
+	{
+		$data['updated_time'] = time();
+	}
+
 }

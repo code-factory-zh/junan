@@ -23,12 +23,12 @@ class CompanyController extends BaseController {
 	 * 接入公司管理-列表
 	 * @DateTime 2018-12-08T17:58:00+0800
 	 */
-	public function list() {
+	public function index() {
 		$companys = $this -> company -> getCompanys('id,code,company_name,created_time,status');
 
 		$data['list'] = $companys;
 		$this -> assign($data);
-		$this -> display('company/list');
+		$this -> display();
 	}
 
 	/**
@@ -42,7 +42,15 @@ class CompanyController extends BaseController {
 	 * @return  array
 	 */
 	public function changeStatus(){
-		var_dump($_POST);
+		//判断当前传的参数和数据库中是否相同,如果相同则报错
+		$where['id'] = I('post.id');
+		$data['status'] = I('post.status');
+		$result = $this->company->updateData($where, $data);
+		if($result){
+			$this->e(0, '修改成功');
+		}else{
+			$this->el($result, '修改失败,请重试');
+		}
 	}
 
 }

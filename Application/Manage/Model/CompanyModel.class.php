@@ -24,4 +24,9 @@ class CompanyModel extends BaseModel {
 	public function getCompanys($fields, $where = []) {
 		return $this -> where($where) -> getField($fields);
 	}
+
+	public function _before_update(&$data, $options)
+	{
+		$data['updated_time'] = time();
+	}
 }

@@ -40,16 +40,14 @@ class JobController extends BaseController {
 	 */
 	public function edit(){
 		if (IS_POST) {
-			$data = ($_POST);
+			$data = I('post.');
 //			$this->_post($data, ['name']);
 
 			if (!$data['name']) {
 				$this->el(0, '岗位名称不能为空!');
 			}
 
-			$data['updated_time'] = time();
 			if(!$data['id']){
-				$data['created_time'] = time();
 				//新增
 				if($result = $this->job->add($data)){
 					$this->e();
@@ -67,8 +65,8 @@ class JobController extends BaseController {
 		}
 
 		//参数
-		if (!empty($_GET['id'])){
-			$jobs = $this->job->getOne('id = ' . $_GET['id']);
+		if (!empty(I('get.id'))){
+			$jobs = $this->job->getOne('id = ' . I('get.id'));
 		}
 
 		$data['list'] = $jobs;
@@ -85,9 +83,8 @@ class JobController extends BaseController {
 	 */
 	public function del()
 	{
-		//参数
-		if (!empty($_GET['id'])){
-			$result = $this->job->del('id = ' . $_GET['id']);
+		if (!empty(I('post.id'))){
+			$result = $this->job->del('id = ' . I('post.id'));
 			if($result){
 				$this->e();
 			}else{

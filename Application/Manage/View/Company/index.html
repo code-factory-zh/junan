@@ -90,8 +90,11 @@
                    <td>{$v.code}</td>
                    <td>{$v.created_time|date='Y年m月d日 H时i分',###}</td>
                    <td>
-                      <button id="butt" class="btn btn-success btn-sm">开启</button>
-                      <button class="btn btn-success btn-sm">禁止</button>
+                     <if condition="$v.status eq 1">
+                      <button class="btn btn-success btn-sm" value="1" idvalue="{$v.id}">开启</button>
+                       <else/>
+                      <button class="btn btn-success btn-sm" value="0" idvalue="{$v.id}">禁止</button>
+                       </if>
                    </td>
                  </tr>
                  </foreach>
@@ -152,18 +155,20 @@
     <!-- Custom Theme Scripts -->
     <script src="/static/build/js/custom.js"></script>
     <script>
-      $("#butt").click(function () {
+      $(".btn").click(function () {
+        status = $(this).attr('value');
+        id = $(this).attr('idvalue');
 
         $.ajax({
-          url: 'index.php/manage/company/changeStatus/',
+          url: '/manage/company/changeStatus/',
           type: 'POST',
           dataType: 'JSON',
-          data: {"status":1},
+          data: {"status":status, "id":id},
           success: function (e) {
             if (e.code != 0) {
               alert(e.msg)
             } else {
-              window.location.href = '/manage/company/list';
+              window.location.href = '/manage/company';
             }
           }
         })
