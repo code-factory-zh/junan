@@ -21,7 +21,12 @@ class CompanyController extends BaseController {
 
 	/**
 	 * 接入公司管理-列表
-	 * @DateTime 2018-12-08T17:58:00+0800
+	 * @author cuiruijun
+	 * @date   2018/12/10 下午11:59
+	 * @url    manage/company
+	 * @method get
+	 *
+	 * @return  array
 	 */
 	public function index() {
 		$companys = $this -> company -> getCompanys('id,code,company_name,created_time,status');
@@ -33,7 +38,7 @@ class CompanyController extends BaseController {
 
 	/**
 	 * 开启/禁止公司账号
-	 * @author cuirj
+	 * @author cuiruijun
 	 * @date   2018/12/10 下午11:59
 	 * @url    manage/company/changeStatus
 	 * @method post

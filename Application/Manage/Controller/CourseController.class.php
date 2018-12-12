@@ -20,10 +20,12 @@ class CourseController extends BaseController {
 		$this->job = new \Manage\Model\JobModel;
 	}
 
-
 	/**
 	 * 课程-列表
-	 * @DateTime 2018-12-08T17:58:00+0800
+	 * @author cuiruijun
+	 * @date   2018/12/10 下午11:59
+	 * @url    manage/job
+	 * @return  array
 	 */
 	public function index() {
 		$jobs = $this->course->getList();
@@ -35,7 +37,7 @@ class CourseController extends BaseController {
 
 	/**
 	 * 编辑岗位
-	 * @author cuirj
+	 * @author cuiruijun
 	 * @date   2018/12/10 下午11:59
 	 * @url    manage/job/edit
 	 * @return  array
