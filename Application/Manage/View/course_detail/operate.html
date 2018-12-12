@@ -65,7 +65,7 @@
         <div class="right_col" role="main">
             <div id="add_edit_course">
                 <h3 class="title">新增章节</h3>
-                <form action="" class="form-horizontal form-label-left" id="submit">
+                <form action="" class="form-horizontal form-label-left" id="submit" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">章节名称</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -115,15 +115,51 @@
                                     <textarea name="detail" id="detail" rows="10" class="form-control">{$record.detail}</textarea>
                                 </div>
                             </div>
-                        <elseif condition="$record.type == 2"/>
                             <div class="form-group toggleShow" style="display: none">
                                 <label for="file_upload" class="control-label col-md-3 col-sm-3 col-xs-12">文件上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input name="file_upload" type="file" id="file_upload" style="padding-top: 5px;">
                                 </div>
                             </div>
+                            <div class="form-group toggleShow" style="display: none">
+                                <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input name="video_upload" type="file" id="video_upload" style="padding-top: 5px;">
+                                </div>
+                            </div>
+                        <elseif condition="$record.type == 2"/>
+                            <div class="form-group toggleShow" style="display: none">
+                                <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <textarea name="detail" id="detail" rows="10" class="form-control">{$record.detail}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group toggleShow">
+                                <label for="file_upload" class="control-label col-md-3 col-sm-3 col-xs-12">文件上传</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input name="file_upload" type="file" id="file_upload" style="padding-top: 5px;">
+                                </div>
+                            </div>
+                            <div class="form-group toggleShow" style="display: none">
+                                <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input name="video_upload" type="file" id="video_upload" style="padding-top: 5px;">
+                                </div>
+                            </div>
                         <elseif condition="$record.type == 3"/>
                             <div class="form-group toggleShow" style="display: none">
+                                <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <textarea name="detail" id="detail" rows="10" class="form-control">{$record.detail}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group toggleShow" style="display: none">
+                                <label for="file_upload" class="control-label col-md-3 col-sm-3 col-xs-12">文件上传</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input name="file_upload" type="file" id="file_upload" style="padding-top: 5px;">
+                                </div>
+                            </div>
+                            <div class="form-group toggleShow">
                                 <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <input name="video_upload" type="file" id="video_upload" style="padding-top: 5px;">
@@ -136,7 +172,7 @@
                     <div calss="btns col-xs-12" style="text-align: center;margin-top: 20px;">
                         <a href="chapter_detail.html"><button class="btn btn-default btn-sm" type="button">取消</button></a>
                         <input type="hidden" name="course_id" value="{$course_id}">
-                        <button class="btn btn-success btn-sm" type="submit">保存</button>
+                        <button class="btn btn-success btn-sm" type="submit" id="save">保存</button>
                     </div>
                 </form>
             </div>

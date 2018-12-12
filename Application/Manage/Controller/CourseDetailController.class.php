@@ -12,12 +12,14 @@ class CourseDetailController extends BaseController
 {
     private $courseDetail;
     private $course;
+    private $upload;
 
     public function _initialize() {
 
         parent::_initialize();
         $this -> courseDetail = new \Manage\Model\CourseDetailModel;
         $this -> course = new \Manage\Model\CourseModel;
+        $this -> upload = new \Manage\Model\UploadModel;
     }
 
     /**
@@ -50,9 +52,10 @@ class CourseDetailController extends BaseController
             $data['course_id'] = $a['course_id'];
             $id = $_GET['id'];
         }
-
-        if (IS_POST) {
+        //var_dump($_FILES);die;
+        if (IS_POST) {var_dump($_FILES);die;
             $this -> _post($p, ['chapter', 'type', 'course_id', 'sort', 'detail', 'course_id']);
+
             if ($p['type'] != 1) {
                 $p['content'] = $p['detail'];
                 $p['detail'] = '';
@@ -94,5 +97,27 @@ class CourseDetailController extends BaseController
 
         $this -> assign($data);
         $this->display();
+    }
+
+    /**
+     * 上传列表
+     * @DateTime 2018-12-12T17:58:00+0800
+     */
+    public function upload()
+    {
+        $this -> _get($a, ['type']);
+        if ($a['type'] == 2) {
+            $type = 'file';
+        } elseif ($a['type'] == 3) {
+            $type = 'media';
+        }
+
+        $file = $_FILES;
+        var_dump($file);die;
+        if (empty($file)) {
+            $this->e('上传文件不能为空');
+        }
+
+        ajax_upload('/upload/'. $type .'/', $_FILES['file']['name']);
     }
 }
