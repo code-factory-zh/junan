@@ -65,7 +65,7 @@
         <div class="right_col" role="main">
             <div id="add_edit_course">
                 <h3 class="title">新增章节</h3>
-                <form action="" class="form-horizontal form-label-left" id="submit" enctype="multipart/form-data">
+                <div action="" class="form-horizontal form-label-left" id="submit" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">章节名称</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -88,6 +88,8 @@
                             <input type="radio" name="type" id="file_type3" value="3" <if condition="$record.type == 3">checked</if>> <label for="file_type3">视频</label>
                         </div>
                     </div>
+
+                    <!-- 新建章节 -->
                     <if condition="$record.id == ''">
                         <div class="form-group toggleShow">
                             <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
@@ -98,15 +100,23 @@
                         <div class="form-group toggleShow" style="display: none">
                             <label for="file_upload" class="control-label col-md-3 col-sm-3 col-xs-12">文件上传</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input name="file_upload" type="file" id="file_upload" style="padding-top: 5px;">
+                                <form action="./upload?type=2" enctype="multipart/form-data" method="post" id="upload">
+                                    <input name="file" type="file" id="file_upload" style="padding-top: 5px;">
+                                    <input type="submit" value="提交" >
+                                </form>
+                                <!--<input name="file_upload" type="file" id="file_upload" style="padding-top: 5px;">-->
                             </div>
                         </div>
                         <div class="form-group toggleShow" style="display: none">
                             <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input name="video_upload" type="file" id="video_upload" style="padding-top: 5px;">
+                                <form action="./upload?type=3" enctype="multipart/form-data" method="post" id="upload">
+                                    <input name="file" type="file" id="video_upload" style="padding-top: 5px;">
+                                    <input type="submit" value="提交" >
+                                </form>
                             </div>
                         </div>
+                    <!-- 修改章节 -->
                     <else/>
                         <if condition="$record.type == 1">
                             <div class="form-group toggleShow">
@@ -118,13 +128,19 @@
                             <div class="form-group toggleShow" style="display: none">
                                 <label for="file_upload" class="control-label col-md-3 col-sm-3 col-xs-12">文件上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input name="file_upload" type="file" id="file_upload" style="padding-top: 5px;">
+                                    <form action="./upload?type=2" enctype="multipart/form-data" method="post" id="upload">
+                                        <input name="file" type="file" id="file_upload" style="padding-top: 5px;">
+                                        <input type="submit" value="提交" >
+                                    </form>
                                 </div>
                             </div>
                             <div class="form-group toggleShow" style="display: none">
                                 <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input name="video_upload" type="file" id="video_upload" style="padding-top: 5px;">
+                                    <form action="./upload?type=3" enctype="multipart/form-data" method="post" id="upload">
+                                        <input name="file" type="file" id="video_upload" style="padding-top: 5px;">
+                                        <input type="submit" value="提交" >
+                                    </form>
                                 </div>
                             </div>
                         <elseif condition="$record.type == 2"/>
@@ -137,13 +153,19 @@
                             <div class="form-group toggleShow">
                                 <label for="file_upload" class="control-label col-md-3 col-sm-3 col-xs-12">文件上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input name="file_upload" type="file" id="file_upload" style="padding-top: 5px;">
+                                    <form action="./upload?type=2" enctype="multipart/form-data" method="post" id="upload">
+                                        <input name="file" type="file" id="file_upload" style="padding-top: 5px;" value="{$Think.server.script_name}{$record.content}">
+                                        <input type="submit" value="提交" >
+                                    </form>
                                 </div>
                             </div>
                             <div class="form-group toggleShow" style="display: none">
                                 <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input name="video_upload" type="file" id="video_upload" style="padding-top: 5px;">
+                                    <form action="./upload?type=3" enctype="multipart/form-data" method="post" id="upload">
+                                        <input name="file" type="file" id="video_upload" style="padding-top: 5px;">
+                                        <input type="submit" value="提交" >
+                                    </form>
                                 </div>
                             </div>
                         <elseif condition="$record.type == 3"/>
@@ -156,13 +178,19 @@
                             <div class="form-group toggleShow" style="display: none">
                                 <label for="file_upload" class="control-label col-md-3 col-sm-3 col-xs-12">文件上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input name="file_upload" type="file" id="file_upload" style="padding-top: 5px;">
+                                    <form action="./upload?type=2" enctype="multipart/form-data" method="post" id="upload">
+                                        <input name="file" type="file" id="file_upload" style="padding-top: 5px;">
+                                        <input type="submit" value="提交" >
+                                    </form>
                                 </div>
                             </div>
                             <div class="form-group toggleShow">
                                 <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input name="video_upload" type="file" id="video_upload" style="padding-top: 5px;">
+                                    <form action="./upload?type=3" enctype="multipart/form-data" method="post" id="upload">
+                                        <input name="file" type="file" style="padding-top: 5px;" value="{$Think.server.script_name}{$record.content}">
+                                        <input type="submit" value="提交" >
+                                    </form>
                                 </div>
                             </div>
                         </if>
@@ -172,9 +200,10 @@
                     <div calss="btns col-xs-12" style="text-align: center;margin-top: 20px;">
                         <a href="chapter_detail.html"><button class="btn btn-default btn-sm" type="button">取消</button></a>
                         <input type="hidden" name="course_id" value="{$course_id}">
+                        <input type="hidden" id="content" name="content">
                         <button class="btn btn-success btn-sm" type="submit" id="save">保存</button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
         <!-- /页面内容 -->
@@ -204,24 +233,48 @@
 <script src="/static/build/js/chapter_add_edit.js"></script>
 
 <script>
-    $("#submit").submit(function () {
-        var title = $('#course_name').val();
-        var type = $('input[name="type"]:checked').val();
-        var sort = $('input[name="sort"]').val();
-        var detail = $('#detail').val();
-        var course_id = $('input[name="course_id"]').val();
-        var id = "{$record.id}";
+    $('#upload').submit(function () {
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#upload')[0]),
+            processData: false,
+            contentType: false
+        }).done(function(res) {
+            if (res.code != 0) {
+                alert(res.msg);
+            } else {
+                $('#content').val(res.msg.name);
+                alert('上传成功');
+            }
+        }).fail(function(res) {
+            alert('fail');
+            return false;
+        });
+        return false;
+    })
+
+    $("#save").click(function () {
+        var data = {};
+        data['chapter'] = $('#course_name').val();
+        data['type'] = $('input[name="type"]:checked').val();
+        data['sort'] = $('input[name="sort"]').val();
+        data['detail'] = $('#detail').val();
+        data['course_id'] = $('input[name="course_id"]').val();
+        data['content'] = $('#content').val();
+        data['id'] = "{$record.id}";
 
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
             dataType: 'JSON',
-            data: {chapter:title, type:type, sort:sort, detail:detail, course_id:course_id, id:id},
+            data: data,
             success: function (e) {
                 if (e.code != 0) {
                     alert(e.msg)
                 } else {
-                    window.location.href = '../course_detail/list?id=' + course_id;
+                    window.location.href = '../course_detail/list?id=' + data['course_id'];
                 }
             }
         })
