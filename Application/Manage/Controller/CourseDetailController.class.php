@@ -42,13 +42,18 @@ class CourseDetailController extends BaseController
      * 添加章节
      * @author cuirj
      * @date   2018/12/11 下午11:59
-     * @url    manage/course_detail/operate
+     * @url    manage/course_detail/edit
      * @method post
      *
-     * @param  int status 1-启用,0-禁止
+     * @param string chapter 标题
+     * @param int type 1文本框 2ppt 3 视频
+     * @param int course_id
+     * @param int sort 排序
+     * @param string content ppt或者视频地址
+     * @param string detail 文本内容
      * @return  array
      */
-    public function operate(){
+    public function edit(){
         if (IS_GET) {
 //            $this -> _get($a, ['course_id']);
             $data['course_id'] = I('get.course_id');
@@ -131,4 +136,23 @@ class CourseDetailController extends BaseController
             $this->e($result);
         }
     }
+	
+	/**
+	 * webuploader 上传文件
+	 */
+	public function ajaxUpload(){
+		// 根据自己的业务调整上传路径、允许的格式、文件大小
+        ajaxUpload('/upload/image/');
+	}
+	/**
+	 * webuploader 上传demo
+	 */
+	public function webuploader(){
+		// 如果是post提交则显示上传的文件 否则显示上传页面
+		if(IS_POST){
+			p($_POST);die;
+		}else{
+			$this->display();
+		}
+	}
 }

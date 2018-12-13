@@ -34,43 +34,67 @@ class QuestionController extends BaseController {
     }
 
     /**
-     * 新增或修改题目
+     * 接入公司管理-列表
+     * @author cuiruijun
+     * @date   2018/12/08 下午10:20
+     * @url    manage/question
+     * @method get
      *
-     * {
-        "course_id": 1,
-        "type": 1,
-        "title": "what is you sex?",
-        "answer": "1",
-        "option": [
-        "girlssss",
-        "boy"
-        ],
-        "id": 4
-     * }
-     * **/
-    public function operate()
+     * @return  array
+     */
+    public function index()
+    {
+        $params = $this->_get($_GET);
+
+        $list = $this -> question -> getAll('*', 'is_deleted = 0', $params['page'], $params['pageNum']);
+
+        $courseList = $this -> course -> getList();
+        foreach ($list as &$val) {
+            $val['course_id'] = $courseList[$val['course_id']];
+            $option = json_decode($val['option'], true);
+            $val['option'] = implode('|', $option);
+        }
+
+        $this -> assign(['data' => $list]);
+        $this -> display();
+    }
+
+    /**
+     * 新增/修改题目
+     * @author cuiruijun
+     * @date   2018/12/8 下午21：03
+     * @url    manage/question/edit
+     * @method post
+     *
+     * @param  int course_id 课程ID
+     * @param int type 类型
+     * @param string title 标题
+     * @param string answer 答案
+     * @return  array
+     */
+    public function edit()
     {
         if (IS_POST) {
-            $data = $this->postFetch($_POST);
-            $this->_post($data, ['course_id', 'type', 'title', 'answer']);
+            $data = $this -> postFetch($_POST);
+            $this -> _post($data, ['course_id', 'type', 'title', 'answer']);
 
             if ($data['type'] == 1 || $data['type'] == 3) {
                 if (strlen($data['answer']) != 1) {
-                    $this->el(0, '答案只能有一个');
+                    $this -> e('答案只能有一个');
                 }
             }elseif ($data['type'] == 2) {
                 if (!count($data['answer'])) {
-                    $this->el(0, '复选答案至少要有一个');
+                    $this -> e('复选答案至少要有一个');
                 }
                 $data['answer'] = json_encode($data['answer']);
             } elseif ($data['type'] == 4) {
                 if (strlen($data['answer']) == '') {
-                    $this->el(0, '答案不能为空');
+                    $this -> e('答案不能为空');
                 }
             }
 
             if (!$data['course_id']) {
-                $this->el(0, '科目不能为空');
+                $this -> e('科目不能为空');
             }
 
             $data['created_time'] = time();
@@ -78,25 +102,24 @@ class QuestionController extends BaseController {
             $data['option'] = json_encode($data['option']);
 
             $Question = M('Questions');
-            $final = $Question->create($data);
+            $final = $this -> question -> create($data);
 
             if (!empty($final['id'])) {
-                $model = new QuestionsModel();
-                $record = $model->getOne('is_deleted = 0 AND id = ' . $final['id']);
+                $record = $this -> question -> getOne('is_deleted = 0 AND id = ' . $final['id']);
                 if (empty($record)) {
-                    $this->el(0, 'The record does not exist');
+                    $this -> e('记录为空');
                 }
 
                 unset($final['created_time']);
-                $result = $Question->save($final);
+                $result = $this -> question -> save($final);
             } else {
-                $result = $Question->add($final);
+                $result = $this -> question -> add($final);
             }
 
             if ($result) {
                 $this->e();
             } else {
-                $this->el($result, 'fail');
+                $this->e('fail');
             }
         }
 
@@ -132,71 +155,35 @@ class QuestionController extends BaseController {
         $data['type_name'] = $types[$data['type']];
 
         $data['course'] = $this -> course -> getList();
-        $this->assign($data);
-        $this->display();
+        $this -> assign($data);
+        $this -> display();
     }
 
-    /*
+    /**
      * 删除题目
+     * @author cuiruijun
+     * @date   2018/12/09 下午10:20
+     * @url    manage/question/del
+     * @method get
      *
-     * @param int $id
-     * **/
+     * @return  array
+     */
     public function del()
     {
-        $id = $_GET['id'];
+        $this -> _get($p, ['id']);
 
-        $Question = new QuestionsModel();
-        $record = $Question->getOne('is_deleted = 0 ANd id = ' . $id);
+        $record = $this -> question -> getOne('is_deleted = 0 ANd id = ' . $p['id']);
         if (empty($record)) {
-            $this->el($record, 'The record does not exist');
+            $this -> el($record, 'The record does not exist');
         }
 
         //删除
-        $result = $Question->del($id);
+        $result = $this -> question -> del($p['id']);
         if ($result) {
-            $this->e();
+            $this -> e();
         } else {
-            $this->el(0, 'fail');
+            $this -> e('fail');
         }
     }
 
-    /*
-     *获取列表
-     * **/
-    public function index()
-    {
-        $params = $this->_get($_GET);
-
-        $Question = new QuestionsModel();
-        $list = $Question->getAll('*', 'is_deleted = 0', $params['page'], $params['pageNum']);
-
-        $Course = new CourseModel();
-        $courseList = $Course->getList();
-        foreach ($list as &$val) {
-            $val['course_id'] = $courseList[$val['course_id']];
-            $option = json_decode($val['option'], true);
-            $val['option'] = implode('|', $option);
-        }
-
-        $this->assign(['data' => $list]);
-        $this->display('question/list');
-    }
-
-
-    public function test(){
-        var_dump("ddddd");exit;
-    }
-
-    // 生成字母随机数
-    // @param MD5之后的密码
-    public function fetchRandPwd(&$pwdMD5, $len = 6) {
-
-        $str = '';
-        $mod = 'abcdefghijklmnopqrstuvwxyz0123456789';
-        for ($i = 0; $i < $len; $i ++) {
-            $str .= $mod[mt_rand(0, 35)];
-        }
-        $pwdMD5 = $this -> _encrypt($str);
-        return $str;
-    }
 }
