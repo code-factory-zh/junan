@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -18,6 +18,8 @@
     <link href="/static/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- 样式 -->
     <link href="/static/build/css/custom.css" rel="stylesheet">
+    <!-- web Uploader -->
+    <link rel="stylesheet" href="/static/build/css/webuploader.css">
 </head>
 
 <body class="nav-md">
@@ -69,29 +71,28 @@
                     <div class="form-group">
                         <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">章节名称</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" name="title" id="course_name" value="{$record.chapter}" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请输入章节名称">
+                            <input type="text" name="title" id="course_name" value="<?php echo ($record["chapter"]); ?>" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请输入章节名称">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="course_price" class="control-label col-md-3 col-sm-3 col-xs-12">章节顺序</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="number" min="1" value="{$record.sort}" name="sort" id="course_price" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填写章节顺序">
+                            <input type="number" min="1" value="<?php echo ($record["sort"]); ?>" name="sort" id="course_price" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填写章节顺序">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">文件类型</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="radio" name="type" id="file_type1" value="1" <if condition="$record.id  == '' || $record.type == 1">checked</if> style="margin-top: 10px"> <label for="file_type1">文字</label>
+                            <input type="radio" name="type" id="file_type1" value="1" <?php if($record["id"] == '' || $record["type"] == 1): ?>checked<?php endif; ?> style="margin-top: 10px"> <label for="file_type1">文字</label>
                             <br>
-                            <input type="radio" name="type" id="file_type2" value="2" <if condition="$record.type == 2">checked</if> > <label for="file_type2">PPT</label>
+                            <input type="radio" name="type" id="file_type2" value="2" <?php if($record["type"] == 2): ?>checked<?php endif; ?> > <label for="file_type2">PPT</label>
                             <br>
-                            <input type="radio" name="type" id="file_type3" value="3" <if condition="$record.type == 3">checked</if>> <label for="file_type3">视频</label>
+                            <input type="radio" name="type" id="file_type3" value="3" <?php if($record["type"] == 3): ?>checked<?php endif; ?>> <label for="file_type3">视频</label>
                         </div>
                     </div>
 
                     <!-- 新建章节 -->
-                    <if condition="$record.id == ''">
-                        <div class="form-group toggleShow">
+                    <?php if($record["id"] == ''): ?><div class="form-group toggleShow">
                             <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <textarea name="detail" id="detail" rows="10" class="form-control"></textarea>
@@ -110,19 +111,29 @@
                         <div class="form-group toggleShow" style="display: none">
                             <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <form action="./upload?type=3" enctype="multipart/form-data" method="post" id="upload">
+                                <!-- <form action="./upload?type=3" enctype="multipart/form-data" method="post" id="upload">
                                     <input name="file" type="file" id="video_upload" style="padding-top: 5px;">
                                     <input type="submit" value="提交" >
-                                </form>
+                                </form> -->
+                                <div id="uploader" class="wu-example">
+                                    <!--用来存放文件信息-->
+                                    <div id="thelist" class="uploader-list"></div>
+                                    <div class="btns" style="position: relative;height: 40px;">
+                                        <div id="picker">选择文件</div>
+                                        <button id="ctlBtn" class="btn btn-sm btn-success">开始上传</button>
+                                        <button class="btn btn-sm btn-default stop">暂停</button>
+                                        <button class="btn btn-sm btn-default upload">继续</button>
+                                        <button class="btn btn-sm btn-danger cancel">取消</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     <!-- 修改章节 -->
-                    <else/>
-                        <if condition="$record.type == 1">
-                            <div class="form-group toggleShow">
+                    <?php else: ?>
+                        <?php if($record["type"] == 1): ?><div class="form-group toggleShow">
                                 <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea name="detail" id="detail" rows="10" class="form-control">{$record.detail}</textarea>
+                                    <textarea name="detail" id="detail" rows="10" class="form-control"><?php echo ($record["detail"]); ?></textarea>
                                 </div>
                             </div>
                             <div class="form-group toggleShow" style="display: none">
@@ -143,18 +154,18 @@
                                     </form>
                                 </div>
                             </div>
-                        <elseif condition="$record.type == 2"/>
+                        <?php elseif($record["type"] == 2): ?>
                             <div class="form-group toggleShow" style="display: none">
                                 <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea name="detail" id="detail" rows="10" class="form-control">{$record.detail}</textarea>
+                                    <textarea name="detail" id="detail" rows="10" class="form-control"><?php echo ($record["detail"]); ?></textarea>
                                 </div>
                             </div>
                             <div class="form-group toggleShow">
                                 <label for="file_upload" class="control-label col-md-3 col-sm-3 col-xs-12">文件上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <form action="./upload?type=2" enctype="multipart/form-data" method="post" id="upload">
-                                        <input name="file" type="file" id="file_upload" style="padding-top: 5px;" value="{$Think.server.script_name}{$record.content}">
+                                        <input name="file" type="file" id="file_upload" style="padding-top: 5px;" value="<?php echo ($_SERVER['SCRIPT_NAME']); echo ($record["content"]); ?>">
                                         <input type="submit" value="提交" >
                                     </form>
                                 </div>
@@ -168,11 +179,11 @@
                                     </form>
                                 </div>
                             </div>
-                        <elseif condition="$record.type == 3"/>
+                        <?php elseif($record["type"] == 3): ?>
                             <div class="form-group toggleShow" style="display: none">
                                 <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <textarea name="detail" id="detail" rows="10" class="form-control">{$record.detail}</textarea>
+                                    <textarea name="detail" id="detail" rows="10" class="form-control"><?php echo ($record["detail"]); ?></textarea>
                                 </div>
                             </div>
                             <div class="form-group toggleShow" style="display: none">
@@ -188,18 +199,16 @@
                                 <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <form action="./upload?type=3" enctype="multipart/form-data" method="post" id="upload">
-                                        <input name="file" type="file" style="padding-top: 5px;" value="{$Think.server.script_name}{$record.content}">
+                                        <input name="file" type="file" style="padding-top: 5px;" value="<?php echo ($_SERVER['SCRIPT_NAME']); echo ($record["content"]); ?>">
                                         <input type="submit" value="提交" >
                                     </form>
                                 </div>
-                            </div>
-                        </if>
-                    </if>
+                            </div><?php endif; endif; ?>
 
 
                     <div calss="btns col-xs-12" style="text-align: center;margin-top: 20px;">
                         <a href="chapter_detail.html"><button class="btn btn-default btn-sm" type="button">取消</button></a>
-                        <input type="hidden" name="course_id" value="{$course_id}">
+                        <input type="hidden" name="course_id" value="<?php echo ($course_id); ?>">
                         <input type="hidden" id="content" name="content">
                         <button class="btn btn-success btn-sm" type="submit" id="save">保存</button>
                     </div>
@@ -229,9 +238,10 @@
 <script src="/static/vendors/nprogress/nprogress.js"></script>
 <!-- Custom Theme Scripts -->
 <script src="/static/build/js/custom.js"></script>
+<!-- web Uploader.js -->
+<script src="/static/build/js/webuploader.min.js"></script>
 <!-- 新增、编辑章节js -->
 <script src="/static/build/js/chapter_add_edit.js"></script>
-
 <script>
     $('#upload').submit(function () {
         $.ajax({
@@ -263,7 +273,7 @@
         data['detail'] = $('#detail').val();
         data['course_id'] = $('input[name="course_id"]').val();
         data['content'] = $('#content').val();
-        data['id'] = "{$record.id}";
+        data['id'] = "<?php echo ($record["id"]); ?>";
 
         $.ajax({
             url: $(this).attr('action'),
@@ -274,7 +284,7 @@
                 if (e.code != 0) {
                     alert(e.msg)
                 } else {
-                    window.location.href = '../course_detail/index?id=' + data['course_id'];
+                    window.location.href = '../course_detail/list?id=' + data['course_id'];
                 }
             }
         })

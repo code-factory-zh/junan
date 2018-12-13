@@ -18,6 +18,8 @@
     <link href="/static/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- 样式 -->
     <link href="/static/build/css/custom.css" rel="stylesheet">
+    <!-- web Uploader -->
+    <link rel="stylesheet" href="/static/build/css/webuploader.css">
 </head>
 
 <body class="nav-md">
@@ -110,10 +112,21 @@
                         <div class="form-group toggleShow" style="display: none">
                             <label for="video_upload" class="control-label col-md-3 col-sm-3 col-xs-12">视频上传</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                <form action="./upload?type=3" enctype="multipart/form-data" method="post" id="upload">
+                                <!-- <form action="./upload?type=3" enctype="multipart/form-data" method="post" id="upload">
                                     <input name="file" type="file" id="video_upload" style="padding-top: 5px;">
                                     <input type="submit" value="提交" >
-                                </form>
+                                </form> -->
+                                <div id="uploader" class="wu-example">
+                                    <!--用来存放文件信息-->
+                                    <div id="thelist" class="uploader-list"></div>
+                                    <div class="btns" style="position: relative;height: 40px;">
+                                        <div id="picker">选择文件</div>
+                                        <button id="ctlBtn" class="btn btn-sm btn-success">开始上传</button>
+                                        <button class="btn btn-sm btn-default stop">暂停</button>
+                                        <button class="btn btn-sm btn-default upload">继续</button>
+                                        <button class="btn btn-sm btn-danger cancel">取消</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     <!-- 修改章节 -->
@@ -229,9 +242,10 @@
 <script src="/static/vendors/nprogress/nprogress.js"></script>
 <!-- Custom Theme Scripts -->
 <script src="/static/build/js/custom.js"></script>
+<!-- web Uploader.js -->
+<script src="/static/build/js/webuploader.min.js"></script>
 <!-- 新增、编辑章节js -->
 <script src="/static/build/js/chapter_add_edit.js"></script>
-
 <script>
     $('#upload').submit(function () {
         $.ajax({
@@ -274,7 +288,7 @@
                 if (e.code != 0) {
                     alert(e.msg)
                 } else {
-                    window.location.href = '../course_detail/index?id=' + data['course_id'];
+                    window.location.href = '../course_detail/list?id=' + data['course_id'];
                 }
             }
         })
