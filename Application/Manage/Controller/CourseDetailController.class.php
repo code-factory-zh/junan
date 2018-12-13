@@ -28,9 +28,11 @@ class CourseDetailController extends BaseController
      */
     public function list()
     {
+//        $this -> _get($p, ['id']);
         $this -> _get($p, ['id']);
+		$id = I('get.id');
 
-        $chapters = $this -> courseDetail -> getChapter('course_id = ' . $p['id'] . ' and is_deleted = 0', 'id,chapter,sort');
+        $chapters = $this -> courseDetail -> getChapter('course_id = ' . $id . ' and is_deleted = 0', 'id,chapter,sort');
 
         $this -> assign(['data' => $chapters, 'id' => $p['id']]);
         $this -> display();
@@ -48,13 +50,14 @@ class CourseDetailController extends BaseController
      */
     public function operate(){
         if (IS_GET) {
-            $this -> _get($a, ['course_id']);
-            $data['course_id'] = $a['course_id'];
-            $id = $_GET['id'];
+//            $this -> _get($a, ['course_id']);
+            $data['course_id'] = I('get.course_id');
+            $id = I('get.id');
         }
 
         if (IS_POST) {
-            $this -> _post($p, ['chapter', 'type', 'course_id', 'sort', 'course_id']);
+//            $this -> _post($p, ['chapter', 'type', 'course_id', 'sort', 'course_id']);
+			$p = I('post.');
 
             if ($p['type'] != 1) {
                 if (empty($p['content'])) {
