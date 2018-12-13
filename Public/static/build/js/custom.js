@@ -52,7 +52,7 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
 
 //top_nav
 function init_top_nav(){
-	$('.top_nav_user').load('./template/top_nav.html');
+	$('.top_nav_user').load('/static/build/components/top_nav.html');
 }
 
 // Sidebar

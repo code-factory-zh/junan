@@ -26,7 +26,7 @@ class CourseDetailController extends BaseController
      * 课程章节-列表
      * @DateTime 2018-12-08T17:58:00+0800
      */
-    public function list()
+    public function index()
     {
 //        $this -> _get($p, ['id']);
         $this -> _get($p, ['id']);
