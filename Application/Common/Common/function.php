@@ -55,12 +55,12 @@
 	
 	/**
 	 * 上传文件类型控制 此方法仅限ajax上传使用
-	 * @param  string   $path    字符串 保存文件路径示例： /Upload/image/
+	 * @param  string   $path    字符串 保存文件路径示例： /upload/image/
 	 * @param  string   $format  文件格式限制
 	 * @param  integer  $maxSize 允许的上传文件最大值 52428800
 	 * @return booler   返回ajax的json格式数据
 	 */
-	function ajaxUpload($path='file',$format='empty',$maxSize='52428800'){
+	function ajaxUpload($path='file', $format='empty', $type = 3, $maxSize='52428800'){
 		ini_set('max_execution_time', '0');
 		// 去除两边的/
 		$path=trim($path,'/');
@@ -71,7 +71,7 @@
 				'image' => array('gif', 'jpg', 'jpeg', 'png', 'bmp'),
 				'photo' => array('jpg', 'jpeg', 'png'),
 				'flash' => array('swf', 'flv'),
-				'media' => array('swf', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'),
+				'media' => array('swf', 'flv', 'mp3', 'mp4', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'),
 				'file' => array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2','pdf')
 			);
 		if(!empty($_FILES)){
@@ -98,9 +98,9 @@
 				echo json_encode($data);
 			}else{
 				// 返回成功信息
-				foreach($info as $file){
-					$data['name']=trim($file['savepath'].$file['savename'],'.');
-					// p($data);
+				foreach($info as $key => $file){
+					$data['name'] = trim($file['savepath'].$file['savename'],'.');
+					$data['type'] = $type;
 					echo json_encode($data);
 				}               
 			}

@@ -64,7 +64,7 @@
         <!-- 页面内容 -->
         <div class="right_col" role="main">
             <div id="course_list">
-                <a href="../course_detail/operate?course_id={$id}"><button class="btn btn-success btn-sm fr" id="add_course">新增章节</button></a>
+                <a href="../course_detail/edit?course_id={$id}"><button class="btn btn-success btn-sm fr" id="add_course">新增章节</button></a>
                 <table class="full_width_table">
                     <thead>
                     <tr>
@@ -78,7 +78,7 @@
                             <td>第{$value.sort}章</td>
                             <td>{$value.chapter}</td>
                             <td class="btn_div">
-                                <a href="../course_detail/operate?id={$value.id}&course_id={$id}"><button class="btn btn-success btn-sm">编辑</button></a>
+                                <a href="../course_detail/edit?id={$value.id}&course_id={$id}"><button class="btn btn-success btn-sm">编辑</button></a>
                             </td>
                         </tr>
                     </foreach>

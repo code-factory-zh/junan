@@ -12,14 +12,12 @@ class CourseDetailController extends BaseController
 {
     private $courseDetail;
     private $course;
-    private $upload;
 
     public function _initialize() {
 
         parent::_initialize();
         $this -> courseDetail = new \Manage\Model\CourseDetailModel;
         $this -> course = new \Manage\Model\CourseModel;
-        $this -> upload = new \Manage\Model\UploadModel;
     }
 
     /**
@@ -61,7 +59,7 @@ class CourseDetailController extends BaseController
         }
 
         if (IS_POST) {
-//            $this -> _post($p, ['chapter', 'type', 'course_id', 'sort', 'course_id']);
+            $this -> _post($p, ['chapter', 'type', 'course_id', 'sort', 'course_id']);
 			$p = I('post.');
 
             if ($p['type'] != 1) {
@@ -109,50 +107,24 @@ class CourseDetailController extends BaseController
         $this->display();
     }
 
-    /**
-     * 上传列表
-     * @DateTime 2018-12-12T17:58:00+0800
-     */
-    public function upload()
-    {
-        if (empty($_GET['type'])) {
-            $this->e();
-        }
-
-        if ($_GET['type'] == 2) {
-            $type = 'file';
-        } elseif ($_GET['type'] == 3) {
-            $type = 'media';
-        }
-
-        if (empty($_FILES['file'])) {
-            $this->e('上传文件不能为空');
-        }
-
-        $result = $this -> upload -> ajaxUpload('/'. $type .'/', $_FILES['file']['name'], $type);
-        if (isset($result['name'])) {
-            $this->e(0, $result);
-        } else {
-            $this->e($result);
-        }
-    }
-	
 	/**
 	 * webuploader 上传文件
 	 */
-	public function ajaxUpload(){
+	public function upload(){
 		// 根据自己的业务调整上传路径、允许的格式、文件大小
-        ajaxUpload('/upload/image/');
-	}
-	/**
-	 * webuploader 上传demo
-	 */
-	public function webuploader(){
-		// 如果是post提交则显示上传的文件 否则显示上传页面
-		if(IS_POST){
-			p($_POST);die;
-		}else{
-			$this->display();
-		}
+        $this -> _post($p, ['type', 'name']);
+        $ext = substr(strrchr($p['name'], '.'), 1);
+
+        if ($ext == 'ppt') {
+            $type = 2;
+            $dir = 'file';
+        } elseif (in_array($ext, ['mp4', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'])) {
+            $type = 3;
+            $dir = 'media';
+        } else {
+            $this -> e('上传类型必须是PPT或者视频文件');
+        }
+
+        ajaxUpload('/upload/'. $dir .'/', $dir, $type);
 	}
 }

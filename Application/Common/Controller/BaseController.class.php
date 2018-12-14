@@ -206,7 +206,7 @@
 			if (count($pc) != 0) {
 				$this -> paramCheck($pc);
 			}
-			$arr = array_map('trim', I());
+			$arr = array_map('trim', I(''));
 			// 如果临时加入了一些数据 从这里加入
 			if ($this -> setUsr == 1) {
 				if (count($this -> usr) == 0 || $this -> append) {
@@ -241,7 +241,7 @@
 		protected function token_auth() {
 
 			// 反射
-			$reflex = get_called_class();
+			/*$reflex = get_called_class();
 			if ($reflex::$token != 1 || !$this -> use_token) {
 				return;
 			}
@@ -255,7 +255,7 @@
 			$this -> save_token($this -> token_str, $this -> u);
 			if ($this -> use_bsid && !isset($this -> u['base_id'])) {
 				$this -> e('当前您没有进入任何养殖基地，无法继续下一步操作...');
-			}
+			}*/
 			// 验证当前用户权限
 			// $this -> ctrl_auth();
 		}
@@ -269,7 +269,7 @@
 					$r = I('post.');
 				}
 			} else {
-				$r = I();
+				$r = I('get.');
 			}
 			$r = array_map('trim', $r);
 			if ($param != '') {
@@ -461,7 +461,7 @@
 
 			$arr = json_decode(file_get_contents("php://input"), true);
 			if (is_null($arr)) {
-				$arr = I();
+				$arr = I('');
 				if (!count($arr)) {
 					$this -> e("数据格式有误", 3);
 				}

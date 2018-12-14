@@ -14,6 +14,10 @@ $(function(){
     var radio = $('input[name="type"]');
     radio.change(function(){
         var index = radio.index(this);
+
+        if (index == 2) {
+            index = 1;
+        }
         $('.toggleShow').eq(index).show().siblings('.toggleShow').hide();
     })
     // webuploader.js初始化
@@ -23,7 +27,7 @@ $(function(){
         swf: '/static/build/js/Uploader.swf',
 
         // 文件接收服务端。
-        server: 'http://www.niguifeng.com/course_detail/upload',
+        server: 'http://www.junan.com/index.php/manage/course_detail/upload',
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -47,7 +51,6 @@ $(function(){
     });
     // 文件上传过程中创建进度条实时显示。
     uploader.on( 'uploadProgress', function( file, percentage ) {
-        console.log(file)
         var $li = $( '#'+file.id ),
             $percent = $li.find('.progress .progress-bar');
 
@@ -63,7 +66,12 @@ $(function(){
 
         $percent.css( 'width', percentage * 100 + '%' );
     })
-    uploader.on( 'uploadSuccess', function( file ) {
+    uploader.on( 'uploadSuccess', function( file , response ) {
+        if (response.code != undefined) {
+            alert(response.msg);
+            return false;
+        }
+        $('#content').val(response.name);
         $( '#'+file.id ).find('p.state').text('已上传');
     });
     
