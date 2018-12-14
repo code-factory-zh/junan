@@ -36,8 +36,8 @@
                     <div class="menu_section">
                         <ul class="nav side-menu">
                             <li><a href="index.html"><i class="fa fa-home"></i> 接入公司管理 </a></li>
-                            <li><a href="course.html"><i class="fa fa-graduation-cap"></i> 课程管理 </a></li>
-                            <li class="current-page"><a href="{$Think.server.script_name}/manage/question/index"><i class="fa fa-book"></i> 题目管理 </a></li>
+                            <li><a href="/manage/question/course"><i class="fa fa-graduation-cap"></i> 课程管理 </a></li>
+                            <li class="current-page"><a href="/manage/question/index"><i class="fa fa-book"></i> 题目管理 </a></li>
                             <li><a href="exam.html"><i class="fa fa-desktop"></i> 考试管理 </a></li>
                             <li><a href="certificate.html"><i class="fa fa-trophy"></i> 证书管理 </a></li>
                         </ul>
@@ -67,16 +67,16 @@
                 <button class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" id="add_course">新增题目</button>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="./operate?type=3">新增判断题</a>
+                        <a href="/manage/question/edit?type=3">新增判断题</a>
                     </li>
                     <li>
-                        <a href="./operate?type=1">新增单选题</a>
+                        <a href="/manage/question/edit?type=1">新增单选题</a>
                     </li>
                     <li>
-                        <a href="./operate?type=2">新增复选题</a>
+                        <a href="/manage/question/edit?type=2">新增复选题</a>
                     </li>
                     <li>
-                        <a href="./operate?type=4">新增填空题</a>
+                        <a href="/manage/question/edit?type=4">新增填空题</a>
                     </li>
                 </ul>
             </div>
@@ -101,8 +101,8 @@
                             <td>{$v.answer}</td>
                             <td>{$v.option}</td>
                             <td class="btn_div">
-                                <button class="btn btn-success btn-sm"><a href="./operate?id={$v.id}">编辑</a></button>
-                                <button class="btn btn-success btn-sm"><a href="./del?id={$v.id}">删除</a></button>
+                                <button class="btn btn-success btn-sm"><a href="/manage/question/edit?id={$v.id}">编辑</a></button>
+                                <button class="btn btn-success btn-sm"><a href="/manage/question/del?id={$v.id}">删除</a></button>
                             </td>
                         </tr>
                     </foreach>

@@ -49,8 +49,9 @@ class QuestionController extends BaseController {
         $list = $this -> question -> getAll('*', 'is_deleted = 0', $params['page'], $params['pageNum']);
 
         $courseList = $this -> course -> getList();
+        $array = array_column($courseList, 'name', 'id');
         foreach ($list as &$val) {
-            $val['course_id'] = $courseList[$val['course_id']];
+            $val['course_id'] = $array[$val['course_id']];
             $option = json_decode($val['option'], true);
             $val['option'] = implode('|', $option);
         }
