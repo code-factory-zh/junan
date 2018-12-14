@@ -67,6 +67,14 @@ class CourseDetailController extends BaseController
                     $this->e('请上传文件');
                 }
                 $p['detail'] = '';
+
+                $ext = substr(strrchr($p['content'], '.'), 1);
+
+                if ($p['type'] == 2 && $ext != 'ppt') {
+                    $this -> e('文件必须是PPT');
+                } elseif ($p['type'] == 3 && !in_array($ext, ['mp4', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'])) {
+                    $this->e('文件必须是视频');
+                }
             }
 
             $id = $_POST['id'];

@@ -27,7 +27,7 @@ $(function(){
         swf: '/static/build/js/Uploader.swf',
 
         // 文件接收服务端。
-        server: 'http://www.junan.com/index.php/manage/course_detail/upload',
+        server: '/manage/course_detail/upload',
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
