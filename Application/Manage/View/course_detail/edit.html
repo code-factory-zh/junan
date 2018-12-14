@@ -67,7 +67,7 @@
         <div class="right_col" role="main">
             <div id="add_edit_course">
                 <h3 class="title"><if condition="$record.id == ''">新增<else/>修改</if>章节</h3>
-                <div action="" method="post" class="form-horizontal form-label-left" id="form">
+                <form action="" method="post" class="form-horizontal form-label-left" id="form">
                     <div class="form-group">
                         <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">章节名称</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -165,7 +165,7 @@
                 if (e.code != 0) {
                     alert(e.msg)
                 } else {
-                    //window.location.href = '/manage/course_detail/index?id=' + course_id;
+                    window.location.href = '/manage/course_detail/index?id=' + course_id;
                 }
             }
         })
