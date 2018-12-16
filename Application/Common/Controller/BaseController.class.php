@@ -297,13 +297,13 @@
 
 		/**
 		 * 根据用户登录数据生成TOKEN
-		 * @param $data['phone']
-		 * @param $data['pwd']
+		 * @param $data['account']
+		 * @param $data['password']
 		 */
 		protected function token_fetch(&$data, $outTime = 0) {
 
 			// 加密用户信息以生成TOKEN
-			return $this -> _encrypt('NBtech!' . $data['phone'] . $data['pwd'] . time());
+			return $this -> _encrypt('NBtech!' . $data['account'] . $data['password'] . time());
 		}
 
 		/**
@@ -312,7 +312,9 @@
 		protected function save_token($token, $data, $outTime = 0) {
 
 			$outTime == 0 && $outTime = C('TOKEN_OUT_TIME');
-			return self::redisInstance() -> setEx($token, $outTime, serialize($data));
+			session('token', serialize($data));
+			return session('token');
+//			return self::redisInstance() -> setEx($token, $outTime, serialize($data));
 		}
 
 		// 权限验证
