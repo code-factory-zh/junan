@@ -17,7 +17,7 @@ class CurriculumModel extends BaseModel {
 	 */
 	public function getCurList($where, $fields) {
 
-		return $this -> where($where) -> getField($fields);
+		return $this -> table('course') -> where($where) -> getField($fields);
 	}
 
 

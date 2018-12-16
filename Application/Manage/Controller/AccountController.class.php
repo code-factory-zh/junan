@@ -33,20 +33,25 @@ class AccountController extends BaseController {
 
 		$cour = [];
 		$courses = $this -> account -> getCourses();
-		foreach ($courses as $k => $v) {
-			 if (!isset($cour[$v['account_id']])){
-			 	$cour[$v['account_id']] = $v['course_name'];
-			 } else {
-			 	$cour[$v['account_id']] .= '，' . $v['course_name'];
-			 }
+		if (count($courses)) {
+			foreach ($courses as $k => $v) {
+				 if (!isset($cour[$v['account_id']])){
+				 	$cour[$v['account_id']] = $v['course_name'];
+				 } else {
+				 	$cour[$v['account_id']] .= '，' . $v['course_name'];
+				 }
+			}
 		}
 
-		foreach ($list as &$items) {
-			if (isset($jobs[$items['job_id']])) {
-				$items['job_name'] = $jobs[$items['job_id']];
-			}
-			if (isset($cour[$items['account_id']])) {
-				$items['course_name'] = $cour[$items['account_id']];
+		if (count($list)) {
+			foreach ($list as &$items) {
+				$items['course_name'] = '-';
+				if (isset($jobs[$items['job_id']])) {
+					$items['job_name'] = $jobs[$items['job_id']];
+				}
+				if (isset($cour[$items['account_id']])) {
+					$items['course_name'] = $cour[$items['account_id']];
+				}
 			}
 		}
 
