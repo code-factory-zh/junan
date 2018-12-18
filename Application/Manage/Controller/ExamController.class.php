@@ -16,6 +16,8 @@ class ExamController extends BaseController {
 	public function _initialize() {
 
 		parent::_initialize();
+		$this -> ignore_token(0);
+
 		$this -> exam = new \Manage\Model\ExamModel;
 		$this -> curri = new \Manage\Model\CurriculumModel;
 	}
@@ -50,7 +52,35 @@ class ExamController extends BaseController {
 	 * 新增、修改
 	 * @DateTime 2018-12-16T13:40:08+0800
 	 */
-	public function edit() {}
+	public function edit() {
+
+		if (IS_POST) {
+			$needle = ['name', 'time', 'pass_score', 'dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'pd_question_score', 'detail'];
+			$this -> _post($p, $needle);
+			$this -> isInt(['dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'pd_question_score']);
+
+			$p['created_time'] = $p['updated_time'] = time();
+			if (isset($p['id']) && $p['id'] != '') {
+				$id = $p['id'];
+				unset($p['id']);
+				$done = $this -> exam -> where(['id' => $id]) -> save($p);
+			} else {
+				$done = $this -> exam -> table('exam') -> add($p);
+			}
+
+			if (!$done) {
+				$this -> e('失败');
+			}
+
+			$this -> e();
+		}
+
+		$this -> _get($p);
+		$data = $this -> exam -> where(['id' => $p['id']]) -> find();
+
+		$this -> assign($data);
+		$this -> display('exam/edit');
+	}
 
 
 	/**
