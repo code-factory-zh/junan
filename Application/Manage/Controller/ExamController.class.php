@@ -87,5 +87,22 @@ class ExamController extends BaseController {
 	 * 考生列表
 	 * @DateTime 2018-12-16T13:40:27+0800
 	 */
-	public function mlist() {}
+	public function mlist() {
+
+		$this -> _get($g, 'course_id');
+		$this -> isInt(['course_id']);
+
+		$data = [];
+		$where = ['em.is_deleted' => 0, 'em.company_id' => $this -> company_id, 'course_id' => $g['course_id']];
+		$data['list'] = $this -> exam -> getMlist($where);
+
+		if (count($data['list'])) {
+			foreach ($data['list'] as &$items) {
+				$items['created_time'] = date('Y-m-d H:i:s', $items['created_time']);
+			}
+		}
+
+		$this -> assign($data);
+		$this -> display('exam/mlist');
+	}
 }
