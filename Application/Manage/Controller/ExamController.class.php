@@ -92,7 +92,7 @@ class ExamController extends BaseController {
 		$this -> _get($g, 'course_id');
 		$this -> isInt(['course_id']);
 
-		$data = [];
+		$data = ['list' => []];
 		$where = ['em.is_deleted' => 0, 'em.company_id' => $this -> company_id, 'course_id' => $g['course_id']];
 		$data['list'] = $this -> exam -> getMlist($where);
 
