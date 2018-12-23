@@ -52,6 +52,8 @@
 		protected $setUsr = 0;
 		protected $usr = [];
 
+		protected $baseModel;
+
 		// 追加用户数据
 		// 当为$_POST或$_GET加入自定义的数据时
 		// user信息将默认不被加入
@@ -61,7 +63,9 @@
 		public function _initialize() {
 
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
+			$this -> baseModel = new \Common\Model\BaseModel;
 			$this -> company_id = 1;
+			$this -> assign('menu', $this -> menu());
 		}
 
 		/**
@@ -92,6 +96,36 @@
 				$this -> e($msg);
 			}
 		}
+
+		/**
+		 * @DateTime 2018-12-23T22:25:40+0800
+		 */
+		protected function menu() {
+
+			$str = '';
+			$icons = [
+				'company' => 'fa-home',
+				'course' => 'fa-graduation-cap',
+				'question' => 'fa-book',
+				'exam' => 'fa-desktop',
+				'account' => 'fa-trophy',
+			];
+			$menu = $this -> baseModel -> getMenu(['is_show' => 0]);
+
+			foreach ($menu as $items) {
+				$icon = '';
+				$current = '';
+				$urilist = explode('/', $items['uri']);
+				if ($urilist[1] == strtolower(CONTROLLER_NAME)) {
+					$current = ' class="current-page"';
+					isset($icons[$urilist[1]]) && $icon = $icons[$urilist[1]];
+				}
+				$str .= '<li' . $current . '><a href="' . $items['uri'] . '"><i class="fa ' . $icon . '"></i> ' . $items['name'] . ' </a></li>' . PHP_EOL;
+			}
+
+			return $str;
+		}
+
 
 		/**
 		 * 如果什么都不传 则默认为成功 code = 0
