@@ -122,7 +122,7 @@
 					$current = ' class="current-page"';
 					isset($icons[$urilist[1]]) && $icon = $icons[$urilist[1]];
 				}
-				$str .= '<li' . $current . '><a href="' . $items['uri'] . '"><i class="fa ' . $icon . '"></i> ' . $items['name'] . ' </a></li>' . PHP_EOL;
+				$str .= '<li' . $current . '><a href="/' . $items['uri'] . '"><i class="fa ' . $icon . '"></i> ' . $items['name'] . ' </a></li>' . PHP_EOL;
 			}
 
 			return $str;
