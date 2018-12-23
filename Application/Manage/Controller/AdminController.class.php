@@ -41,7 +41,6 @@ class AdminController extends CommonController
             $post = I('post.');
             $this->ignore_token();
             $user = $this->user->getAdmin(['account' => $post['account']]);
-            $post['password'] = $this->_encrypt($post['password']);
             if (!($u = $this->user->check($post, $user))) {
                 $this->e('用户名或密码不正确');
             }
