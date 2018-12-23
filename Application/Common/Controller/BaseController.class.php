@@ -98,9 +98,11 @@
 		}
 
 		/**
+		 * $type = 1 表示课程公司菜单
+		 * $type = 2 表示上课公司菜单
 		 * @DateTime 2018-12-23T22:25:40+0800
 		 */
-		protected function menu() {
+		protected function menu($type = 1) {
 
 			$str = '';
 			$icons = [
@@ -110,7 +112,7 @@
 				'exam' => 'fa-desktop',
 				'account' => 'fa-trophy',
 			];
-			$menu = $this -> baseModel -> getMenu(['is_show' => 0]);
+			$menu = $this -> baseModel -> getMenu(['is_show' => 0, 'type' => $type]);
 
 			foreach ($menu as $items) {
 				$icon = '';
