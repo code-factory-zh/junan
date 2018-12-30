@@ -60,6 +60,8 @@
 		// 将本属性设置为1则将追加用户数据到$_POST或$_GET
 		protected $append = 0;
 
+		const login_page = 'Manage/admin/login';
+
 		public function _initialize() {
 
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
@@ -349,10 +351,23 @@
 
 			$outTime == 0 && $outTime = C('TOKEN_OUT_TIME');
 			session('token', serialize($data));
-			return session('token');
+			return unserialize(session('token'));
 
 //			return self::redisInstance() -> setEx($token, $outTime, serialize($data));
-    }
+    	}
+
+    	protected function islogin() {
+
+    		if ($this -> get_token_value('token')) {
+				$this -> redirect(self::login_page);
+			}
+    	}
+
+    	// 根据TOKEN取值
+    	protected function get_token_value($token) {
+
+			return unserialize(session($token));
+    	}
 
     // 权限验证
     // 当前登录者在本基地的权限验证

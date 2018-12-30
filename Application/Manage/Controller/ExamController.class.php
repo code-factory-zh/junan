@@ -16,8 +16,9 @@ class ExamController extends BaseController {
 	public function _initialize() {
 
 		parent::_initialize();
-		$this -> ignore_token(0);
+		$this -> islogin();
 
+		$this -> ignore_token(0);
 		$this -> exam = new \Manage\Model\ExamModel;
 		$this -> curri = new \Manage\Model\CurriculumModel;
 	}
