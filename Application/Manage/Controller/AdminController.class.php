@@ -45,6 +45,7 @@ class AdminController extends CommonController
                 $this->e('用户名或密码不正确');
             }
             $token = $this->token_fetch($u);
+            $this -> save_token('token', 1);
             if (!$this->save_token($token, $u)) {
                 $this->e('无法生成TOKEN');
             }

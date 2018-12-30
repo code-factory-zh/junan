@@ -358,7 +358,7 @@
 
     	protected function islogin() {
 
-    		if ($this -> get_token_value('token')) {
+    		if (!$this -> get_token_value('token')) {
 				$this -> redirect(self::login_page);
 			}
     	}
