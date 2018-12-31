@@ -86,9 +86,6 @@ class CompanyController extends CommonController
             if(!$this->user->registerCheck($post)){
                 $this->e('此公司已被注册');
             }
-            if(!$this->user->registerCodeCheck($post)){
-                $this->e('此账号已被注册');
-            }
             $this->lenCheck('password', 6, 16);
             if ($post['password'] != $post['verify_password']) {
                 $this->e('两次输入的密码不一样');

@@ -73,20 +73,6 @@ class CompanyModel extends BaseModel
         return true;
     }
 
-    /**
-     * 检查账号是否被注册过，注册过则返回false，没注册则返回true
-     * @param $account
-     * @return bool
-     */
-    public function registerCodeCheck($data)
-    {
-        $admin = $this->table('company')->where(['company_name' => $data['company_name'], 'code' => $data['code'], 'status' => self::STATUS_ACTIVE])->find();
-        if ($admin) {
-            return false;
-        }
-        return true;
-    }
-
     public function addUser($data)
     {
         $done = M('company')->table('company')->add([
