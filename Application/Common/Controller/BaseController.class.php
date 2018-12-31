@@ -52,16 +52,22 @@
 		protected $setUsr = 0;
 		protected $usr = [];
 
+		protected $baseModel;
+
 		// 追加用户数据
 		// 当为$_POST或$_GET加入自定义的数据时
 		// user信息将默认不被加入
 		// 将本属性设置为1则将追加用户数据到$_POST或$_GET
 		protected $append = 0;
 
+		const login_page = 'Manage/admin/login';
+
 		public function _initialize() {
 
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
+			$this -> baseModel = new \Common\Model\BaseModel;
 			$this -> company_id = 1;
+			$this -> assign('menu', $this -> menu());
 		}
 
 		/**
@@ -92,6 +98,38 @@
 				$this -> e($msg);
 			}
 		}
+
+		/**
+		 * $type = 1 表示课程公司菜单
+		 * $type = 2 表示上课公司菜单
+		 * @DateTime 2018-12-23T22:25:40+0800
+		 */
+		protected function menu($type = 1) {
+
+			$str = '';
+			$icons = [
+				'company' => 'fa-home',
+				'course' => 'fa-graduation-cap',
+				'question' => 'fa-book',
+				'exam' => 'fa-desktop',
+				'account' => 'fa-trophy',
+			];
+			$menu = $this -> baseModel -> getMenu(['is_show' => 0, 'type' => $type]);
+
+			foreach ($menu as $items) {
+				$icon = '';
+				$current = '';
+				$urilist = explode('/', $items['uri']);
+				if ($urilist[1] == strtolower(CONTROLLER_NAME)) {
+					$current = ' class="current-page"';
+					isset($icons[$urilist[1]]) && $icon = $icons[$urilist[1]];
+				}
+				$str .= '<li' . $current . '><a href="/' . $items['uri'] . '"><i class="fa ' . $icon . '"></i> ' . $items['name'] . ' </a></li>' . PHP_EOL;
+			}
+
+			return $str;
+		}
+
 
 		/**
 		 * 如果什么都不传 则默认为成功 code = 0
@@ -297,13 +335,13 @@
 
 		/**
 		 * 根据用户登录数据生成TOKEN
-		 * @param $data['phone']
-		 * @param $data['pwd']
+		 * @param $data['account']
+		 * @param $data['password']
 		 */
 		protected function token_fetch(&$data, $outTime = 0) {
 
 			// 加密用户信息以生成TOKEN
-			return $this -> _encrypt('NBtech!' . $data['phone'] . $data['pwd'] . time());
+			return $this -> _encrypt('NBtech!' . $data['account'] . $data['password'] . time());
 		}
 
 		/**
@@ -312,230 +350,260 @@
 		protected function save_token($token, $data, $outTime = 0) {
 
 			$outTime == 0 && $outTime = C('TOKEN_OUT_TIME');
-			return self::redisInstance() -> setEx($token, $outTime, serialize($data));
-		}
+			session('token', serialize($data));
+			return unserialize(session('token'));
 
-		// 权限验证
-		// 当前登录者在本基地的权限验证
-		// 如果登录者还没有选择进入基地 将无法取得他的权限
-		// 返回错误给登录者
-		private function ctrl_auth() {
+//			return self::redisInstance() -> setEx($token, $outTime, serialize($data));
+    	}
 
-			// Login模块不做验证
-			if (CONTROLLER_NAME == "Login") {
-				return;
+    	protected function islogin() {
+
+    		if (!$this -> get_token_value('token')) {
+				$this -> redirect(self::login_page);
 			}
-			$msg = '你没有权限';
-			if (!isset($this -> u['id']) || !isset($this -> u['base_id'])) {
-				$this -> e($msg);
-			}
-			$count = M() -> query('SELECT count(*) c FROM us_user_role ur
+    	}
+
+    	// 根据TOKEN取值
+    	protected function get_token_value($token) {
+
+			return unserialize(session($token));
+    	}
+
+    // 权限验证
+    // 当前登录者在本基地的权限验证
+    // 如果登录者还没有选择进入基地 将无法取得他的权限
+    // 返回错误给登录者
+    private function ctrl_auth()
+    {
+
+        // Login模块不做验证
+        if (CONTROLLER_NAME == "Login") {
+            return;
+        }
+        $msg = '你没有权限';
+        if (!isset($this->u['id']) || !isset($this->u['base_id'])) {
+            $this->e($msg);
+        }
+        $count = M()->query('SELECT count(*) c FROM us_user_role ur
 			JOIN us_role_auth ra ON ur.role_id = ra.role_id
 			JOIN us_auth a ON ra.auth_id = a.id
-			WHERE ur.user_id = ' . $this -> u['id'] . ' AND ur.base_id = ' . $this -> u['base_id'] . ' AND a.route = "' . $this -> mca . '"');
-			if ($count[0]['c'] == 0) {
-				$this -> e($msg);
-			}
-		}
+			WHERE ur.user_id = ' . $this->u['id'] . ' AND ur.base_id = ' . $this->u['base_id'] . ' AND a.route = "' . $this->mca . '"');
+        if ($count[0]['c'] == 0) {
+            $this->e($msg);
+        }
+    }
 
-		// 删除TOKEN
-		// 当注销用户时
-		protected function token_flush($token) {
+    // 删除TOKEN
+    // 当注销用户时
+    protected function token_flush($token)
+    {
 
-			return self::redisInstance() -> delete($token);
-		}
+        return self::redisInstance()->delete($token);
+    }
 
-		/**
-		 * 根据TOKEN取得用户信息
-		 * @param $token
-		 * @return Array/bool
-		 */
-		protected function getUserByToken($token) {
+    /**
+     * 根据TOKEN取得用户信息
+     * @param $token
+     * @return Array/bool
+     */
+    protected function getUserByToken($token)
+    {
 
-			if (false !== ($token = self::redisInstance() -> get($token))){
-				return unserialize($token);
-			}
-			return false;
-		}
+        if (false !== ($token = self::redisInstance()->get($token))) {
+            return unserialize($token);
+        }
+        return false;
+    }
 
-		// 检测字符串长度 如果小于$len则跳出程序
-		// $this -> lenCheck('pn_name,养殖池的名称', 3);
-		protected function lenCheck($str, $len, $end = 0) {
+    // 检测字符串长度 如果小于$len则跳出程序
+    // $this -> lenCheck('pn_name,养殖池的名称', 3);
+    protected function lenCheck($str, $len, $end = 0)
+    {
 
-			if (false == ($value = $this -> requests($str))) {
-				return;
-			}
-			$len_value = mb_strlen($value);
-			if (false == ($confName = conf('dictionaries,' . $str))) {
-				$confName = $str . '的值';
-			}
-			if ($end > $len) {
-				if ($len_value < $len || $len_value > $end) {
-					$msg = '必须在' . $len . '到' . $end . '个字之间';
-				}
-			} else if ($end == $len && $len != $len_value) {
-				$msg = '必须是' . $len . '个字符';
-			} else if ($len_value < $len) {
-				$msg = '不得少于' . $len . '个字';
-			}
-			if (isset($msg)) {
-				$this -> e($confName . $msg);
-			}
-		}
+        if (false == ($value = $this->requests($str))) {
+            return;
+        }
+        $len_value = mb_strlen($value);
+        if (false == ($confName = conf('dictionaries,' . $str))) {
+            $confName = $str . '的值';
+        }
+        if ($end > $len) {
+            if ($len_value < $len || $len_value > $end) {
+                $msg = '必须在' . $len . '到' . $end . '个字之间';
+            }
+        } else if ($end == $len && $len != $len_value) {
+            $msg = '必须是' . $len . '个字符';
+        } else if ($len_value < $len) {
+            $msg = '不得少于' . $len . '个字';
+        }
+        if (isset($msg)) {
+            $this->e($confName . $msg);
+        }
+    }
 
-		// 验证得到的数据中 参数$param所允许的值
-		// 如：suiValue("type", [1,2]) 验证type的值是否为1或2
-		protected function suiValue($param, $psValue = []) {
+    // 验证得到的数据中 参数$param所允许的值
+    // 如：suiValue("type", [1,2]) 验证type的值是否为1或2
+    protected function suiValue($param, $psValue = [])
+    {
 
-			if ($str = $this -> requests($param)) {
-				foreach ($psValue as $item) {
-					if ($str == $item) {
-						return;
-					}
-				}
-				$this -> e($param . '的值不合法');
-			}
-		}
+        if ($str = $this->requests($param)) {
+            foreach ($psValue as $item) {
+                if ($str == $item) {
+                    return;
+                }
+            }
+            $this->e($param . '的值不合法');
+        }
+    }
 
-		/**
-		 * 过滤参数（带个性化提示）
-		 * @param $param 需要传输的参数 如果param的形式是关联数组，则数组值均为提示语；如果是索引数组，仅做参数判断
-		 * @param $type 当未传输时，是否输出本参数
-		 * @param $option 默认将符号“-”当成未传输
-		 */
-		protected function paramCheck($param = [], $option = '-'){
+    /**
+     * 过滤参数（带个性化提示）
+     * @param $param 需要传输的参数 如果param的形式是关联数组，则数组值均为提示语；如果是索引数组，仅做参数判断
+     * @param $type 当未传输时，是否输出本参数
+     * @param $option 默认将符号“-”当成未传输
+     */
+    protected function paramCheck($param = [], $option = '-')
+    {
 
-			$s = '';
-			$msg = '缺少参数';
-			$get = $this -> requests();
-			foreach($param as $key => $values){
-				if(is_numeric($key)){
-					if(!array_key_exists($values, $get) || $get[$values] === ''){
-						$s .= $values . ', ';
-					}
-				}else{
-					if(!array_key_exists($key, $get) || $get[$key] === ''){
-						$this -> e($values . '/' . $key, 5);
-					}
-				}
-			}
-			if (!APP_DEBUG) $this -> e($msg); // 关闭调试的时候不再显示缺省的参数名
-			if(!empty($s)) $this -> e($msg . ': ' . rtrim($s, ', '), 5);
-			return 0;
-		}
+        $s = '';
+        $msg = '缺少参数';
+        $get = $this->requests();
+        foreach ($param as $key => $values) {
+            if (is_numeric($key)) {
+                if (!array_key_exists($values, $get) || $get[$values] === '') {
+                    $s .= $values . ', ';
+                }
+            } else {
+                if (!array_key_exists($key, $get) || $get[$key] === '') {
+                    $this->e($values . '/' . $key, 5);
+                }
+            }
+        }
+        if (!APP_DEBUG) $this->e($msg); // 关闭调试的时候不再显示缺省的参数名
+        if (!empty($s)) $this->e($msg . ': ' . rtrim($s, ', '), 5);
+        return 0;
+    }
 
-		/**
-		 * 通用加密类（TOKEN生成不能使用这一类）
-		 */
-		protected function _encrypt($str) {
+    /**
+     * 通用加密类（TOKEN生成不能使用这一类）
+     */
+    protected function _encrypt($str, $password_type = PASSWORD_DEFAULT)
+    {
+        return password_hash($str, $password_type);
+//			return strtoupper(md5("NBI,nongbo_tech.com!" . $str));
+    }
 
-			return strtoupper(md5("NBI,nongbo_tech.com!" . $str));
-		}
+    /**
+     * 检测图片验证码是否正确
+     * @param $code 验证码
+     * @return boolean
+     */
+    protected function check_img_verify($code, $id = '')
+    {
 
-		/**
-		 * 检测图片验证码是否正确
-		 * @param $code 验证码
-		 * @return boolean
-		 */
-		protected function check_img_verify($code, $id = '') {
+        $verify = new \Think\Verify();
+        return $verify->check($code, $id);
+    }
 
-			$verify = new \Think\Verify();
-			return $verify -> check($code, $id);
-		}
+    // 检查手机号是否合法
+    protected function phoneCheck($phone)
+    {
 
-		// 检查手机号是否合法
-		protected function phoneCheck($phone) {
+        $msg = '手机号码不规范';
+        $this->isInt($phone);
+        if (strlen($phone) != 11) {
+            $this->e($msg);
+        }
+        if (!preg_match("/^[1]{1}[3578]{1}\d{9}$/", $phone)) {
+            $this->e($msg);
+        }
+    }
 
-			$msg = '手机号码不规范';
-			$this -> isInt($phone);
-			if (strlen($phone) != 11) {
-				$this -> e($msg);
-			}
-			if (!preg_match("/^[1]{1}[3578]{1}\d{9}$/", $phone)) {
-				$this -> e($msg);
-			}
-		}
+    // 转换POST到服务器的JSON为数组 如果JSON不合法 将直接返回错误数据
+    protected function jsonDecode(&$arr)
+    {
 
-		// 转换POST到服务器的JSON为数组 如果JSON不合法 将直接返回错误数据
-		protected function jsonDecode(&$arr) {
+        $arr = json_decode(file_get_contents("php://input"), true);
+        if (is_null($arr)) {
+            $arr = I();
+            if (!count($arr)) {
+                $this->e("数据格式有误", 3);
+            }
+        }
+        return 0;
+    }
 
-			$arr = json_decode(file_get_contents("php://input"), true);
-			if (is_null($arr)) {
-				$arr = I();
-				if (!count($arr)) {
-					$this -> e("数据格式有误", 3);
-				}
-			}
-			return 0;
-		}
+    /**
+     * 发送信息到某个手机
+     * @param $phone 接收信息的手机
+     * @param $smsId 短信模板
+     * @param $tempLateMsg 短信变量内容替换
+     */
+    protected function sendShortMessage($phone, $smsId, $tempLateMsg = '')
+    {
 
-		/**
-		 * 发送信息到某个手机
-		 * @param $phone 接收信息的手机
-		 * @param $smsId 短信模板
-		 * @param $tempLateMsg 短信变量内容替换
-		 */
-		protected function sendShortMessage($phone, $smsId, $tempLateMsg = ''){
+        $ali = new \Ali\Msg\TopClient;
+        $ali->appkey = '23556318';
+        $ali->secretKey = 'f55f1a76af7304a8e1e4da6345729f0e';
+        $req = new \Ali\Msg\AlibabaAliqinFcSmsNumSendRequest;
+        $req->setExtend("");
+        $req->setSmsType("normal");
+        $req->setSmsFreeSignName("农博创新");
+        $req->setSmsParam($tempLateMsg);
+        $req->setRecNum($phone);
+        $req->setSmsTemplateCode($smsId);
+        $resp = $ali->execute($req);
+        return $resp->code == 0 && 1;
+    }
 
-			$ali = new \Ali\Msg\TopClient;
-			$ali -> appkey = '23556318';
-			$ali -> secretKey = 'f55f1a76af7304a8e1e4da6345729f0e';
-			$req = new \Ali\Msg\AlibabaAliqinFcSmsNumSendRequest;
-			$req -> setExtend("");
-			$req -> setSmsType("normal");
-			$req -> setSmsFreeSignName("农博创新");
-			$req -> setSmsParam($tempLateMsg);
-			$req -> setRecNum($phone);
-			$req -> setSmsTemplateCode($smsId);
-			$resp = $ali -> execute($req);
-			return $resp -> code == 0 && 1;
-		}
+    /**
+     * @param $sms 阿里云验证码模板编号
+     */
+    protected function sendMessage($phone, $verifyCode, $sms)
+    {
 
-	 	/**
-	 	 * @param $sms 阿里云验证码模板编号
-	 	 */
-		protected function sendMessage($phone, $verifyCode, $sms){
+        $c = new \Ali\Msg\TopClient;
+        $c->appkey = '23556318';
+        $c->secretKey = 'f55f1a76af7304a8e1e4da6345729f0e';
+        $req = new \Ali\Msg\AlibabaAliqinFcSmsNumSendRequest;
+        $req->setExtend("");
+        $req->setSmsType("normal");
+        $req->setSmsFreeSignName("农博创新");
+        $req->setSmsParam("{code:'" . $verifyCode . "'}");
+        $req->setRecNum($phone);
+        $req->setSmsTemplateCode($sms);
+        $resp = $c->execute($req);
+        return $resp->code == 0 && 1;
+    }
 
-			$c = new \Ali\Msg\TopClient;
-			$c -> appkey = '23556318';
-			$c -> secretKey = 'f55f1a76af7304a8e1e4da6345729f0e';
-			$req = new \Ali\Msg\AlibabaAliqinFcSmsNumSendRequest;
-			$req -> setExtend("");
-			$req -> setSmsType("normal");
-			$req -> setSmsFreeSignName("农博创新");
-			$req -> setSmsParam("{code:'" . $verifyCode . "'}");
-			$req -> setRecNum($phone);
-			$req -> setSmsTemplateCode($sms);
-			$resp = $c -> execute($req);
-			return $resp -> code == 0 && 1;
-		}
+    // CURL GET
+    protected function httpGet($url)
+    {
 
-		// CURL GET
-		protected function httpGet($url){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $out = curl_exec($ch);
+        curl_close($ch);
+        $out = $this->not_json($out) ? $out : json_decode($out, true);
+        return $out;
+    }
 
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			$out = curl_exec($ch);
-			curl_close($ch);
-			$out = $this -> not_json($out) ? $out : json_decode($out, true);
-			return $out;
-		}
+    // CURL POST
+    protected function httpPost($url, $post_data)
+    {
 
-		// CURL POST
-		protected function httpPost($url, $post_data) {
-
-			$curl = curl_init();
-			curl_setopt($curl, CURLOPT_URL, $url);
-			curl_setopt($curl, CURLOPT_HEADER, 1);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($curl, CURLOPT_POST, 1); //设置post方式提交
-			curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($post_data));
-			curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json;charset=utf-8'));
-			$data = curl_exec($curl);
-			curl_close($curl);
-			return $data;
-		}
-	}
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HEADER, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POST, 1); //设置post方式提交
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($post_data));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json;charset=utf-8'));
+        $data = curl_exec($curl);
+        curl_close($curl);
+        return $data;
+    }
+}
