@@ -10,11 +10,11 @@ namespace Manage\Model;
 
 use Common\Model\BaseModel;
 
-class AdminModel extends BaseModel
+class CompanyModel extends BaseModel
 {
     const STATUS_DISABLE = 1;
     const STATUS_ACTIVE = 0;
-    protected $tableName = 'admin';
+    protected $tableName = 'company';
 
     public function _initialize()
     {
@@ -25,17 +25,29 @@ class AdminModel extends BaseModel
      * 取得账号信息
      * @DateTime 2018-12-08T18:09:05+0800
      */
-    public function getAdmin($where)
+    public function getCompany($where)
     {
         if (!isset($where['status'])) {
             $where['status'] = self::STATUS_ACTIVE;
         }
-        return $this->table('admin')->where($where)->find();
+        return $this->table('company')->where($where)->find();
+    }
+
+    /**
+     * 搜索公司
+     * @DateTime 2018-12-08T18:09:05+0800
+     */
+    public function searchCompany($where)
+    {
+        if (!isset($where['status'])) {
+            $where['status'] = self::STATUS_ACTIVE;
+        }
+        return $this->table('company')->where($where)->select();
     }
 
     public function check($data, $args)
     {
-        if ($data['account'] != $args['account'] or password_verify($data['password'], $args['password'])) {
+        if ($data['company_name'] != $args['company_name'] or !password_verify($data['password'], $args['password'])) {
             return false;
         }
         return true;
@@ -52,10 +64,10 @@ class AdminModel extends BaseModel
      * @param $account
      * @return bool
      */
-    public function registerCompanyCheck($companyName)
+    public function registerCheck($data)
     {
-        $company = $this->table('company')->where(['company_name' => $companyName, 'status' => self::STATUS_ACTIVE])->find();
-        if ($company) {
+        $admin = $this->table('company')->where(['company_name' => $data['company_name'], 'status' => self::STATUS_ACTIVE])->find();
+        if ($admin) {
             return false;
         }
         return true;
@@ -66,9 +78,9 @@ class AdminModel extends BaseModel
      * @param $account
      * @return bool
      */
-    public function registerCheck($account)
+    public function registerCodeCheck($data)
     {
-        $admin = $this->table('admin')->where(['account' => $account, 'status' => self::STATUS_ACTIVE])->find();
+        $admin = $this->table('company')->where(['company_name' => $data['company_name'], 'code' => $data['code'], 'status' => self::STATUS_ACTIVE])->find();
         if ($admin) {
             return false;
         }
@@ -77,9 +89,11 @@ class AdminModel extends BaseModel
 
     public function addUser($data)
     {
-        $done = M('admin')->table('admin')->add([
-            'account' => $data['account'],
+        $done = M('company')->table('company')->add([
+            'code' => $data['code'],
+            'company_name' => $data['company_name'],
             'password' => $data['password'],
+            'status' => self::STATUS_ACTIVE,
             'created_time' => time(),
             'updated_time' => time(),
         ]);
