@@ -50,9 +50,10 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
     $FOOTER = $('footer');
 
 
-//top_nav
+//top_nav left_nav
 function init_top_nav(){
 	$('.top_nav_user').load('./template/top_nav.html');
+    $('#left_nav').load('./template/left_nav.html');
 }
 
 // Sidebar
@@ -5044,7 +5045,7 @@ if (typeof NProgress != 'undefined') {
 		init_CustomNotification();
 		init_autosize();
 		init_autocomplete();
-		// 头部导航栏引用
+		// 头部导航栏引用,侧边栏引用
 		init_top_nav();
 	});
 	
