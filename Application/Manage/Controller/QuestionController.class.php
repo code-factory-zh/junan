@@ -59,7 +59,7 @@ class QuestionController extends BaseController {
         }
 
         $this -> assign(['data' => $list]);
-        $this -> display();
+        $this -> display('question/index');
     }
 
     /**

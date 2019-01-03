@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * @Dec    水产所有模块的控制器基类
+	 * @Dec    控制器总基类
 	 * @Auther QiuXiangCheng
 	 * @Date   2017/12/12
 	 */
@@ -67,8 +67,27 @@
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
 			$this -> baseModel = new \Common\Model\BaseModel;
 			$this -> company_id = 1;
-			$this -> assign('menu', $this -> menu());
+			$this -> assign('menu', $this -> menu($this -> select_domain()));
 		}
+
+
+		/**
+		 * 根据域名前缀分两个端
+		 * @DateTime 2019-01-03T22:39:57+0800
+		 */
+		protected function select_domain() {
+
+			$type = ['admin' => 1, 'course' => 2];
+			$tmp = explode('.', $_SERVER['HTTP_HOST']);
+			if (!count($tmp)) {
+				return $type['admin'];
+			}
+			if (!in_array($tmp[0], ['admin', 'course'])) {
+				return $type['admin'];
+			}
+			return $type[$tmp[0]];
+		}
+
 
 		/**
 		 * Redis 单例
