@@ -48,4 +48,13 @@
 		{
 			return $this->where($where)->save($data);
 		}
+
+		/**
+		 * 取得菜单
+		 * @DateTime 2018-12-23T22:24:26+0800
+		 */
+		public function getMenu($where = []) {
+
+			return $this -> table('menu') -> where($where) -> select();
+		}
 	}

@@ -6,15 +6,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="/static/assets/images/favicon.ico" type="image/ico" />
-
+	  <link rel="icon" href="images/favicon.ico" type="image/ico" />
     <title>后台管理系统</title>
+
     <!-- Bootstrap -->
     <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="/static/vendors/nprogress/nprogress.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="/static/build/css/custom.css" rel="stylesheet">
   </head>
@@ -51,24 +52,29 @@
         <!-- 页面内容 -->
         <div class="right_col" role="main">
           <div id="course_list">
-              <a href="/manage/account/edit"><button class="btn btn-success btn-sm fr" id="add_course">新增子帐号</button></a>
+              <a href="/manage/exam/edit"><button class="btn btn-success btn-sm fr" id="add_course">新增考试</button></a>
               <table class="full_width_table">
                  <thead>
                    <tr>
-                     <th>帐号名称</th>
-                     <th>手机</th>
-                     <th>岗位</th>
-                     <th>报读课程</th>
+                     <th>试题名称</th>
+                     <th>考试时长</th>
+                     <th>题目数</th>
+                     <th>对应课程</th>
+                     <th>操作</th>
                    </tr>
                  </thead>
-                 <foreach name="list" key="k" item="v">
-                 <tr>
-                   <td>{$v.account_name}</td>
-                   <td>{$v.mobile}</td>
-                   <td>{$v.job_name}</td>
-                   <td>{$v.course_name}</td>
-                 </tr>
-                 </foreach>
+                 <foreach name="list" item="v">
+                     <tr>
+                        <td>{$v.name}</td>
+                        <td>{$v.time}</td>
+                        <td>{$v.total_exam_amount}</td>
+                        <td>{$v.course_name}</td>
+                        <td class="btn_div">
+                            <a href="/manage/exam/edit?id={$v.id}"><button class="btn btn-success btn-sm">编辑</button></a>
+                            <a href="/manage/exam/mlist?course_id={$v.course_id}"><button class="btn btn-success btn-sm">考生列表</button></a>
+                        </td>
+                      </tr>
+                  </foreach>
                </table>
           </div>
         </div>
@@ -93,6 +99,7 @@
     <script src="/static/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="/static/vendors/nprogress/nprogress.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="/static/build/js/custom.js"></script>
 
