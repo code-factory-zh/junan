@@ -32,7 +32,7 @@ class CourseDetailController extends BaseController
         $chapters = $this -> courseDetail -> getChapter('course_id = ' . $id . ' and is_deleted = 0', 'id,chapter,sort');
 
         $this -> assign(['data' => $chapters, 'id' => $id]);
-        $this -> display();
+        $this -> display('Course_detail/index');
     }
 
     /**
@@ -111,7 +111,7 @@ class CourseDetailController extends BaseController
         }
 
         $this -> assign($data);
-        $this->display();
+        $this->display('Course_detail/edit');
     }
 
 	/**

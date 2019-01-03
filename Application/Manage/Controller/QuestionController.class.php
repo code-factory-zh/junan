@@ -161,7 +161,7 @@ class QuestionController extends BaseController {
 
         $data['course'] = $this -> course -> getList();
         $this -> assign($data);
-        $this -> display();
+        $this -> display('Question/edit');
     }
 
     /**
