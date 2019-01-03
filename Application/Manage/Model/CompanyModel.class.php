@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @Dec    Acount模块
- * @Auther QiuXiangCheng
- * @Date   2018/12/08
+ * @Dec    Manage模块主模型
+ * @Auther cuiruijun
+ * @Date   2018/12/10
  */
 
 namespace Manage\Model;
@@ -12,7 +12,7 @@ use Common\Model\BaseModel;
 
 class CompanyModel extends BaseModel
 {
-    const STATUS_DISABLE = 1;
+	const STATUS_DISABLE = 1;
     const STATUS_ACTIVE = 0;
     protected $tableName = 'company';
 
@@ -32,6 +32,19 @@ class CompanyModel extends BaseModel
         }
         return $this->table('company')->where($where)->find();
     }
+
+	/**
+	 * 取得所有公司名称
+	 * @DateTime 2018-12-10
+	 */
+	public function getCompanys($fields, $where = []) {
+		return $this -> where($where) -> getField($fields);
+	}
+
+	public function _before_update(&$data, $options)
+	{
+		$data['updated_time'] = time();
+	}
 
     /**
      * 搜索公司
