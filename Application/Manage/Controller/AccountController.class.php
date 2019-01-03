@@ -58,7 +58,7 @@ class AccountController extends BaseController {
 
 		$data['list'] = $list;
 		$this -> assign($data);
-		$this -> display('account/list');
+		$this -> display('Account/list');
 	}
 
 
@@ -102,6 +102,6 @@ class AccountController extends BaseController {
 		$data['jobs'] = $this -> job -> getJobs('id, name');
 
 		$this -> assign($data);
-		$this -> display('account/edit');
+		$this -> display('Account/edit');
 	}
 }

@@ -45,7 +45,7 @@ class ExamController extends BaseController {
 		// pr($list);
 
 		$this -> assign($data);
-		$this -> display('exam/list');
+		$this -> display('Exam/list');
 	}
 
 
@@ -80,7 +80,7 @@ class ExamController extends BaseController {
 		$data = $this -> exam -> where(['id' => $p['id']]) -> find();
 
 		$this -> assign($data);
-		$this -> display('exam/edit');
+		$this -> display('Exam/edit');
 	}
 
 
@@ -104,6 +104,6 @@ class ExamController extends BaseController {
 		}
 
 		$this -> assign($data);
-		$this -> display('exam/mlist');
+		$this -> display('Exam/mlist');
 	}
 }
