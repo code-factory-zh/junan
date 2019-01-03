@@ -78,7 +78,7 @@ class QuestionController extends BaseController {
     public function edit()
     {
         if (IS_POST) {
-            $data = $this -> postFetch($_POST);
+//            $data = $this -> postFetch($_POST);
 //            $this -> _post($data, ['course_id', 'type', 'title', 'answer']);
 
 			$data = I('post.');
@@ -129,7 +129,7 @@ class QuestionController extends BaseController {
         }
 
         //参数
-        if (!empty($_GET['id'])) {
+        if (!empty(I('get.id'))) {
             $exist = $this -> question -> getOne('id = ' . I('get.id'));
             $data['record'] = $exist;
             $data['type'] = $exist['type'];
