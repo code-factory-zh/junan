@@ -16,6 +16,7 @@ class CourseDetailController extends BaseController
     public function _initialize() {
 
         parent::_initialize();
+		$this -> islogin();
         $this -> courseDetail = new \Manage\Model\CourseDetailModel;
         $this -> course = new \Manage\Model\CourseModel;
     }
@@ -26,13 +27,11 @@ class CourseDetailController extends BaseController
      */
     public function index()
     {
-//        $this -> _get($p, ['id']);
-        $this -> _get($p, ['id']);
-		$id = I('get.id');
+		$id = I('get.course_id');
 
         $chapters = $this -> courseDetail -> getChapter('course_id = ' . $id . ' and is_deleted = 0', 'id,chapter,sort');
 
-        $this -> assign(['data' => $chapters, 'id' => $p['id']]);
+        $this -> assign(['data' => $chapters, 'id' => $id]);
         $this -> display();
     }
 
@@ -59,7 +58,7 @@ class CourseDetailController extends BaseController
         }
 
         if (IS_POST) {
-            $this -> _post($p, ['chapter', 'type', 'course_id', 'sort', 'course_id']);
+//            $this -> _post($p, ['chapter', 'type', 'course_id', 'sort', 'course_id']);
 			$p = I('post.');
 
             if ($p['type'] != 1) {
@@ -77,7 +76,7 @@ class CourseDetailController extends BaseController
                 }
             }
 
-            $id = $_POST['id'];
+            $id = I('post.id');
             if (!empty($id)) {
                 $exist = $this -> courseDetail -> getDetail('sort = ' . $p['sort'] . ' and course_id = ' . $p['course_id'] . ' and id != ' . $id);
                 if ($exist) {
@@ -120,7 +119,7 @@ class CourseDetailController extends BaseController
 	 */
 	public function upload(){
 		// 根据自己的业务调整上传路径、允许的格式、文件大小
-        $this -> _post($p, ['type', 'name']);
+		$p = I('post.');
         $ext = substr(strrchr($p['name'], '.'), 1);
 
         if ($ext == 'ppt') {

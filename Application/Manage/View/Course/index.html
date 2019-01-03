@@ -21,45 +21,33 @@
   </head>
 
   <body class="nav-md">
-    <div class="container body">
+  <div class="container body">
       <div class="main_container">
-        <div class="col-md-3 left_col">
-          <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>首页</span></a>
-            </div>
+          <div class="col-md-3 left_col">
+              <div class="left_col scroll-view">
+                  <div class="navbar nav_title" style="border: 0;">
+                      <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>首页</span></a>
+                  </div>
 
-            <div class="clearfix"></div>
-
-            <!-- 侧边栏 -->
-            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-              <div class="menu_section">
-                <ul class="nav side-menu">
-                  <li><a href="index.html"><i class="fa fa-home"></i> 接入公司管理 </a></li>
-                  <li><a href="course.html"><i class="fa fa-graduation-cap"></i> 课程管理 </a></li>
-                  <li><a href="question.html"><i class="fa fa-book"></i> 题目管理 </a></li>
-                  <li><a href="exam.html"><i class="fa fa-desktop"></i> 考试管理 </a></li>
-                  <li><a href="certificate.html"><i class="fa fa-trophy"></i> 证书管理 </a></li>
-                 </ul>
+                  <div class="clearfix"></div>
+                  <include file="public/header" />
               </div>
-            </div>
           </div>
-        </div>
 
-        <!-- 顶部导航栏 -->
-        <div class="top_nav">
-          <div class="nav_menu">
-            <nav>
-              <div class="nav toggle">
-                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+          <!-- 顶部导航栏 -->
+          <div class="top_nav">
+              <div class="nav_menu">
+                  <nav>
+                      <div class="nav toggle">
+                          <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                      </div>
+                      <!-- 用户名文件在template文件夹下的top_nav.html -->
+                      <div class="top_nav_user">
+                      </div>
+                  </nav>
               </div>
-              <!-- 用户名文件在template文件夹下的top_nav.html -->
-              <div class="top_nav_user">
-              </div>
-            </nav>
           </div>
-        </div>
-        <!-- /顶部导航栏 -->
+          <!-- /顶部导航栏 -->
 
         <!-- 页面内容 -->
         <div class="right_col" role="main">
@@ -83,7 +71,7 @@
                    <td>{$v.created_time|date='Y年m月d日 H时i分',###}</td>
                    <td>
                       <a href="/manage/course/edit?id={$v.id}"><button class="btn btn-success btn-sm">基础编辑</button></a>
-                      <a href="/manage/course_detail/list?course_id={$v.id}"><button class="btn btn-success btn-sm">章节详情</button></a>
+                      <a href="/manage/course_detail/?course_id={$v.id}"><button class="btn btn-success btn-sm">章节详情</button></a>
                       <!--<button class="btn btn-success btn-sm">删除</button>-->
                    </td>
                  </tr>

@@ -29,6 +29,7 @@ class QuestionController extends BaseController {
     public function _initialize() {
         parent::_initialize();
 
+		$this -> islogin();
         $this -> question = new \Manage\Model\QuestionsModel;
         $this -> course = new \Manage\Model\CourseModel;
     }
@@ -44,7 +45,8 @@ class QuestionController extends BaseController {
      */
     public function index()
     {
-        $params = $this->_get($_GET);
+//        $params = $this->_get($_GET);
+        $params = I('get.');
 
         $list = $this -> question -> getAll('*', 'is_deleted = 0', $params['page'], $params['pageNum']);
 
@@ -77,7 +79,9 @@ class QuestionController extends BaseController {
     {
         if (IS_POST) {
             $data = $this -> postFetch($_POST);
-            $this -> _post($data, ['course_id', 'type', 'title', 'answer']);
+//            $this -> _post($data, ['course_id', 'type', 'title', 'answer']);
+
+			$data = I('post.');
 
             if ($data['type'] == 1 || $data['type'] == 3) {
                 if (strlen($data['answer']) != 1) {
@@ -126,7 +130,7 @@ class QuestionController extends BaseController {
 
         //参数
         if (!empty($_GET['id'])) {
-            $exist = $this -> question -> getOne('id = ' . $_GET['id']);
+            $exist = $this -> question -> getOne('id = ' . I('get.id'));
             $data['record'] = $exist;
             $data['type'] = $exist['type'];
             if ($exist['type'] < 3) $data['record']['option'] = json_decode($data['record']['option'], true);
@@ -171,7 +175,8 @@ class QuestionController extends BaseController {
      */
     public function del()
     {
-        $this -> _get($p, ['id']);
+//        $this -> _get($p, ['id']);
+		$p = I('get.');
 
         $record = $this -> question -> getOne('is_deleted = 0 ANd id = ' . $p['id']);
         if (empty($record)) {

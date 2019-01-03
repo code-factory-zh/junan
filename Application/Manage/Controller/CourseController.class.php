@@ -16,6 +16,7 @@ class CourseController extends BaseController {
 	public function _initialize() {
 
 		parent::_initialize();
+		$this -> islogin();
 		$this->course = new \Manage\Model\CourseModel;
 		$this->job = new \Manage\Model\JobModel;
 	}

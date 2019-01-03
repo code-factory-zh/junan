@@ -15,6 +15,7 @@ class JobController extends BaseController {
 	public function _initialize() {
 
 		parent::_initialize();
+		$this -> islogin();
 		$this->job = new \Manage\Model\JobModel;
 	}
 
