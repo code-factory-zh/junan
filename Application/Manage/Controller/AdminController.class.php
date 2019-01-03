@@ -52,6 +52,6 @@ class AdminController extends CommonController
             $this->user->login($user); // 记录用户登录情况
             $this->rel(['token' => $token])->e();
         }
-        $this->display('admin/login');
+        $this->display('Admin/login');
     }
 }
