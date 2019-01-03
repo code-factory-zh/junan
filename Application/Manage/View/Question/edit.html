@@ -66,7 +66,7 @@
                             <select id="gangwei" name="course_id" class="form-control">
                                 <option value="">请选择科目</option>
                                 <foreach name="course" key="k" item="v">
-                                    <option value="{$k}" <if condition="$record.course_id == $k">selected</if>>{$v}</option>
+                                    <option value="{$k}" <if condition="$record.course_id == $k">selected</if>>{$v.name}</option>
                                 </foreach>
                             </select>
                         </div>
