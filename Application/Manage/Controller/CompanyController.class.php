@@ -81,8 +81,8 @@ class CompanyController extends BaseController {
 		if (IS_POST) {
 			$post = I('post.');
 			$this->ignore_token();
-			$user = $this->user->getCompany(['company_name' => $post['company_name']]);
-			if (!($u = $this->user->check($post, $user))) {
+			$user = $this->company->getCompany(['company_name' => $post['company_name']]);
+			if (!($u = $this->company->check($post, $user))) {
 				$this->e('公司名称或密码不正确');
 			}
 			$token = $this->token_fetch($u);
@@ -90,10 +90,10 @@ class CompanyController extends BaseController {
 			if (!$this->save_token($token, $u)) {
 				$this->e('无法生成TOKEN');
 			}
-			$this->user->login($user); // 记录用户登录情况
+			$this->company->login($user); // 记录用户登录情况
 			$this->rel(['token' => $token])->e();
 		}
-		$this->display();
+		$this->display('Company/login');
 	}
 
 	/**

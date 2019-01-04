@@ -60,11 +60,16 @@
 		// 将本属性设置为1则将追加用户数据到$_POST或$_GET
 		protected $append = 0;
 
-		const login_page = 'Manage/admin/login';
+		const login_page = 'manage/admin/login';
+		const login_page_company = 'manage/company/login';
+
+		const company_index = 'manage/company/index';
+		const admin_index = 'manage/account/list';
 
 		public function _initialize() {
 
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
+			$this -> uri = strtolower(MODULE_NAME. '/' .CONTROLLER_NAME. '/' .ACTION_NAME);
 			$this -> baseModel = new \Common\Model\BaseModel;
 			$this -> company_id = 1;
 			$this -> assign('menu', $this -> menu($this -> select_domain()));
@@ -377,8 +382,25 @@
 
     	protected function islogin() {
 
+    		$format = $this -> select_domain();
     		if (!$this -> get_token_value('token')) {
-				$this -> redirect(self::login_page);
+    			if ($format == 1 && $this -> uri != self::login_page) {
+					$this -> redirect(self::login_page);
+				}
+				if ($this -> uri != self::login_page_company) {
+					$this -> redirect(self::login_page_company);
+				}
+				return;
+			}
+
+			if ($format == 1) {
+				if ($this -> uri != self::admin_index) {
+					$this -> redirect(self::admin_index);
+				}
+				return;
+			}
+			if ($this -> uri != self::company_index) {
+				$this -> redirect(self::company_index);
 			}
     	}
 
