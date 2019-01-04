@@ -45,13 +45,26 @@ class AdminController extends CommonController
                 $this->e('用户名或密码不正确');
             }
             $token = $this->token_fetch($u);
-            $this -> save_token('token', 1);
+            $this->save_token('token', 1);
             if (!$this->save_token($token, $u)) {
                 $this->e('无法生成TOKEN');
             }
-            $this->user->login($user); // 记录用户登录情况
-            $this->rel(['token' => $token])->e();
+            $userinfo = json_decode($this->user->login($user)); // 记录用户登录情况
+            $this->rel(['token' => $token, 'userinfo' => $userinfo])->e();
         }
         $this->display('Admin/login');
+    }
+
+    /**
+     * 退出登录
+     */
+    public function logout()
+    {
+        if (session('userinfo')) {
+            session('userinfo', null);
+            $this->display('Admin/login');
+        }
+        echo '<script>alert("尚未登录用户！");document.location.href="/"</script>';
+        exit();
     }
 }
