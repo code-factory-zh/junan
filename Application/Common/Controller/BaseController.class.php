@@ -60,10 +60,19 @@
 		// 将本属性设置为1则将追加用户数据到$_POST或$_GET
 		protected $append = 0;
 
+		// 认证公司登录页
 		const login_page = 'manage/admin/login';
+
+		// 学习公司登录页
 		const login_page_company = 'manage/company/login';
 
+		// 学习公司注册页
+		const register_page_company = 'manage/company/register';
+
+		// 学习公司默认跳转主页
 		const company_index = 'manage/company/index';
+
+		// 认证公司默认跳转主页
 		const admin_index = 'manage/account/list';
 
 		public function _initialize() {
@@ -387,7 +396,7 @@
     			if ($format == 1 && $this -> uri != self::login_page) {
 					$this -> redirect(self::login_page);
 				}
-				if ($this -> uri != self::login_page_company) {
+				if ($this -> uri != self::login_page_company && $this -> uri != self::register_page_company) {
 					$this -> redirect(self::login_page_company);
 				}
 				return;
