@@ -124,7 +124,7 @@ class CourseDetailController extends BaseController
 
         if ($ext == 'ppt') {
             $type = 2;
-            $dir = 'ppt';
+            $dir = 'file';
         } elseif (in_array($ext, ['mp4', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'])) {
             $type = 3;
             $dir = 'media';
@@ -132,7 +132,7 @@ class CourseDetailController extends BaseController
             $this -> e('上传类型必须是PPT或者视频文件');
         }
 
-        $path = '/upload/'. $dir .'/';
+        $path = $dir .'/';
 		if (!file_exists($path))
 		{
 			mkdir($path, 0777, true);
