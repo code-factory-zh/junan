@@ -86,7 +86,7 @@ class CompanyModel extends BaseModel
         return true;
     }
 
-    public function addUser($data)
+    public function addCompany($data)
     {
         $done = M('company')->table('company')->add([
             'code' => $data['code'],
