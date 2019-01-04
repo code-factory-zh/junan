@@ -1,3 +1,4 @@
+<?php include "../../../Common/Common/functions.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <body>
@@ -5,7 +6,7 @@
     <li class="">
         <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
             <?php $userinfo = json_decode(session('userinfo')); ?>
-            <?php if ($this->select_domain() == 1){ ?>
+            <?php if (select_domain() == 1){ ?>
             你好，<?php echo $userinfo["account"]; ?>
             <?php } else { ?>
             你好，<?php echo $userinfo["code"]; ?>
@@ -14,7 +15,7 @@
         </a>
         <ul class="dropdown-menu dropdown-usermenu pull-right">
             <li>
-                <?php if ($this->select_domain() == 1){ ?>
+                <?php if (select_domain() == 1){ ?>
                 <a href="/manage/admin/logout"><i class="fa fa-sign-out pull-right"></i> 退出登录</a>
                 <?php } else { ?>
                 <a href="/manage/company/logout"><i class="fa fa-sign-out pull-right"></i> 退出登录</a>
