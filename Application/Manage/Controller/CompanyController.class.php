@@ -15,7 +15,6 @@ class CompanyController extends BaseController
 
 
     private $company;
-    private $user;
 
     // 不需要验证TOKEN
     protected static $token = 0;
@@ -74,7 +73,7 @@ class CompanyController extends BaseController
     {
         $post = I('post.');
         $this->ignore_token();
-        $companyList = $this->user->searchCompany(['company_name' => $post['company_name']]);
+        $companyList = $this->company->searchCompany(['company_name' => $post['company_name']]);
         $this->rel(['company_list' => $companyList])->e();
     }
 
@@ -125,7 +124,7 @@ class CompanyController extends BaseController
         if (IS_POST) {
             $post = I('post.');
             $this->ignore_token();
-            if (!$this->user->registerCheck($post)) {
+            if (!$this->company->registerCheck($post)) {
                 $this->e('此公司已被注册');
             }
             $this->lenCheck('password', 6, 16);
@@ -137,7 +136,7 @@ class CompanyController extends BaseController
             }
             $post['password'] = $this->_encrypt($post['password']);
             // 插入数据库
-            if (!($id = $this->user->addUser($post))) {
+            if (!($id = $this->company->addCompany($post))) {
                 $this->e('失败,未知错误');
             }
             $this->e();
