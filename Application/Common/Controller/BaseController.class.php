@@ -394,12 +394,12 @@
 			}
 
 			if ($format == 1) {
-				if ($this -> uri != self::admin_index) {
+				if ($this -> uri == self::login_page) {
 					$this -> redirect(self::admin_index);
 				}
 				return;
 			}
-			if ($this -> uri != self::company_index) {
+			if ($this -> uri == self::login_page_company) {
 				$this -> redirect(self::company_index);
 			}
     	}
