@@ -4,7 +4,7 @@
 <ul class="nav navbar-nav navbar-right">
     <li class="">
         <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <?php $userinfo = json_decode(session('userinfo')); ?>
+            <?php $userinfo = json_decode(session('userinfo'), true); ?>
             <?php $tmp = explode('.', $_SERVER['HTTP_HOST']); ?>
             <?php if ($tmp[0] == "admin"){ ?>
             你好，<?php echo $userinfo["account"]; ?>
