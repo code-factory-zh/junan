@@ -70,9 +70,11 @@
                     </tr>
                     </foreach>
                 </table>
+                <if condition="$buy eq 1">
                 <div>
                     <a href="/manage/curriculum/order_list"><button class="btn btn-success btn-sm fr" style="margin-top: 10px;">购买添加的课程</button></a>
                 </div>
+                </if>
             </div>
             <!-- 添加课程的弹窗 -->
             <div id="add_course_win" class="add_course_win">

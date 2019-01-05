@@ -28,13 +28,18 @@ class CurriculumController extends BaseController {
 	 */
 	public function list() {
 
-		// pr(session('company_id:' . $this -> userinfo['id']));
 		$this -> _get($g);
 		$data = [];
 		$where = "company_id = {$this -> company_id}";
 		$data['list'] = $this -> curriculum -> getCourseListByWhere($where, 'c.id, c.name, c.job_id, cac.amount');
 		$data['course_id'] = $g['course_id'];
 		$data['job_id'] = $g['job_id'];
+
+		$data['buy'] = 0;
+		$s = session('company_id:' . $this -> userinfo['id']);
+		if (!is_null($s)) {
+			$data['buy'] = 1;
+		}
 		$this -> assign($data);
 		$this -> display('Curriculum/list');
 	}
