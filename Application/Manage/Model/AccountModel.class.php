@@ -18,15 +18,40 @@ class AccountModel extends BaseModel {
 	}
 
 	/**
+	 * 根据条件查找子帐户
+	 * @DateTime 2019-01-05T14:51:46+0800
+	 */
+	public function findAccount($where) {
+
+		return $this -> where($where) -> find();
+	}
+
+	/**
 	 * 取得所有的子帐户
 	 * @DateTime 2018-12-08T18:09:05+0800
 	 */
-	public function getAccount() {
+	public function getAccount($where = []) {
 
 		return $this -> field('a.id account_id, a.name account_name, a.mobile, aj.job_id') ->
-		table('account a') ->
+		table('account a') -> where($where) ->
 		join('LEFT JOIN account_job aj ON a.id = aj.account_id') ->
 		select();
+	}
+
+
+	public function getCourse($where = [], $fields = '*') {
+
+		return $this -> table('course') -> where($where) -> getField('id, name');
+	}
+
+
+	/**
+	 * 取得子帐户
+	 * @DateTime 2019-01-05T16:04:22+0800
+	 */
+	public function getAccountColumn($where = []) {
+
+		return $this -> where($where) -> getField('mobile, name');
 	}
 
 
