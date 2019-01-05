@@ -61,6 +61,14 @@ class ExamController extends BaseController {
 			$this -> _post($p, $needle);
 			$this -> isInt(['dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'course_id', 'pd_question_score']);
 
+			$score = $p['dx_question_amount'] * $p['dx_question_score'] + $p['fx_question_amount'] * $p['fx_question_score'] + $p['pd_question_amount'] * $p['pd_question_score'];
+			if($score != 100)
+			{
+				$this -> e('总分固定100分');
+			}
+
+			$p['score'] = $score;
+
 			$p['created_time'] = $p['updated_time'] = time();
 			if (isset($p['id']) && $p['id'] != '') {
 				$id = $p['id'];
