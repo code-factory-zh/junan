@@ -69,10 +69,19 @@
                 </div>
               </div>
               <div class="form-group">
+                <label for="job_id" class="control-label col-md-3 col-sm-3 col-xs-12">课程类型</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select id="type" class="form-control" name="type">
+                    <option value="0" <if condition="0 eq $list['type']">selected</if>>专业课程</option>
+                    <option value="1" <if condition="1 eq $list['type']">selected</if>>通用课程</option>
+                  </select>
+                </div>
+                </div>
+              <div class="form-group" id="job_show_display" {$list['job_id'] ? '' : 'style="display:none"'}>
                 <label for="job_id" class="control-label col-md-3 col-sm-3 col-xs-12">岗位</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <select id="job_id" class="form-control" name="job_id">
-                    <option value="">请选择岗位</option>
+                    <option value="0">请选择岗位</option>
                     <foreach name="jobs" key="k" item="v">
                       <option value="{$k}" <if condition="$k eq $list['job_id']">selected</if>>{$v}</option>
                     </foreach>
@@ -120,6 +129,17 @@
     <script src="/static/build/js/course_add_edit.js"></script>
 
     <script>
+
+      //如果是专业课程,则不选择岗位
+      $('#type').change(function(){
+        type = $(this).val();
+        if(type == 0){
+          $('#job_show_display').show();
+        }else{
+          $('#job_show_display').hide();
+        }
+      })
+
         $("#form").submit(function () {
 
             $.ajax({

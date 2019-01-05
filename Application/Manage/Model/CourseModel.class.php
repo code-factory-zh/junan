@@ -11,9 +11,11 @@ class CourseModel extends BaseModel {
 
     protected $tableName = 'course';
 
-    public function getList()
+    public function getList($where = null)
     {
-        return $this->where('is_deleted = 0')->getField('id, name, job_id, amount, detail, created_time');
+		$where['is_deleted'] = 0;
+
+        return $this->where($where)->getField('id, name, job_id, type, amount, detail, created_time');
     }
 
 	public function _before_insert(&$data, $options)
