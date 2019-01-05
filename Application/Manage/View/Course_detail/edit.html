@@ -91,7 +91,7 @@
             <input type="hidden" name="id" value="{$record.id}">
             <input type="hidden" id="content" name="content" value="{$record.content}">
             </form>
-            <form action="">
+            <form action="" class="form-horizontal form-label-left">
                 <div class="form-group toggleShow" <if condition="$record.id == '' || $record.type == 1">style="display: none"</if>>
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">上传文件</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
