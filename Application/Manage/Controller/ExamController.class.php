@@ -20,6 +20,7 @@ class ExamController extends BaseController {
 
 		$this -> ignore_token(0);
 		$this -> exam = new \Manage\Model\ExamModel;
+		$this -> course = new \Manage\Model\CourseModel;
 		$this -> curri = new \Manage\Model\CurriculumModel;
 	}
 
@@ -56,9 +57,9 @@ class ExamController extends BaseController {
 	public function edit() {
 
 		if (IS_POST) {
-			$needle = ['name', 'time', 'pass_score', 'dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'pd_question_score', 'detail'];
+			$needle = ['name', 'time', 'pass_score', 'dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'course_id',  'pd_question_score', 'detail'];
 			$this -> _post($p, $needle);
-			$this -> isInt(['dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'pd_question_score']);
+			$this -> isInt(['dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'course_id', 'pd_question_score']);
 
 			$p['created_time'] = $p['updated_time'] = time();
 			if (isset($p['id']) && $p['id'] != '') {
@@ -76,8 +77,12 @@ class ExamController extends BaseController {
 			$this -> e();
 		}
 
-		$this -> _get($p);
+//		$this -> _get($p);
+		$p = I('get.');
 		$data = $this -> exam -> where(['id' => $p['id']]) -> find();
+
+		//取所有的课程
+		$data['course'] = $this->course->getList();
 
 		$this -> assign($data);
 		$this -> display('Exam/edit');

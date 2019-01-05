@@ -71,22 +71,33 @@
                 </div>
               </div>
               <div class="form-group">
+                <label for="course_id" class="control-label col-md-3 col-sm-3 col-xs-12">课程</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select id="course_id" class="form-control" name="course_id">
+                    <option value="">请选择课程</option>
+                    <foreach name="course" key="k" item="v">
+                      <option value="{$v['id']}" <if condition="$v['id'] eq $course_id">selected</if>>{$v['name']}</option>
+                    </foreach>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="course_price" class="control-label col-md-3 col-sm-3 col-xs-12">及格分数</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="number" name="pass_score" value="{$pass_score}" id="course_price" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填写考试时长，单位：分钟">
+                  <input type="number" name="pass_score" value="{$pass_score}" id="course_price" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填写及格分数">
                 </div>
               </div>
               <div class="form-group">
                 <label for="gangwei" class="control-label col-md-3 col-sm-3 col-xs-12">题型</label>
                 <div class="col-md-6 col-sm-6 col-xs-12 tixing">
                     <div class="line">
-                        <span>单选题</span><input type="number" value="{$dx_question_amount}" name="dx_question_amount" class="input_num"><span>题，每题</span><input type="number" value="{$dx_question_score}" name="dx_question_score" class="input_num"><span>分，共x分</span>
+                        <span>单选题</span><input type="number" value="{$dx_question_amount}" name="dx_question_amount" class="input_num"><span>题，每题</span><input type="number" value="{$dx_question_score}" name="dx_question_score" class="input_num"><span>分，共0分</span>
                     </div>
                     <div class="line">
-                        <span>复选题</span><input value="{$fx_question_amount}" type="number" name="fx_question_amount" class="input_num"><span>题，每题</span><input value="{$fx_question_score}" type="number" name="fx_question_score" class="input_num"><span>分，共x分</span>
+                        <span>复选题</span><input value="{$fx_question_amount}" type="number" name="fx_question_amount" class="input_num"><span>题，每题</span><input value="{$fx_question_score}" type="number" name="fx_question_score" class="input_num"><span>分，共0分</span>
                     </div>
                     <div class="line">
-                        <span>判断题</span><input type="number" value="{$pd_question_amount}" name="pd_question_amount" class="input_num"><span>题，每题</span><input value="{$pd_question_score}" type="number" name="pd_question_score" class="input_num"><span>分，共x分</span>
+                        <span>判断题</span><input type="number" value="{$pd_question_amount}" name="pd_question_amount" class="input_num"><span>题，每题</span><input value="{$pd_question_score}" type="number" name="pd_question_score" class="input_num"><span>分，共0分</span>
                     </div>
                 </div>
               </div>
