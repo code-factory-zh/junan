@@ -77,8 +77,8 @@ class ExamController extends BaseController {
 			$this -> e();
 		}
 
-//		$this -> _get($p);
-		$p = I('get.');
+		$this -> _get($p);
+//		$p = I('get.');
 		$data = $this -> exam -> where(['id' => $p['id']]) -> find();
 
 		//取所有的课程
