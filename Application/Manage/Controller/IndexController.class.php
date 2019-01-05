@@ -26,7 +26,12 @@ class IndexController extends BaseController {
 	}
 
 	public function index(){
-	    $this->display('Index');
+
+		if ($this -> select_domain() == 1) {
+			$this -> redirect(self::login_page);
+		}
+		$this -> redirect(self::login_page_company);
+	    // $this->display('Index');
     }
 
     public function test(){
