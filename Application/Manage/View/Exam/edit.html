@@ -91,20 +91,20 @@
                 <label for="gangwei" class="control-label col-md-3 col-sm-3 col-xs-12">题型</label>
                 <div class="col-md-6 col-sm-6 col-xs-12 tixing">
                     <div class="line">
-                        <span>单选题</span><input type="number" value="{$dx_question_amount}" name="dx_question_amount" class="input_num"><span>题，每题</span><input type="number" value="{$dx_question_score}" name="dx_question_score" class="input_num"><span>分，共0分</span>
+                        <span>单选题</span><input type="number" value="{$dx_question_amount}" name="dx_question_amount" class="input_num"><span>题，每题</span><input type="number" value="{$dx_question_score}" name="dx_question_score" class="input_num">分，共<span id="t1" class="total">0</span>分
                     </div>
                     <div class="line">
-                        <span>复选题</span><input value="{$fx_question_amount}" type="number" name="fx_question_amount" class="input_num"><span>题，每题</span><input value="{$fx_question_score}" type="number" name="fx_question_score" class="input_num"><span>分，共0分</span>
+                        <span>复选题</span><input value="{$fx_question_amount}" type="number" name="fx_question_amount" class="input_num"><span>题，每题</span><input value="{$fx_question_score}" type="number" name="fx_question_score" class="input_num">分，共<span id="t2" class="total">0</span>分
                     </div>
                     <div class="line">
-                        <span>判断题</span><input type="number" value="{$pd_question_amount}" name="pd_question_amount" class="input_num"><span>题，每题</span><input value="{$pd_question_score}" type="number" name="pd_question_score" class="input_num"><span>分，共0分</span>
+                        <span>判断题</span><input type="number" value="{$pd_question_amount}" name="pd_question_amount" class="input_num"><span>题，每题</span><input value="{$pd_question_score}" type="number" name="pd_question_score" class="input_num">分，共<span id="t3" class="total">0</span>分
                     </div>
                 </div>
               </div>
               <div class="form-group">
                 <label for="intro" class="control-label col-md-3 col-sm-3 col-xs-hidden"></label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    <p style="text-align:right;">总分固定100分，目前计算得x分。</p>
+                    <p style="text-align:right;">总分固定100分，目前计算得<span id="totalscore"></span>分。</p>
                 </div>
                 </div>
               <div class="form-group">
@@ -115,7 +115,7 @@
               </div>
               <div class="btns col-xs-12" style="text-align: center;margin-top: 20px;">
                 <a href="exam.html"><button class="btn btn-default btn-sm" type="button">取消</button></a>
-                <button class="btn btn-success btn-sm" type="submit">保存</button>
+                <button id="submit" mark="0" class="btn btn-success btn-sm" type="submit">保存</button>
               </div>
             </form>
           </div>
@@ -161,6 +161,25 @@
                 })
                 return false
             })
+
+          $(".tixing input").keyup(function (e) {
+//            debugger;
+            if( $(this).val() && $(this).siblings("input").val() ){
+              var total = parseInt( $(this).val() ) * parseInt( $(this).siblings("input").val() );
+              $(this).siblings(".total").text(total);
+              var totalscore = parseInt( $("#t1").text() ) + parseInt( $("#t2").text() ) + parseInt( $("#t3").text() );
+              $("#totalscore").text(totalscore);
+            }else{
+              $(this).siblings(".total").text(0);
+            }
+          });
+//          提交
+          $("#submit").click(function(e){
+            var totalscore = $("#totalscore").text();
+            if( parseInt(totalscore) != 100 ){
+              alert('总分只能为100')
+            }
+          })
         })
     </script>
   </body>
