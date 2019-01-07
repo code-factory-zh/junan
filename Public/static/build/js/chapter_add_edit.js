@@ -20,11 +20,11 @@ $(function(){
         }
         // $('.toggleShow').eq(index).show().siblings('.toggleShow').hide();
         if (index == 0) {
-            $('.toggleShow')[0].show();
-            $('.toggleShow')[1].hide();
+            $('.toggleShow').eq(0).show();
+            $('.toggleShow').eq(1).hide();
         } else if (index == 1) {
-            $('.toggleShow')[1].show();
-            $('.toggleShow')[0].hide();
+            $('.toggleShow').eq(1).show();
+            $('.toggleShow').eq(0).hide();
         }
     })
     // webuploader.js初始化
