@@ -13,21 +13,18 @@ class PayController extends BaseController {
 	public function _initialize() {
 
 		parent::_initialize();
-		$this -> islogin();
-		$this -> job = new \Manage\Model\JobModel;
-		$this -> account = new \Manage\Model\AccountModel;
 	}
 
 
 	public function setpay() {
 
-		file_put_contents('./test.txt', 'data');
+		du(file_put_contents('/data/test.txt', 'data'));
 		$this -> e(0);
 	}
 
 	public function getpay() {
 
-		$a = file_get_contents('./test.txt');
+		$a = file_get_contents('/data/test.txt');
 		pr($a);
 	}
 }
