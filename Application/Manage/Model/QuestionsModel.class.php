@@ -10,11 +10,6 @@ class QuestionsModel extends BaseModel {
     }
 
     protected $tableName = 'questions';
-    
-    //删除记录
-    public function del($id) {
-        return $this->where('id = ' . $id)->save(['is_deleted' => 1]);
-    }
 
     //获取多条记录
     public function getAll($select = '*', $where = '', $page = 1, $pageNum = 20, $order = 'id desc')
