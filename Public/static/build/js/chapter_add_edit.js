@@ -18,7 +18,14 @@ $(function(){
         if (index == 2) {
             index = 1;
         }
-        $('.toggleShow').eq(index).show().siblings('.toggleShow').hide();
+        // $('.toggleShow').eq(index).show().siblings('.toggleShow').hide();
+        if (index == 0) {
+            $('.toggleShow').eq(0).show();
+            $('.toggleShow').eq(1).hide();
+        } else if (index == 1) {
+            $('.toggleShow').eq(1).show();
+            $('.toggleShow').eq(0).hide();
+        }
     })
     // webuploader.js初始化
     var uploader = WebUploader.create({

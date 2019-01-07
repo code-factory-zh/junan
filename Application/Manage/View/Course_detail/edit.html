@@ -82,50 +82,50 @@
                     </div>
 
                     <div class="form-group toggleShow" <if condition="$record.id != '' && $record.type != 1">style="display:none"</if>>
-                        <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <textarea name="detail" id="detail" rows="10" class="form-control">{$record.detail}</textarea>
-                        </div>
+                    <label for="detail" class="control-label col-md-3 col-sm-3 col-xs-12">详细内容</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <textarea name="detail" id="detail" rows="10" class="form-control">{$record.detail}</textarea>
                     </div>
-                    <div class="form-group toggleShow" <if condition="$record.id == '' || $record.type == 1">style="display: none"</if>>
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">上传文件</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <if condition="$record.content != ''"><a href="<?php echo 'http://'.$_SERVER['HTTP_HOST']; ?>{$record.content}" target="_blank">点击查看文件</a></if>
-                            <div id="uploader" class="wu-example">
-                                <!--用来存放文件信息-->
-                                <div id="thelist" class="uploader-list"></div>
-                                <div class="btns" style="position: relative;height: 40px;">
-                                    <div id="picker">选择文件</div>
-                                    <button id="ctlBtn" class="btn btn-sm btn-success">开始上传</button>
-                                    <button class="btn btn-sm btn-default stop">暂停</button>
-                                    <button class="btn btn-sm btn-default upload">继续</button>
-                                    <button class="btn btn-sm btn-danger cancel">取消</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div calss="btns col-xs-12" style="text-align: center;margin-top: 20px;">
-                        <a href="/manage/course_detail/index?id={$course_id}"><button class="btn btn-default btn-sm" type="button">取消</button></a>
-                        <input type="hidden" name="course_id" value="{$course_id}">
-                        <input type="hidden" name="id" value="{$record.id}">
-                        <input type="hidden" id="content" name="content" value="{$record.content}">
-                        <button class="btn btn-success btn-sm" type="submit" id="save">保存</button>
-                    </div>
-                </form>
             </div>
+            <input type="hidden" name="course_id" value="{$course_id}">
+            <input type="hidden" name="id" value="{$record.id}">
+            <input type="hidden" id="content" name="content" value="{$record.content}">
+            </form>
+            <form action="" class="form-horizontal form-label-left">
+                <div class="form-group toggleShow" <if condition="$record.id == '' || $record.type == 1">style="display: none"</if>>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">上传文件</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <if condition="$record.content != ''"><a href="<?php echo 'http://'.$_SERVER['HTTP_HOST']; ?>{$record.content}" target="_blank">点击查看文件</a></if>
+                    <div id="uploader" class="wu-example">
+                        <!--用来存放文件信息-->
+                        <div id="thelist" class="uploader-list"></div>
+                        <div class="btns" style="position: relative;height: 40px;">
+                            <div id="picker">选择文件</div>
+                            <button id="ctlBtn" class="btn btn-sm btn-success">开始上传</button>
+                            <button class="btn btn-sm btn-default stop">暂停</button>
+                            <button class="btn btn-sm btn-default upload">继续</button>
+                            <button class="btn btn-sm btn-danger cancel">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-        <!-- /页面内容 -->
-
-        <!-- 底部 -->
-        <footer>
-            <div class="pull-right" style="text-align:center;width: 100%;">
-                后台管理系统
-            </div>
-            <div class="clearfix"></div>
-        </footer>
-        <!-- /底部 -->
+        <div calss="btns col-xs-12" style="text-align: center;margin-top: 20px;">
+            <a href="/manage/course_detail/index?id={$course_id}"><button class="btn btn-default btn-sm" type="button">取消</button></a>
+            <button class="btn btn-success btn-sm" id="save" onclick="formSubmit()">保存</button>
+        </div>
     </div>
+    <!-- /页面内容 -->
+</div>
+
+<!-- 底部 -->
+<footer>
+    <div class="pull-right" style="text-align:center;width: 100%;">
+        后台管理系统
+    </div>
+    <div class="clearfix"></div>
+</footer>
+<!-- /底部 -->
 </div>
 
 <!-- jQuery -->
@@ -143,6 +143,9 @@
 <!-- 新增、编辑章节js -->
 <script src="/static/build/js/chapter_add_edit.js"></script>
 <script>
+    function formSubmit() {
+        $('#form').submit();
+    }
     $("#form").submit(function () {
         var course_id = $('input[name="course_id"]').val();
         $.ajax({
