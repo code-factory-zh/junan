@@ -81,7 +81,6 @@
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
 			$this -> uri = strtolower(MODULE_NAME. '/' .CONTROLLER_NAME. '/' .ACTION_NAME);
 			$this -> baseModel = new \Common\Model\BaseModel;
-			$this -> company_id = 1;
 			$this -> userinfo = self::getLoginSession();
 			$this -> assign('menu', $this -> menu($this -> select_domain()));
 		}

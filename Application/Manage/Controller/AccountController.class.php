@@ -30,7 +30,7 @@ class AccountController extends BaseController {
 
 		$data = [];
 		$jobs = $this -> job -> getJobs('id, name');
-		$list = $this -> account -> getAccount();
+		$list = $this -> account -> getAccount(['a.company_id' => $this -> userinfo['id']]);
 
 		$cour = [];
 		$courses = $this -> account -> getCourses();
@@ -47,6 +47,7 @@ class AccountController extends BaseController {
 		if (count($list)) {
 			foreach ($list as &$items) {
 				$items['course_name'] = '-';
+				$items['job_name'] = '-';
 				if (isset($jobs[$items['job_id']])) {
 					$items['job_name'] = $jobs[$items['job_id']];
 				}
@@ -74,7 +75,7 @@ class AccountController extends BaseController {
 			$this -> isInt(['job_id']);
 
 			$job_id = $p['job_id'];
-			$p['company_id'] = $this -> company_id;
+			$p['company_id'] = $this -> userinfo['id'];
 
 			unset($p['job_id']);
 			if (!($id = $this -> account -> add($p))) {
@@ -85,7 +86,7 @@ class AccountController extends BaseController {
 			$time = time();
 			// $account_job = M('account_job');
 			$done = M('account_job') -> table('account_job') -> add([
-				'company_id' => $this -> company_id,
+				'company_id' => $this -> userinfo['id'],
 				'account_id' => $id,
 				'job_id' => $job_id,
 				'created_time' => $time,
