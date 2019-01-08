@@ -80,7 +80,7 @@ $totalPrice = 1;
 		$input -> SetProduct_id("123456789");
 
 		$result = $notify -> GetPayUrl($input);
-		du($result);
+		// du($result);
 		$url = '/manage/pay/show_wxpay_pic?data=' . urlencode($result["code_url"]);
 		$this -> rel(['url' => $url]) -> e(0, 'Success');
 	}
