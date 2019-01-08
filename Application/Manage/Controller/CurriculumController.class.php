@@ -122,7 +122,7 @@ class CurriculumController extends BaseController {
 		$total = 0;
 
 		// 生成订单号
-		$this -> fetch_order_num();
+		// $this -> fetch_order_num();
 		if (count($list)) {
 			$jobs = $this -> account -> getCourse();
 			$users = $this -> account -> getAccountColumn(['company_id' => $this -> userinfo['id']]);
