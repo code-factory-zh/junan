@@ -30,8 +30,7 @@ class AccountController extends BaseController {
 
 		$data = [];
 		$jobs = $this -> job -> getJobs('id, name');
-		// ['a.company_id' => $this -> userinfo['id']]
-		$list = $this -> account -> getAccount();
+		$list = $this -> account -> getAccount(['a.company_id' => $this -> userinfo['id']]);
 
 		$cour = [];
 		$courses = $this -> account -> getCourses();

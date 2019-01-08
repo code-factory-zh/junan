@@ -30,7 +30,8 @@ class CurriculumController extends BaseController {
 
 		$this -> _get($g);
 		$data = [];
-		$where = "company_id = {$this -> company_id}";
+		// $where = "company_id = {$this -> company_id}";
+		$where = 1;
 		$data['list'] = $this -> curriculum -> getCourseListByWhere($where, 'c.id, c.name, c.job_id, cac.amount');
 		$data['course_id'] = $g['course_id'];
 		$data['job_id'] = $g['job_id'];
