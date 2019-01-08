@@ -18,13 +18,19 @@ class PayController extends BaseController {
 
 	public function setpay() {
 
-		du(file_put_contents('/data/test.txt', 'data'));
-		$this -> e(0);
+		$str = 1;
+		$tmp = file_get_contents('/webser/log/test.txt');
+		if ($tmp) {
+			$str = intval($tmp) + 1;
+		}
+		if(file_put_contents('/webser/log/test.txt', $str)) {
+			$this -> e(0, $str);
+		}
+		$this -> e('插入失败');
 	}
 
 	public function getpay() {
 
-		$a = file_get_contents('/data/test.txt');
-		pr($a);
+		pr(file_get_contents('/webser/log/test.txt'));
 	}
 }
