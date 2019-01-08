@@ -681,12 +681,16 @@
 	protected function fetch_order_num() {
 
 		// 取当前用户当前页面订单号 key
-		$session_key_order = sha1('ORDER_NUM:' . $this -> userinfo['id']);
-		$orderNum = session($session_key_order);
-		if (is_null($orderNum)) {
-			$orderNum = 'T' . date('YmdHis') . mt_rand(10000, 99999);
-			session($session_key_order, $orderNum);
-		}
+		// $session_key_order = sha1('ORDER_NUM:' . $this -> userinfo['id']);
+		// $orderNum = session($session_key_order);
+		// if (is_null($orderNum)) {
+		// 	$orderNum = 'T' . date('YmdHis') . mt_rand(10000, 99999);
+		// 	session($session_key_order, $orderNum);
+		// }
+		// return $orderNum;
+	
+		$orderNum = 'T' . date('YmdHis') . mt_rand(10000, 99999);
+		session($session_key_order, $orderNum);
 		return $orderNum;
 	}
 }

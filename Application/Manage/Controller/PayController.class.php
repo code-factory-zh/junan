@@ -78,7 +78,7 @@ $totalPrice = 1;
 		$input -> SetNotify_url(C('CALL_BACK_URL'));
 		$input -> SetTrade_type(C('TRADE_TYPE'));
 		$input -> SetProduct_id("123456789");
-du($result);
+
 		$result = $notify -> GetPayUrl($input);
 		$url = '/manage/pay/show_wxpay_pic?data=' . urlencode($result["code_url"]);
 		$this -> rel(['url' => $url]) -> e(0, 'Success');

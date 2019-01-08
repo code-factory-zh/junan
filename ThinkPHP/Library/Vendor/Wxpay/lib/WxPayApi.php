@@ -1,6 +1,6 @@
 <?php
 require_once "WxPay.Exception.php";
-require_once "WxPay.Config.Interface.php";
+require_once "WxPayConfigInterface.php";
 require_once "WxPay.Data.php";
 
 /**
