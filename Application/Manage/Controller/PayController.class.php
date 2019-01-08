@@ -18,19 +18,7 @@ class PayController extends BaseController {
 
 	public function setpay() {
 
-		$str = 1;
-		$tmp = file_get_contents('/webser/log/test.txt');
-		if ($tmp) {
-			$str = intval($tmp) + 1;
-		}
-		if(file_put_contents('/webser/log/test.txt', $str)) {
-			$this -> e(0, $str);
-		}
-		$this -> e('插入失败');
-	}
-
-	public function getpay() {
-
-		pr(file_get_contents('/webser/log/test.txt'));
+		$data = ['created_time' => 1, 'updated_time' => 1];
+		M('pay') -> add($data);
 	}
 }
