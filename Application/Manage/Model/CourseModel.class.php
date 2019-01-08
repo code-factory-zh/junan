@@ -26,4 +26,9 @@ class CourseModel extends BaseModel {
 	{
 		$data['updated_time'] = time();
 	}
+
+	public function getCourseAmount($where = []) {
+
+		return $this -> where($where) -> getField('amount');
+	}
 }
