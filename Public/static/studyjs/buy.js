@@ -10,7 +10,7 @@ function pay(){
     				console.log(re)
     				if (re.code == 0) {
     					init = window.clearInterval(init)
-    					return true
+    					window.location.href = '/manage/curriculum/list';
     				}
     			})
     		}, 1000);
