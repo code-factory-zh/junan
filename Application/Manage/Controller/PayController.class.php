@@ -12,6 +12,7 @@ class PayController extends BaseController {
 	public function _initialize() {
 
 		parent::_initialize();
+		$this -> ignore_token();
 	}
 
 
@@ -49,6 +50,11 @@ class PayController extends BaseController {
 	}
 
 
+	/**
+	 * 回调微信  完成
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-10T01:41:53+0800
+	 */
 	private function callback_ok() {
 
 		vendor("Wxpay.lib.WxPayData");
@@ -57,6 +63,16 @@ class PayController extends BaseController {
 		$notify -> SetReturn_msg("OK");
 		$xml = $notify -> ToXml();
 		echo $xml;
+	}
+
+
+	public function checkCallBack() {
+
+		$this -> _get($g, ['od']);
+		if (!is_null(session($g['od']))) {
+			$this -> e(-1);
+		}
+		$this -> e(0);
 	}
 
 
@@ -119,6 +135,6 @@ $totalPrice = 1;
 		$input -> SetProduct_id("123456789");
 		$result = $notify -> GetPayUrl($input);
 		$url = '/manage/pay/show_wxpay_pic?data=' . urlencode($result["code_url"]);
-		$this -> rel(['url' => $url]) -> e(0, 'Success');
+		$this -> rel(['url' => $url, 'ordernum' => $tmpInfo['orderNum']]) -> e(0, 'Success');
 	}
 }
