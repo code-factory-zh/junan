@@ -17,7 +17,13 @@ class PayController extends BaseController {
 
 	public function setpay() {
 
-		vendor("Wxpay.example.notify");
+		vendor("Wxpay.lib.WxPayData");
+		$notify = new \WxPayNotifyReply;
+		$notify -> SetReturn_code("SUCCESS");
+		$notify -> SetReturn_msg("OK");
+		$xml = $notify -> ToXml();
+		echo $xml;
+
 		$data = file_get_contents('php://input');
 		M('tmp') -> add(['str' => $data]);
 	}
