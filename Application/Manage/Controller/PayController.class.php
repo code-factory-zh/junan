@@ -22,12 +22,12 @@ class PayController extends BaseController {
 		$notify -> SetReturn_code("SUCCESS");
 		$notify -> SetReturn_msg("OK");
 		$xml = $notify -> ToXml();
-		echo $xml;
+		// echo $xml;
 
 
 		$notifiedData = file_get_contents('php://input');
 		$xmlObj = simplexml_load_string($notifiedData, 'SimpleXMLElement', LIBXML_NOCDATA);
-
+pr(json_encode($xmlObj));
 		M('tmp') -> add(['str' => $xmlObj]);
         $xmlObj = json_decode(json_encode($xmlObj), true);
 
