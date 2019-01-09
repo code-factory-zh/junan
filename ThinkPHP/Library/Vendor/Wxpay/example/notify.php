@@ -99,7 +99,3 @@ class PayNotifyCallBack extends WxPayNotify
 	}
 }
 
-$config = new WxPayConfig();
-Log::DEBUG("begin notify");
-$notify = new PayNotifyCallBack();
-$notify->Handle($config, false);
