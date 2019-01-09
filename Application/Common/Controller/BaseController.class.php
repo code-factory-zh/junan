@@ -686,6 +686,7 @@
 			if (!is_null($company)) {
 				return ['orderNum' => $str, 'company' => $company];
 			}
+			return false;
 		}
 
 		$session_key_order = md5('ORDER_NUM:' . $this -> userinfo['id']);
