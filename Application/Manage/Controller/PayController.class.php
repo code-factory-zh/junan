@@ -27,8 +27,8 @@ class PayController extends BaseController {
 
 		$notifiedData = file_get_contents('php://input');
 		$xmlObj = simplexml_load_string($notifiedData, 'SimpleXMLElement', LIBXML_NOCDATA);
-pr(json_encode($xmlObj));
-		M('tmp') -> add(['str' => $xmlObj]);
+
+		M('tmp') -> add(['str' => json_encode($xmlObj)]);
         $xmlObj = json_decode(json_encode($xmlObj), true);
 
 		M('tmp') -> add(['str' => $notifiedData]);
