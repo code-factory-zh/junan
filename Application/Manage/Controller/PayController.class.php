@@ -17,6 +17,7 @@ class PayController extends BaseController {
 
 	public function setpay() {
 
+		vendor("Wxpay.example.notify");
 		$data = file_get_contents('php://input');
 		M('tmp') -> add(['str' => $data]);
 	}
@@ -59,28 +60,27 @@ class PayController extends BaseController {
 		}
 		$totalPrice = bcmul($totalPrice, 100, 2);
 
+$totalPrice = 1;
+
 		vendor("Wxpay.lib.WxPayApi");
 		vendor("Wxpay.example.WxPayNativePay");
 		vendor("Wxpay.example.log");
 
+		$tmpInfo = $this -> fetch_order_num();
 		$notify = new \NativePay();
 		$input = new \WxPayUnifiedOrder();
-
-$totalPrice = 1;
-
 		$input -> SetBody(C('BODY_NAME'));
 		$input -> SetAttach("BUY");
-		$input -> SetOut_trade_no($this -> fetch_order_num());
+		$input -> SetOut_trade_no($tmpInfo['orderNum']);
 		$input -> SetTotal_fee($totalPrice);
 		$input -> SetTime_start(date("YmdHis"));
 		$input -> SetTime_expire(date("YmdHis", time() + 300));
+
 		// $input -> SetGoods_tag("test");
 		$input -> SetNotify_url(C('CALL_BACK_URL'));
 		$input -> SetTrade_type(C('TRADE_TYPE'));
 		$input -> SetProduct_id("123456789");
-
 		$result = $notify -> GetPayUrl($input);
-		// du($result);
 		$url = '/manage/pay/show_wxpay_pic?data=' . urlencode($result["code_url"]);
 		$this -> rel(['url' => $url]) -> e(0, 'Success');
 	}
