@@ -17,21 +17,46 @@ class PayController extends BaseController {
 
 	public function setpay() {
 
+		vendor('Wxpay.example.WxPayConfig');
+		$config = new \WxPayConfig();
+
+		$notifiedData = file_get_contents('php://input');
+		$xmlObj = simplexml_load_string($notifiedData, 'SimpleXMLElement', LIBXML_NOCDATA);
+		M('tmp') -> add(['str' => json_encode($xmlObj)]);
+
+        $xmlObj = json_decode(json_encode($xmlObj), true);
+		if ($xmlObj['return_code'] == "SUCCESS" && $xmlObj['result_code'] == "SUCCESS") {
+			foreach($xmlObj as $k => $v) {
+				if($k == 'sign') {
+					$xmlSign = $xmlObj[$k];
+					unset($xmlObj[$k]);
+				};
+			}
+
+			$sign = http_build_query($xmlObj);
+            $sign = md5($sign . '&key=' . $config -> GetKey());
+            $sign = strtoupper($sign);
+
+            if ($sign === $xmlSign) {
+                $trade_no = $xmlObj['out_trade_no']; // 总订单号
+            	$order = $this -> fetch_order_num($trade_no);
+            	if ($order !== false) {
+            		seseion($trade_no, null);
+            	}
+                $this -> callback_ok();
+            }
+		}
+	}
+
+
+	private function callback_ok() {
+
 		vendor("Wxpay.lib.WxPayData");
 		$notify = new \WxPayNotifyReply;
 		$notify -> SetReturn_code("SUCCESS");
 		$notify -> SetReturn_msg("OK");
 		$xml = $notify -> ToXml();
-		// echo $xml;
-
-
-		$notifiedData = file_get_contents('php://input');
-		$xmlObj = simplexml_load_string($notifiedData, 'SimpleXMLElement', LIBXML_NOCDATA);
-
-		M('tmp') -> add(['str' => json_encode($xmlObj)]);
-        $xmlObj = json_decode(json_encode($xmlObj), true);
-
-		M('tmp') -> add(['str' => $notifiedData]);
+		echo $xml;
 	}
 
 
