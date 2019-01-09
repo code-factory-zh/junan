@@ -41,7 +41,7 @@ class PayController extends BaseController {
                 $trade_no = $xmlObj['out_trade_no']; // 总订单号
             	$order = $this -> fetch_order_num($trade_no);
             	if ($order !== false) {
-            		seseion($order['orderNum'], null);
+            		seseion($trade_no, null);
             	}
                 $this -> callback_ok();
             }
