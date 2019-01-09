@@ -7,10 +7,10 @@
 * 
 **/
 
-require_once "../lib/WxPay.Api.php";
-require_once '../lib/WxPay.Notify.php';
-require_once "WxPay.Config.php";
-require_once 'log.php';
+vendor('Wxpay.lib.WxPayApi');
+vendor('Wxpay.lib.WxPayNotify');
+vendor('Wxpay.example.WxPayConfig');
+vendor('Wxpay.example.log');
 
 //初始化日志
 $logHandler= new CLogFileHandler("../logs/".date('Y-m-d').'.log');
