@@ -16,6 +16,11 @@ class PayController extends BaseController {
 	}
 
 
+	/**
+	 * 微信回调
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-10T02:20:51+0800
+	 */
 	public function setpay() {
 
 		vendor('Wxpay.example.WxPayConfig');
@@ -40,10 +45,7 @@ class PayController extends BaseController {
 
             if ($sign === $xmlSign) {
                 $trade_no = $xmlObj['out_trade_no']; // 总订单号
-            	$order = $this -> fetch_order_num($trade_no);
-            	if ($order !== false) {
-            		seseion($trade_no, null);
-            	}
+            	M('order') -> where(['order_num' => $trade_no]) -> save(['status' => 1, 'updated_time' => time()]);
                 $this -> callback_ok();
             }
 		}
@@ -66,10 +68,16 @@ class PayController extends BaseController {
 	}
 
 
+	/**
+	 * 检查是否已完成
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-10T02:21:17+0800
+	 */
 	public function checkCallBack() {
 
 		$this -> _get($g, ['od']);
-		if (!is_null(session($g['od']))) {
+		$count = M('order') -> where(['order_num' => $g['od'], 'status' => 0]) -> count();
+		if ($count) {
 			$this -> e(-1);
 		}
 		$this -> e(0);
@@ -120,6 +128,17 @@ $totalPrice = 1;
 		vendor("Wxpay.example.log");
 
 		$tmpInfo = $this -> fetch_order_num();
+
+		$time = time();
+		$data = [
+			'company_id' => $this -> userinfo['id'],
+			'order_num' => $tmpInfo['orderNum'],
+			'created_time' => $time,
+			'updated_time' => $time,
+			'amount' => $totalPrice,
+		];
+		M('order') -> add($data);
+
 		$notify = new \NativePay();
 		$input = new \WxPayUnifiedOrder();
 		$input -> SetBody(C('BODY_NAME'));
