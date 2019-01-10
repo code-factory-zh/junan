@@ -75,13 +75,30 @@
 		// 认证公司默认跳转主页
 		const admin_index = 'manage/account/list';
 
+		protected $userinfo;
 		public function _initialize() {
 
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
 			$this -> uri = strtolower(MODULE_NAME. '/' .CONTROLLER_NAME. '/' .ACTION_NAME);
 			$this -> baseModel = new \Common\Model\BaseModel;
 			$this -> company_id = 1;
+			$this -> userinfo = self::getLoginSession();
 			$this -> assign('menu', $this -> menu($this -> select_domain()));
+		}
+
+
+		/**
+		 * 取当前登录态
+		 * @Author   邱湘城
+		 * @DateTime 2019-01-05T14:11:46+0800
+		 */
+		private static function getLoginSession() {
+
+			$tmp = session('userinfo');
+			if ($tmp && $tmp = json_decode($tmp, true)) {
+				return $tmp;
+			}
+			return [];
 		}
 
 
@@ -556,10 +573,10 @@
     }
 
     // 检查手机号是否合法
-    protected function phoneCheck($phone)
+    protected function phoneCheck($phone, $msg = '')
     {
 
-        $msg = '手机号码不规范';
+        if (empty($msg)) $msg = '手机号码不规范';
         $this->isInt($phone);
         if (strlen($phone) != 11) {
             $this->e($msg);

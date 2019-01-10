@@ -176,19 +176,19 @@ class QuestionController extends BaseController {
     public function del()
     {
 //        $this -> _get($p, ['id']);
-		$p = I('get.');
+		$p = I('post.');
 
-        $record = $this -> question -> getOne('is_deleted = 0 ANd id = ' . $p['id']);
+        $record = $this -> question -> getOne('is_deleted = 0 AND id = ' . $p['id']);
         if (empty($record)) {
-            $this -> el($record, 'The record does not exist');
+            $this -> el($record, '记录不存在');
         }
 
         //删除
-        $result = $this -> question -> del($p['id']);
+        $result = $this -> question -> del('id = ' .$p['id']);
         if ($result) {
             $this -> e();
         } else {
-            $this -> e('fail');
+			$this->el($result, '删除失败');
         }
     }
 
