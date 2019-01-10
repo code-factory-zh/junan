@@ -495,7 +495,7 @@ body {
     color: #73879C;
     background: #2A3F54;
     font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 400;
     line-height: 1.471
 }
@@ -4425,3 +4425,9 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     margin: 0 auto;
 }
 /* /购买课程页面 */
+.btn-sm{
+    font-size: 14px;
+}
+#sidebar-menu{
+    font-size: 16px;
+}
