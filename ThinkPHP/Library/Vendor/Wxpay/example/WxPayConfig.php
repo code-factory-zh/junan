@@ -89,7 +89,7 @@ class WxPayConfig extends WxPayConfigInterface
 	 */
 	public function GetKey()
 	{
-		return trim(file_get_contents('/cert/app/Key'));
+		return //trim(file_get_contents('/cert/app/Key'));
 	}
 	public function GetAppSecret()
 	{
