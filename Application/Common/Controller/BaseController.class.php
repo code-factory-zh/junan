@@ -81,7 +81,6 @@
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
 			$this -> uri = strtolower(MODULE_NAME. '/' .CONTROLLER_NAME. '/' .ACTION_NAME);
 			$this -> baseModel = new \Common\Model\BaseModel;
-			$this -> company_id = 1;
 			$this -> userinfo = self::getLoginSession();
 			$this -> assign('menu', $this -> menu($this -> select_domain()));
 		}
@@ -673,4 +672,26 @@
         curl_close($curl);
         return $data;
     }
+
+	/**
+	 * 订单号生成
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-09T00:57:33+0800
+	 */
+	protected function fetch_order_num($str = '') {
+
+		// 取当前用户当前页面订单号 key
+		if (!empty($str)) {
+			$company = session($str);
+			if (!is_null($company)) {
+				return ['orderNum' => $str, 'company' => $company];
+			}
+			return false;
+		}
+
+		$session_key_order = md5('ORDER_NUM:' . $this -> userinfo['id']);
+		$orderNum = 100 . mt_rand(100, 999) . date('YmdHis') . mt_rand(100000, 999999);
+		session($orderNum, $session_key_order);
+		return ['orderNum' => $orderNum, 'company' => $session_key_order];
+	}
 }

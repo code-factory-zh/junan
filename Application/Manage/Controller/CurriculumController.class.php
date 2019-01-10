@@ -18,6 +18,7 @@ class CurriculumController extends BaseController {
 		$this -> islogin();
 		$this -> ignore_token();
 
+		$this -> course = new \Manage\Model\CourseModel;
 		$this -> account = new \Manage\Model\AccountModel;
 		$this -> curriculum = new \Manage\Model\CurriculumModel;
 	}
@@ -28,9 +29,12 @@ class CurriculumController extends BaseController {
 	 */
 	public function list() {
 
+		// $session_key = 'company_id:' . $this -> userinfo['id'];
+		// pr(session($session_key));
 		$this -> _get($g);
 		$data = [];
-		$where = "company_id = {$this -> company_id}";
+		// $where = "company_id = {$this -> company_id}";
+		$where = 1;
 		$data['list'] = $this -> curriculum -> getCourseListByWhere($where, 'c.id, c.name, c.job_id, cac.amount');
 		$data['course_id'] = $g['course_id'];
 		$data['job_id'] = $g['job_id'];
@@ -62,9 +66,14 @@ class CurriculumController extends BaseController {
 		foreach ($list as $job) {
 			$accounts[$job['mobile']][] = $job['job_id'];
 		}
-		$data = ['course_id' => $p['course_id'], 'job_id' => $p['job_id'], 'phone_list' => []];
-		unset($p['course_id'], $p['job_id']);
+		$data = ['course_id' => $p['course_id'], 'job_id' => $p['job_id'], 'price' => 0, 'phone_list' => []];
 
+		$course_price = $this -> course -> getCourseAmount(['id' => $p['course_id']]);
+		if (is_null($course_price)) {
+			$this -> e('异常，无法取得课程价格！');
+		}
+
+		unset($p['course_id'], $p['job_id']);
 		foreach ($p as $items) {
 			if (empty($items)) {
 				$this -> e('输入框内的手机号码不得为空');
@@ -78,6 +87,7 @@ class CurriculumController extends BaseController {
 			if (!in_array($data['job_id'], $accounts[$items])) {
 				$this -> e('用户"' . $items . '"的工作岗位不适用于该课程！');
 			}
+			$data['price'] += intval($course_price);
 			$data['phone_list'][] = $items;
 		}
 
@@ -108,8 +118,11 @@ class CurriculumController extends BaseController {
 
 		$session_key = 'company_id:' . $this -> userinfo['id'];
 		$list = session($session_key);
-
 		$data = [];
+		$total = 0;
+
+		// 生成订单号
+		// $this -> fetch_order_num();
 		if (count($list)) {
 			$jobs = $this -> account -> getCourse();
 			$users = $this -> account -> getAccountColumn(['company_id' => $this -> userinfo['id']]);
@@ -117,13 +130,17 @@ class CurriculumController extends BaseController {
 				$tmp = [
 					'job_name' => $jobs[$items['job_id']],
 					'users' => [],
+					'price' => $items['price'],
 				];
+				$total == $items['price'];
 				foreach ($items['phone_list'] as $v) {
 					$tmp['users'][] = ['mobile' => $v, 'name' => $users[$v]];
 				}
 				$data[$k] = $tmp;
 			}
 		}
+
+		$this -> assign('total', $total);
 		$this -> assign('list', $data);
 		$this -> display('Curriculum/buy');
 	}
