@@ -16,6 +16,11 @@ class PayController extends BaseController {
 	}
 
 
+	public function t() {
+
+		echo 1;
+	}
+
 	/**
 	 * 微信回调
 	 * @Author   邱湘城
