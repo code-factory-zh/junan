@@ -32,7 +32,6 @@ class CurriculumController extends BaseController {
 		$this -> _get($g);
 		$data = [];
 
-
 		// $session_key = 'company_id:order:' . $this -> userinfo['id'];
 		// session($session_key, null);
 
