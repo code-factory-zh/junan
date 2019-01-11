@@ -63,8 +63,18 @@ class CurriculumController extends BaseController {
 		$this -> _get($p, ['course_id']);
 		$where = ['c.id' => $p['course_id'], 'aj.company_id' => $this -> userinfo['id'], 'a.status' => 0, 'c.is_deleted' => 0];
 		$list = $this -> account -> getAccountsByWhere($where);
-		$data = ['course_id' => $p['course_id'], 'job_id' => $p['job_id'], 'list' => $list];
 
+		// 去重
+		$where = ['company_id' => $this -> userinfo['id'], 'course_id' => $p['course_id'], 'status' => 0];
+		$accounts = $this -> account -> getCourseByCpnid($where);
+		$accounts = array_values($accounts);
+		foreach ($list as $k => $items) {
+			if (in_array($items['account_id'], $accounts)) {
+				unset($list[$k]);
+			}
+		}
+
+		$data = ['course_id' => $p['course_id'], 'job_id' => $p['job_id'], 'list' => $list];
 		$this -> assign($data);
 		$this -> display('Curriculum/certificate');
 	}

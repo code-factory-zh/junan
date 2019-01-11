@@ -41,6 +41,15 @@ class AccountModel extends BaseModel {
 	}
 
 
+	/**
+	 * 根据条件查找已购买课程的人
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-12T00:33:55+0800
+	 */
+	public function getCourseByCpnid($where) {
+
+		return $this -> table('company_account_course') -> where($where) -> getField('id, account_id');
+	}
 
 
 	/**
