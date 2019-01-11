@@ -10,10 +10,11 @@ function pay(){
     				console.log(re)
     				if (re.code == 0) {
     					init = window.clearInterval(init)
-    					window.location.href = '/manage/curriculum/list';
+                        window.location.href = '/manage/pay/finished?od=' + r.rel.ordernum;
+    					// window.location.href = '/manage/curriculum/list';
     				}
     			})
-    		}, 1000);
+    		}, 2000);
 
     		$('#ewm').attr('src', r.rel.url)
     	}
