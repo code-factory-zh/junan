@@ -113,7 +113,7 @@ class PayController extends BaseController {
 				'status' => 0,
 			];
 			foreach ($items['phone_list'] as $mobile) {
-				$data['account_id'] = M('account') -> where(['mobile' => $mobile]) -> getField('id');
+				$data['account_id'] = M('account') -> where(['mobile' => $mobile, 'company_id' => $this -> userinfo['id'], 'status' => 0]) -> getField('id');
 				M('company_account_course') -> add($data);
 			}
 		}
