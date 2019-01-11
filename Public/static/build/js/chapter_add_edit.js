@@ -22,11 +22,11 @@ $(function(){
         if (index == 0) {
             $('.toggleShow').eq(0).show();
             $('.toggleShow').eq(1).hide();
-            $('.twoBtn').css('margin-top', '20px')
+            //$('.twoBtn').css('margin-top', '20px');
         } else if (index == 1) {
             $('.toggleShow').eq(1).show();
             $('.toggleShow').eq(0).hide();
-            $('.twoBtn').css('marginTop', '70px')
+            //$('.twoBtn').css('margin-top', '70px');
         }
     })
     // webuploader.js初始化

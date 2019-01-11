@@ -91,7 +91,7 @@
             <input type="hidden" name="id" value="{$record.id}">
             <input type="hidden" id="content" name="content" value="{$record.content}">
             </form>
-            <form action="" class="form-horizontal form-label-left">
+            <form class="form-horizontal form-label-left">
                 <div class="form-group toggleShow" <if condition="$record.id == '' || $record.type == 1">style="display: none"</if>>
                 <div class="control-label col-md-3 col-sm-3 col-xs-12">上传文件</div>
                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -101,20 +101,20 @@
                         <div id="thelist" class="uploader-list"></div>
                         <div class="btns" style="position: relative;height: 40px;">
                             <div id="picker">选择文件</div>
-                            <button id="ctlBtn" class="btn btn-sm btn-success">开始上传</button>
-                            <button class="btn btn-sm btn-default stop">暂停</button>
-                            <button class="btn btn-sm btn-default upload">继续</button>
-                            <button class="btn btn-sm btn-danger cancel">取消</button>
+                            <button id="ctlBtn" class="btn btn-sm btn-success" type="button">开始上传</button>
+                            <button class="btn btn-sm btn-default stop" type="button">暂停</button>
+                            <button class="btn btn-sm btn-default upload" type="button">继续</button>
+                            <button class="btn btn-sm btn-danger cancel" type="button">取消</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <div calss="btns col-xs-12 twoBtn" style="text-align: center;">
+        <div class="btns col-xs-12 twoBtn" style="text-align: center;margin-top:50px;">
             <a href="/manage/course_detail/index?id={$course_id}"><button class="btn btn-default btn-sm" type="button">取消</button></a>
             <button class="btn btn-success btn-sm" id="save" onclick="formSubmit()">保存</button>
         </div>
-    </div>
+        </div>
     <!-- /页面内容 -->
 </div>
 

@@ -4425,9 +4425,15 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     margin: 0 auto;
 }
 /* /购买课程页面 */
+/*字体大小*/
 .btn-sm{
     font-size: 14px;
 }
 #sidebar-menu{
     font-size: 16px;
+}
+/*设置上传文件的label宽度*/
+#picker div:nth-child(2){
+    width: 100% !important;
+    height: 100% !important;
 }
