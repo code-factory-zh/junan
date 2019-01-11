@@ -29,18 +29,20 @@ class CurriculumController extends BaseController {
 	 */
 	public function list() {
 
-		// $session_key = 'company_id:' . $this -> userinfo['id'];
-		// pr(session($session_key));
 		$this -> _get($g);
 		$data = [];
-		// $where = "company_id = {$this -> company_id}";
+
+
+		// $session_key = 'company_id:order:' . $this -> userinfo['id'];
+		// session($session_key, null);
+
 		$where = 1;
 		$data['list'] = $this -> curriculum -> getCourseListByWhere($where, 'c.id, c.name, c.job_id, cac.amount');
 		$data['course_id'] = $g['course_id'];
 		$data['job_id'] = $g['job_id'];
 
 		$data['buy'] = 0;
-		$s = session('company_id:' . $this -> userinfo['id']);
+		$s = session('company_id:order:' . $this -> userinfo['id']);
 		if (!is_null($s)) {
 			$data['buy'] = 1;
 		}
@@ -50,19 +52,38 @@ class CurriculumController extends BaseController {
 
 
 	/**
-	 * 添加课程 将当前企业下的用户绑定到课程课程课程去
-	 * @DateTime 2019-01-05T13:17:26+0800
+	 * 展示当前企业可购买此课程的员工
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-11T21:36:53+0800
 	 */
-	public function addCourse() {
+	public function show_account() {
 
-		$this -> _post($p);
-		if ((($count = count($p)) && $count < 2) || !isset($p['course_id'])) {
-			$this -> e('参数错误！');
-		}
+		// $session_key = 'company_id:order:' . $this -> userinfo['id'];
+		// session($session_key, null);
 
-		$session_key = 'company_id:' . $this -> userinfo['id'];
+		$this -> _get($p, ['course_id']);
+		$where = ['c.id' => $p['course_id'], 'aj.company_id' => $this -> userinfo['id'], 'a.status' => 0, 'c.is_deleted' => 0];
+		$list = $this -> account -> getAccountsByWhere($where);
+		$data = ['course_id' => $p['course_id'], 'job_id' => $p['job_id'], 'list' => $list];
+
+		$this -> assign($data);
+		$this -> display('Curriculum/certificate');
+	}
+
+
+	/**
+	 * 提交数据到购物车
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-11T23:06:09+0800
+	 */
+	public function add_course() {
+
+		$this -> _post($p, ['course_id', 'job_id', 'account']);
+
+		$session_key = 'company_id:order:' . $this -> userinfo['id'];
 		$accounts = [];
-		$list = $this -> account -> getAccount(['a.company_id' => $this -> userinfo['id']]);
+		$list = $this -> account -> getAccount(['a.company_id' => $this -> userinfo['id'], 'a.status' => 0]);
+
 		foreach ($list as $job) {
 			$accounts[$job['mobile']][] = $job['job_id'];
 		}
@@ -74,7 +95,7 @@ class CurriculumController extends BaseController {
 		}
 
 		unset($p['course_id'], $p['job_id']);
-		foreach ($p as $items) {
+		foreach ($p['account'] as $items) {
 			if (empty($items)) {
 				$this -> e('输入框内的手机号码不得为空');
 			}
@@ -105,7 +126,7 @@ class CurriculumController extends BaseController {
 			session($session_key, $session_list);
 		}
 
-		// print_r(session($session_key));
+		// pr(session($session_key));
 		$this -> e(0);
 	}
 
@@ -116,10 +137,11 @@ class CurriculumController extends BaseController {
 	 */
 	public function order_list() {
 
-		$session_key = 'company_id:' . $this -> userinfo['id'];
-		$list = session($session_key);
 		$data = [];
 		$total = 0;
+
+		$session_key = 'company_id:order:' . $this -> userinfo['id'];
+		$list = session($session_key);
 
 		// 生成订单号
 		// $this -> fetch_order_num();
