@@ -7,6 +7,7 @@
  */
 namespace Manage\Controller;
 use Common\Controller\BaseController;
+header("Content-type:text/html;charset=utf-8");
 class PayController extends BaseController {
 
 	public function _initialize() {
@@ -15,11 +16,6 @@ class PayController extends BaseController {
 		$this -> ignore_token();
 	}
 
-
-	public function t() {
-
-		echo 1;
-	}
 
 	/**
 	 * 微信回调
@@ -85,7 +81,45 @@ class PayController extends BaseController {
 		if ($count) {
 			$this -> e(-1);
 		}
+
 		$this -> e(0);
+	}
+
+
+	/**
+	 * 跳转用于操作SESSION
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-11T23:49:36+0800
+	 * @return   [type]                   [description]
+	 */
+	public function finished() {
+
+		$this -> _get($g, ['od']);
+		$session_key = 'company_id:order:' . $this -> userinfo['id'];
+		$list = session($session_key);
+		if (is_null($list)) {
+			M('order') -> where(['order_num' => $g['od']]) -> save(['status' => 3]);
+			echo '<script>alert("出错，信息已记录，请联系管理员！");window.location.href="/manage/curriculum/list"</script>';
+			exit;
+		}
+
+		$time = time();
+		foreach ($list as $items) {
+			$data = [
+				'course_id' => $items['course_id'],
+				'company_id' => $this -> userinfo['id'],
+				'created_time' => $time,
+				'updated_time' => $time,
+				'status' => 0,
+			];
+			foreach ($items['phone_list'] as $mobile) {
+				$data['account_id'] = M('account') -> where(['mobile' => $mobile]) -> getField();
+				M('company_account_course') -> add($data);
+			}
+		}
+
+		session($session_key, null);
+		$this -> redirect('/manage/curriculum/list');
 	}
 
 
@@ -114,7 +148,7 @@ class PayController extends BaseController {
 	 */
 	public function getCodeUrl() {
 
-		$session_key = 'company_id:' . $this -> userinfo['id'];
+		$session_key = 'company_id:order:' . $this -> userinfo['id'];
 		$list = session($session_key);
 		if (is_null($list) || !count($list)) {
 			$this -> e('没有订单信息');
