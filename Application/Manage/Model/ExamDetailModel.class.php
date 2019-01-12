@@ -11,7 +11,13 @@ class ExamDetailModel extends BaseModel
         parent::_initialize();
     }
 
-    protected $tableName = 'exam_detail_log';
+    protected $tableName = 'exam_detail';
+
+    public function _before_insert(&$data, $options)
+    {
+        $data['created_time'] = time();
+        $data['updated_time'] = time();
+    }
 
     public function _before_update(&$data, $options)
     {
@@ -29,6 +35,18 @@ class ExamDetailModel extends BaseModel
         return $this -> where($where) -> getField($fields);
     }
 
+    /*
+     * 根据条件获取总数
+     * @param array $where
+     * @param string $field
+     * **/
+    public function getField($where, $field)
+    {
+        return $this -> field($field) -> where($where) -> find();
+    }
+
+
+
     /**
      * 根据条件取试题数据
      * @DateTime 2019-01-10T13:17:10+0800
@@ -38,22 +56,4 @@ class ExamDetailModel extends BaseModel
         return $this -> where($where) -> find();
     }
 
-    /**
-     * 用户各种类型已答完总数及已答问题ID
-     * @param int $uid
-     * @param int $examId 考试ID
-     * @return bool
-     */
-    public function answerTotal($uid, $examId)
-    {
-        $data['radio'] = $this -> getRecord('question_id', ['uid' => $uid, 'exam_id' => $examId, 'type' => 1]);
-        $data['checkbox'] = $this -> getRecord('question_id', ['uid' => $uid, 'exam_id' => $examId, 'type' => 2]);
-        $data['judge'] = $this -> getRecord('question_id', ['uid' => $uid, 'exam_id' => $examId, 'type' => 3]);
-
-        $data['radioTotal'] = count($data['radio']);
-        $data['checkboxTotal'] = count($data['checkbox']);
-        $data['judgeTotal'] = count($data['judge']);
-
-        return $data;
-    }
 }

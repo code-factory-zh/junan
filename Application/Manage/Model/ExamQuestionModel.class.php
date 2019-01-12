@@ -3,7 +3,7 @@
 namespace Manage\Model;
 use Common\Model\BaseModel;
 
-class ExamMemberModel extends BaseModel
+class ExamQuestionModel extends BaseModel
 {
 
     public function _initialize()
@@ -11,22 +11,19 @@ class ExamMemberModel extends BaseModel
         parent::_initialize();
     }
 
-    protected $tableName = 'exam_member';
-
+    protected $tableName = 'exam_questions';
 
     public function _before_insert(&$data, $options)
     {
         $data['created_time'] = time();
-        $data['updated_time'] = time();
-        $data['is_deleted'] = 0;
+        $data['status'] = 1;
     }
 
-
     /**
-     * 鏍规嵁鏉′欢鍙栬�冭瘯鏁版嵁
+     * 根据条件取考试题目数据
      * @DateTime 2019-01-10T13:17:10+0800
      */
-    public function findData($where) {
+    public function findExamQuestion($where) {
 
         return $this -> where($where) -> find();
     }
