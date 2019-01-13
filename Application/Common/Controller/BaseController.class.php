@@ -377,7 +377,7 @@
 			}
 			// 续期
 			$this -> save_token($this -> token_str, $this -> u);
-			pr($this -> u);
+			// pr($this -> u);
 
 			// if ($this -> use_bsid && !isset($this -> u['base_id'])) {
 			// 	pr($this -> u);
