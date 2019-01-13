@@ -41,4 +41,10 @@ class LoginController extends CommonController {
 		pr($data);
 		$this -> e(0);
 	}
+
+	public function t() {
+
+		$this -> _get($p);
+		pr($p);
+	}
 }

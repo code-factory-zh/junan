@@ -137,6 +137,7 @@
 		 */
 		protected function save_openid_token($openid, $data) {
 
+			// return session($openid, serialize($data));
 			return session($openid, serialize($data));
 		}
 
@@ -153,40 +154,6 @@
 			}
 			return unserialize(session($openid));
 		}
-
-
-		/**
-		 * 2019 TOKEN
-		 * @Author   邱湘城
-		 * @DateTime 2019-01-13T13:53:15+0800
-		 */
-		// protected function token_check() {
-
-		// 	$tk = session('TOKEN:' . $this -> wxtoken);
-		// 	if (is_null($tk)) {
-		// 		$this -> e('Token Invalid!');
-		// 	}
-		// }
-
-		// protected function getUserInfo() {}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 		/**
@@ -410,9 +377,12 @@
 			}
 			// 续期
 			$this -> save_token($this -> token_str, $this -> u);
-			if ($this -> use_bsid && !isset($this -> u['base_id'])) {
-				$this -> e('当前您没有进入任何养殖基地，无法继续下一步操作...');
-			}
+			pr($this -> u);
+
+			// if ($this -> use_bsid && !isset($this -> u['base_id'])) {
+			// 	pr($this -> u);
+			// 	$this -> e('当前您没有进入任何养殖基地，无法继续下一步操作...');
+			// }
 			// 验证当前用户权限
 			// $this -> ctrl_auth();
 		}
@@ -543,7 +513,7 @@
      */
     protected function getUserByToken($token) {
 
-    	$tk = session('token');
+    	$tk = session($token);
     	if (is_null($tk)) {
     		return false;
     	}
