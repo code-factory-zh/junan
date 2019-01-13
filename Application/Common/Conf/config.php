@@ -1,6 +1,6 @@
 <?php
 return array(
-	'MODULE_ALLOW_LIST' => ['Manage'],
+	'MODULE_ALLOW_LIST' => ['Manage', 'Wechat'],
 	'DEFAULT_MODULE' => 'Manage',
 	'DEFAULT_GROUP' => 'Manage',
 

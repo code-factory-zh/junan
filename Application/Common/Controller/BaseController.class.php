@@ -76,6 +76,17 @@
 		const admin_index = 'manage/account/list';
 
 		protected $userinfo;
+
+
+
+
+
+
+		/**
+		 * 微信小程序登录态
+		 */
+		protected $wxtoken;
+
 		public function _initialize() {
 
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
@@ -117,6 +128,65 @@
 			}
 			return $type[$tmp[0]];
 		}
+
+
+		/**
+		 * 保存当前用户SESSION
+		 * @Author   邱湘城
+		 * @DateTime 2019-01-13T14:29:58+0800
+		 */
+		protected function save_openid_token($openid, $data) {
+
+			return session($openid, serialize($data));
+		}
+
+
+		/**
+		 * 取得用户数据
+		 * @Author   邱湘城
+		 * @DateTime 2019-01-13T14:31:06+0800
+		 */
+		protected function get_openid_token($openid) {
+
+			if (is_null(session($openid))) {
+				return false;
+			}
+			return unserialize(session($openid));
+		}
+
+
+		/**
+		 * 2019 TOKEN
+		 * @Author   邱湘城
+		 * @DateTime 2019-01-13T13:53:15+0800
+		 */
+		// protected function token_check() {
+
+		// 	$tk = session('TOKEN:' . $this -> wxtoken);
+		// 	if (is_null($tk)) {
+		// 		$this -> e('Token Invalid!');
+		// 	}
+		// }
+
+		// protected function getUserInfo() {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		/**
@@ -461,8 +531,7 @@
 
     // 删除TOKEN
     // 当注销用户时
-    protected function token_flush($token)
-    {
+    protected function token_flush($token) {
 
         return self::redisInstance()->delete($token);
     }
@@ -472,19 +541,23 @@
      * @param $token
      * @return Array/bool
      */
-    protected function getUserByToken($token)
-    {
+    protected function getUserByToken($token) {
 
-        if (false !== ($token = self::redisInstance()->get($token))) {
-            return unserialize($token);
-        }
-        return false;
+    	$tk = session('token');
+    	if (is_null($tk)) {
+    		return false;
+    	}
+    	return unserialize($tk);
+
+        // if (false !== ($token = self::redisInstance()->get($token))) {
+        //     return unserialize($token);
+        // }
+        // return false;
     }
 
     // 检测字符串长度 如果小于$len则跳出程序
     // $this -> lenCheck('pn_name,养殖池的名称', 3);
-    protected function lenCheck($str, $len, $end = 0)
-    {
+    protected function lenCheck($str, $len, $end = 0) {
 
         if (false == ($value = $this->requests($str))) {
             return;
