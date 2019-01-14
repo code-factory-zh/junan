@@ -34,7 +34,7 @@ class ExamController extends CommonController
     /**
      * 前台考试列表
      * */
-    public function lists()
+    public function list()
     {
         $data = ['list' => []];
         $data['list'] = $this -> exam -> getlist(['is_deleted' => 0], 'id, name');
@@ -82,7 +82,7 @@ class ExamController extends CommonController
             //查询已经打完的题目
             $return = [];
             foreach ($questionIds as $value) {
-                $record = $this -> detail -> getRecord('id, type', ['account_id' => $this -> account_id, 'exam_questions_id' => $exist['id'], 'question_id' => $value]);
+                $record = $this -> detail -> getField(['account_id' => $this -> account_id, 'exam_questions_id' => $exist['id'], 'question_id' => $value], 'id, type');
                 if (empty($record)) {
                     $return[$value] = 0;
                 } else {
@@ -140,7 +140,7 @@ class ExamController extends CommonController
             $question['status'] = $record['status'];
         }
 
-        $this -> e($question);
+        $this -> e(0, $question);
     }
 
     /**
@@ -175,7 +175,7 @@ class ExamController extends CommonController
         }
 
         //是否已答过
-        $isAnswer = $this -> detail -> getRecord('id', ['account_id' => $this -> account_id, 'question_id' => $g['question_id'], 'exam_questions_id' => $g['id']]);
+        $isAnswer = $this -> detail -> getField(['account_id' => $this -> account_id, 'question_id' => $g['question_id'], 'exam_questions_id' => $g['id']], 'id');
         if (!empty($isAnswer)) {
             $this -> e('请勿重复提交');
         }
@@ -216,7 +216,7 @@ class ExamController extends CommonController
 
         $end = count($questions) == (!empty($num['num'])) ? $num['num'] + 1 : 0;
 
-        if (reset($questions) == $g['question_id']) {
+        if (empty($num['num'])) {
             $this -> examQuestion -> save(['id' => $g['id'], 'start_time' => time()]);
 
             $result = $this -> detail -> add($data);
