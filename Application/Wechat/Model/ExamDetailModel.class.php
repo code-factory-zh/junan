@@ -1,6 +1,6 @@
 <?php
 
-namespace Manage\Model;
+namespace Wechat\Model;
 use Common\Model\BaseModel;
 
 class ExamDetailModel extends BaseModel

@@ -25,8 +25,8 @@ class ExamController extends CommonController
         $this -> exam = new \Manage\Model\ExamModel;
         $this -> member = new \Manage\Model\ExamMemberModel;
         $this -> question = new \Manage\Model\QuestionsModel;
-        $this -> detail = new \Manage\Model\ExamDetailModel;
-        $this -> examQuestion = new \Manage\Model\ExamQuestionModel;
+        $this -> detail = new \Wechat\Model\ExamDetailModel;
+        $this -> examQuestion = new \Wechat\Model\ExamQuestionModel;
 
         $this -> account_id = 1;
     }

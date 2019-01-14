@@ -1,6 +1,6 @@
 <?php
 
-namespace Manage\Model;
+namespace Wechat\Model;
 use Common\Model\BaseModel;
 
 class ExamQuestionModel extends BaseModel
@@ -19,10 +19,6 @@ class ExamQuestionModel extends BaseModel
         $data['status'] = 1;
     }
 
-    /**
-     * 根据条件取考试题目数据
-     * @DateTime 2019-01-10T13:17:10+0800
-     */
     public function findExamQuestion($where) {
 
         return $this -> where($where) -> find();
