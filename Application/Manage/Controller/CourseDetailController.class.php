@@ -122,7 +122,7 @@ class CourseDetailController extends BaseController
 		$p = I('post.');
         $ext = substr(strrchr($p['name'], '.'), 1);
 
-        if ($ext == 'ppt') {
+        if (in_array($ext, ['ppt', 'pptx'])) {
             $type = 2;
             $dir = 'file';
         } elseif (in_array($ext, ['mp4', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'])) {
