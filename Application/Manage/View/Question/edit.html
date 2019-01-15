@@ -56,6 +56,15 @@
                 <h3 class="title"><if condition="$record.id != ''">修改<else />新增</if>{$type_name}</h3>
                 <form action="" class="form-horizontal form-label-left" method="post" id="form">
                     <div class="form-group">
+                        <label for="common" class="control-label col-md-3 col-sm-3 col-xs-12">类型</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select id="common" name="common" class="form-control">
+                                <option value="2" <if condition="$record.common == 2">selected</if>>专业</option>
+                                <option value="1"  <if condition="$record.common == 1">selected</if>>通用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="course_name" class="control-label col-md-3 col-sm-3 col-xs-12">题目名称</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="text" id="course_name" name="title" value="{$record.title}" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请输入题目名称">
@@ -241,12 +250,13 @@
         var id = $('input[name="id"]').val();
         var title = $('#course_name').val();
         var course_id = $('#gangwei').val();
+        var common = $('#common').val();
 
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
             dataType: 'JSON',
-            data: {type:type, option:option, answer:answer, id:id, title:title, course_id:course_id},
+            data: {type:type, option:option, answer:answer, id:id, title:title, course_id:course_id, common:common},
             success: function (e) {
                 if (e.code != 0) {
                     alert(e.msg)

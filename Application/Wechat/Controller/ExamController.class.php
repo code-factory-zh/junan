@@ -65,17 +65,9 @@ class ExamController extends CommonController
             $this->e('考试不存在');
         }
 
-        //计算需要得出的考试类型题目数量
-        $radioNum = $exam['dx_question_amount'] / $exam['dx_question_score'];
-        $checkboxNum = $exam['fx_question_amount'] / $exam['fx_question_score'];
-        $judgeNum = $exam['pd_question_amount'] / $exam['pd_question_score'];
-
-        $radioWhere = ['course_id' => $exam['course_id'], 'is_deleted' => 0, 'type' => 1];
-        $checkboxWhere = ['course_id' => $exam['course_id'], 'is_deleted' => 0, 'type' => 2];
-        $judgeWhere = ['course_id' => $exam['course_id'], 'is_deleted' => 0, 'type' => 3];
-
         //判断exam_questions表是否有记录
         $exist = $this -> examQuestion -> findExamQuestion(['exam_id' => $g['id'], 'account_id' => $this -> account_id, 'status' => 1]);
+
         if (!empty($exist)) {
             $questionIds = json_decode($exist['question_ids']);
 
@@ -91,17 +83,12 @@ class ExamController extends CommonController
             }
             $this->e(0, ['id' => $exist['id'], 'rows' => $return]);
         } else {
-            $radio = $this -> question -> getAll('id', $radioWhere, 1, $radioNum);
-            $checkbox = $this -> question -> getAll('id', $checkboxWhere, 1, $checkboxNum);
-            $judge = $this -> question -> getAll('id', $judgeWhere, 1, $judgeNum);
+            //计算需要得出的考试类型题目数量
+            $radioNum = $exam['dx_question_amount'] / $exam['dx_question_score'];
+            $checkboxNum = $exam['fx_question_amount'] / $exam['fx_question_score'];
+            $judgeNum = $exam['pd_question_amount'] / $exam['pd_question_score'];
 
-            $data['exam_id'] = $g['id'];
-            $data['account_id'] = $this -> account_id;
-            $data['exam_time'] = $exam['time'];
-            $questionIds = [];
-            if (!empty($radio)) $questionIds = array_merge($questionIds, array_column($radio, 'id'));
-            if (!empty($checkbox)) $questionIds = array_merge($questionIds, array_column($checkbox, 'id'));
-            if (!empty($judge)) $questionIds = array_merge($questionIds, array_column($judge, 'id'));
+            $questionIds = $this -> question -> getIds($radioNum, $checkboxNum, $judgeNum, $exam['course_id']);
             $data['question_ids'] = json_encode($questionIds);
 
             if ($result = $this ->examQuestion -> add($data)) {
