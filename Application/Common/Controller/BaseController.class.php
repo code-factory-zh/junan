@@ -229,7 +229,7 @@
 			$r['code'] = $param;
 			$r['msg'] = $msg;
 			if ($this -> output == 1) {
-				$r['rel'] = [];
+				$r['data'] = [];
 			}
 			if (!is_numeric($param)) {
 				$r['msg']  = $param;
@@ -240,7 +240,7 @@
 				$r['msg'] = 'Field';
 			} else {
 				if (count($this -> rel) != 0) {
-					$r['rel'] = $this -> rel;
+					$r['data'] = $this -> rel;
 				}
 			}
 			return $this -> ajaxReturn($r);
