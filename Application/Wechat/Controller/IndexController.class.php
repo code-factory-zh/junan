@@ -54,6 +54,7 @@ class IndexController extends CommonController {
 				[
 					'id' 			=> 1,
 					'icon' 			=> '',
+					'type_icon'		=> 1,
 					'url' 			=> '',
 					'name' 			=> '安全生产意识',
 					'total_chapter' => 10,
@@ -64,6 +65,7 @@ class IndexController extends CommonController {
 				[
 					'id' 			=> 2,
 					'icon' 			=> '',
+					'type_icon'		=> 1,
 					'url' 			=> '',
 					'name' 			=> '安全生产意识',
 					'total_chapter' => 10,
@@ -74,6 +76,7 @@ class IndexController extends CommonController {
 				[
 					'id' 			=> 3,
 					'icon' 			=> '',
+					'type_icon'		=> 1,
 					'url' 			=> '',
 					'name' 			=> '安全生产意识',
 					'total_chapter' => 10,
@@ -84,6 +87,6 @@ class IndexController extends CommonController {
 			],
 		];
 
-		$this -> rel(['list' => $list]) -> e();
+		$this -> rel($list) -> e();
 	}
 }
