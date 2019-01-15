@@ -39,6 +39,8 @@ class QuestionsModel extends BaseModel {
         return $this -> field($select) -> where($where) -> find();
     }
 
+
+
     /**
      * 计算公用和专业题目数
      *
@@ -50,32 +52,11 @@ class QuestionsModel extends BaseModel {
      * **/
     public function getIds($dx, $fx, $pd, $courseId)
     {
-        $fxCount = rand(0, $fx);
+        $count = questionCount($dx, $fx, $pd);
 
-        $dxCount = 0;
-        $pdCount = 0;
-
-        do{
-            //判断剩余专业的有多少
-            $total = ($dx + $pd + $fx) * 0.7;
-            $leftCount = round($total) - $fxCount;
-
-            if($pd + $dx < $leftCount){
-                //如果剩余的两种题目加起来还不到剩余的要出题的数目,则直接跳出循环
-                $flag = false;
-            }elseif($pd + $dx == $leftCount){
-                //如果剩余的两种题目总数正好等于题目总数,直接返回
-                $dxCount = $dx;
-                $pdCount = $pd;
-                $flag = true;
-            }else{
-                $dxRandMin = $leftCount - $pd;
-                $dxCount = rand($dxRandMin, $dx);
-                $pdCount = $leftCount - $dxCount;
-                $flag = true;
-            }
-
-        }while($flag === false);
+        $fxCount = $count['fx'];
+        $dxCount = $count['dx'];
+        $pdCount = $count['pd'];
 
         $data['dxMajor'] = $this -> getAll('id', ['course_id' => $courseId, 'is_deleted' => 0, 'type' => 1, 'common' => 2], 1, $dxCount);
         $data['dxCommon'] = $this -> getAll('id', ['course_id' => $courseId, 'is_deleted' => 0, 'type' => 1, 'common' => 1], 1, $dx - $dxCount);

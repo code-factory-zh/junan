@@ -106,3 +106,46 @@
 			}
 		}
 	}
+
+	/**
+	 * 计算获取题木的数量（7:3）
+	 * **/
+	function questionCount($dx, $fx, $pd)
+    {
+        $arr = ['dx' => $dx, 'pd' => $pd, 'fx' => $fx];
+        asort($arr);
+
+        $arr_keys = array_keys($arr);
+        $arrValues = array_values($arr);
+        $count = ($fx + $dx + $pd) * 0.7;
+
+        $arrFirstValue = 0;
+        $arrSecondValue = 0;
+        do{
+
+            $minCount = rand(0, $arrValues[0]);
+            //判断剩余专业的有多少
+            $leftCount = $count - $minCount;
+
+            if($arrValues[1] + $arrValues[2] < $leftCount){
+                //如果剩余的两种题目加起来还不到剩余的要出题的数目,则直接跳出循环
+                $flag = false;
+            }elseif($arrValues[1] + $arrValues[2] == $leftCount){
+                //如果剩余的两种题目总数正好等于题目总数,直接返回
+                $arrFirstValue = $arrValues[1];
+                $arrSecondValue = $arrValues[2];
+
+                $flag = true;
+            }else{
+                $randMin = $leftCount - $arrValues[2];
+
+                $arrFirstValue = rand($randMin, $arrValues[1]);
+                $arrSecondValue = $leftCount - $arrFirstValue;
+
+                $flag = true;
+            }
+
+        }while($flag === false);
+
+        return [$arr_keys[0] => $minCount, $arr_keys[1] => $arrFirstValue, $arr_keys[2] => $arrSecondValue];
+    }
