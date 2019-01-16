@@ -98,6 +98,20 @@ class LoginController extends CommonController {
 	}
 
 
+	public function x() {
+
+		$this -> save_openid_token('aaa', ['www' => 1]);
+	}
+
+
+	public function y() {
+
+		$list = $this -> get_openid_token('aaa');
+		pr($list);
+	}
+
+
+
 	/**
 	 * 验证登录状态 根据前端微信小程序open_id查询用户表是否存在
 	 * @Author   邱湘城
