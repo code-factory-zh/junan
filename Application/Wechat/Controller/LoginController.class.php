@@ -32,16 +32,16 @@ class LoginController extends CommonController {
 	 */
 	public function get_open_id($code) {
 
-		$url = self::wx_app . "?appid=&secret=&js_code={$code}&grant_type=authorization_code";
+		$auth = self::getScreat();
+		$url = self::wx_app . "?appid={$auth[0]}&secret={$auth[1]}&js_code={$code}&grant_type=authorization_code";
 		return $this -> httpGet($url);
 	}
 
-	public function test() {
+	private static function getScreat() {
 
-		$fi = file_get_contents('/webser/www/junan/Public/screat');
-		pr($fi);
+		$fi = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/cert/screat');
+		return explode("\n", trim($fi));
 	}
-
 
 	/**
 	 * 登录功能
