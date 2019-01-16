@@ -135,10 +135,10 @@
 		 * @Author   邱湘城
 		 * @DateTime 2019-01-13T14:29:58+0800
 		 */
-		protected function save_openid_token($openid, $data) {
+		protected function save_openid_token($token, $data) {
 
-			// return session($openid, serialize($data));
-			return session($openid, serialize($data));
+			// return session($token, serialize($data));
+			return session($token, serialize($data));
 		}
 
 
@@ -147,12 +147,12 @@
 		 * @Author   邱湘城
 		 * @DateTime 2019-01-13T14:31:06+0800
 		 */
-		protected function get_openid_token($openid) {
+		protected function get_openid_token($token) {
 
-			if (is_null(session($openid))) {
+			if (is_null(session($token))) {
 				return false;
 			}
-			return unserialize(session($openid));
+			return unserialize(session($token));
 		}
 
 
