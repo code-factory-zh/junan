@@ -38,7 +38,7 @@ class LoginController extends CommonController {
 
 	public function test() {
 
-		$fi = file_get_contents('/cert/screat');
+		$fi = file_get_contents('/webser/www/junan/Public/screat');
 		pr($fi);
 	}
 
