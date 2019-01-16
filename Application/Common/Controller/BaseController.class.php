@@ -7,8 +7,8 @@
 	 */
 	namespace Common\Controller;
 	use Think\Controller;
-	header('Access-Control-Allow-Origin:*');
-	header('content-type:application:json;charset=utf8');
+	header("Access-Control-Allow-Origin: *");
+	header('content-type:application/json;charset=utf8');
 	header('Access-Control-Allow-Headers:x-requested-with,content-type');
 	class BaseController extends Controller {
 
@@ -370,10 +370,10 @@
 				return;
 			}
 			if (!($this -> token_str = $this -> requests('token'))) {
-				$this -> e('Invalid Token2!' . $this -> token_str);
+				$this -> e('Invalid Token,2!');
 			}
 			if (!($this -> u = $this -> getUserByToken($this -> token_str)) || !isset($this -> u['id'])) {
-				$this -> e('Invalid Token3!' . $this -> token_str);
+				$this -> e('Invalid Token,3!');
 			}
 			// 续期
 			$this -> save_token($this -> token_str, $this -> u);
@@ -513,10 +513,19 @@
      */
     protected function getUserByToken($token) {
 
-    	if (is_null(session($token))) {
-			return false;
-		}
-		return unserialize(session($token));
+    	$user = M('account') -> where(['session_key' => $token]) -> find();
+    	if (!count($user) || $user['otime'] == 0) {
+    		return false;
+    	}
+    	if (time() > intval($user['otime'])) {
+    		return false;
+    	}
+    	return $user;
+
+  //   	if (is_null(session($token))) {
+		// 	return false;
+		// }
+		// return unserialize(session($token));
 
         // if (false !== ($token = self::redisInstance()->get($token))) {
         //     return unserialize($token);

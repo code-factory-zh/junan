@@ -14,8 +14,9 @@ class LoginController extends CommonController {
 	private $user;
 	private $account;
 
-	const token_salt = 'junan.com:';
+	const token_salt = 'junan.com:wx_app_session_key:';
 	const wx_app = 'https://api.weixin.qq.com/sns/jscode2session';
+	const session_otime = 86400;
 
 	public function _initialize() {
 
@@ -64,17 +65,19 @@ class LoginController extends CommonController {
 			$this -> rel([]) -> e($rel['errcode'], '效验获取open_id失败！');
 		}
 
+		// $rel['session_key'] = 'aaa';
+		// $rel['openid'] = 'xxx';
+
 		// 绑定用户OPEN_ID
-		if (empty($user['open_id'])) {
-			$this -> user -> where($where) -> save(['open_id' => $rel['openid']]);
-		}
+		$token = md5(self::token_salt . $rel['session_key'] . $p['company_id'] . time());
+		$data = ['open_id' => $rel['openid'], 'otime' => time() + self::session_otime, 'session_key' => $token];
+		$this -> user -> where($where) -> save($data);
 
 		if (!empty($user['open_id']) && $user['open_id'] != $rel['openid']) {
 			$this -> e('open_id 匹配出错！');
 		}
 		$user['openid'] = $rel['openid'];
 
-		$token = md5(self::token_salt . $rel['openid'] . $p['company_id'] . time());
 		$this -> save_openid_token($token, $user);
 		// pr($this -> get_openid_token($token));
 		$this -> rel(['token' => $token]) -> e();
@@ -93,21 +96,23 @@ class LoginController extends CommonController {
 			$this -> e('没有数据！');
 		}
 
-		unset($this -> u['openid'], $this -> u['open_id']);
+		unset($this -> u['openid'], $this -> u['open_id'], $this -> u['session_key']);
 		$this -> rel($this -> u) -> e();
 	}
 
 
 	public function x() {
 
+		$_SESSION["wwxw"] = 1;
 		$this -> save_openid_token('aaa', ['www' => 1]);
+		$this -> e('w');
 	}
 
 
 	public function y() {
 
-		$list = $this -> get_openid_token('aaa');
-		pr($list);
+		// $list = $this -> get_openid_token('aaa');
+		$this -> rel($_SESSION) -> e();
 	}
 
 
