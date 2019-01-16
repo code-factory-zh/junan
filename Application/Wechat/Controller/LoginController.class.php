@@ -15,6 +15,7 @@ class LoginController extends CommonController {
 	private $account;
 
 	const token_salt = 'junan.com:';
+	const wx_app = 'https://api.weixin.qq.com/sns/jscode2session';
 
 	public function _initialize() {
 
@@ -25,13 +26,31 @@ class LoginController extends CommonController {
 
 
 	/**
+	 * 根据code取得openid
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-16T21:40:59+0800
+	 */
+	public function get_open_id($code) {
+
+		$url = self::wx_app . "?appid=&secret=&js_code={$code}&grant_type=authorization_code";
+		return $this -> httpGet($url);
+	}
+
+	public function test() {
+
+		$fi = file_get_contents('/cert/screat');
+		pr($fi);
+	}
+
+
+	/**
 	 * 登录功能
 	 * @Author   邱湘城
 	 * @DateTime 2019-01-15T21:25:40+0800
 	 */
 	public function dologin() {
 
-		$this -> ignore_token() -> _post($p, ['company_id', 'mobile', 'open_id']);
+		$this -> ignore_token() -> _post($p, ['company_id', 'mobile', 'code']);
 		$this -> isint(['company_id', 'mobile']);
 		$this -> phoneCheck($p['mobile']);
 
@@ -41,14 +60,43 @@ class LoginController extends CommonController {
 			$this -> e('登录失败!');
 		}
 
-		if (isset($user['open_id'])) { // 绑定用户OPEN_ID
-			$this -> user -> where($where) -> save(['open_id' => $p['open_id']]);
+		$rel = $this -> get_open_id($p['code']);
+		if (!is_array($rel) || (!isset($rel['openid']) && !isset($rel['session_key']))) {
+			$this -> rel([]) -> e($rel['errcode'], '效验获取open_id失败！');
 		}
 
-		$token = md5(self::token_salt . $p['open_id'] . $p['company_id']);
+		// 绑定用户OPEN_ID
+		if (empty($user['open_id'])) {
+			$this -> user -> where($where) -> save(['open_id' => $rel['openid']]);
+		}
+
+		if (!empty($user['open_id']) && $user['open_id'] != $rel['openid']) {
+			$this -> e('open_id 匹配出错！');
+		}
+		$user['openid'] = $rel['openid'];
+
+		$token = md5(self::token_salt . $rel['openid'] . $p['company_id']);
 		$this -> save_openid_token($token, $user);
 		// pr($this -> get_openid_token($token));
 		$this -> rel(['token' => $token]) -> e();
+	}
+
+
+	/**
+	 * 取用户数据
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-16T22:11:59+0800
+	 */
+	public function get_user_inf() {
+
+		$this -> _get($p);
+		$rel = $this -> get_openid_token($p['token']);
+		if (is_null($rel)) {
+			$this -> e('没有数据！');
+		}
+
+		unset($rel['openid'], $rel['open_id']);
+		$this -> rel($rel) -> e(0, '完成');
 	}
 
 
@@ -57,26 +105,20 @@ class LoginController extends CommonController {
 	 * @Author   邱湘城
 	 * @DateTime 2019-01-13T14:27:17+0800
 	 */
-	public function loginAuth() {
+	// public function loginAuth() {
 
-		$this -> ignore_token() -> _get($p);
-		if (!isset($p['token'])) {
-			$this -> e('请重新登录.');
-		}
+	// 	$this -> ignore_token() -> _get($p);
+	// 	if (!isset($p['token'])) {
+	// 		$this -> e('请重新登录.');
+	// 	}
 
-		$user = $this -> account -> findAccount(['open_id' => $p['token']]);
-		if (count($user)) {
-			$this -> save_openid_token($p['token'], $user);
-		}
+	// 	$user = $this -> account -> findAccount(['open_id' => $p['token']]);
+	// 	if (count($user)) {
+	// 		$this -> save_openid_token($p['token'], $user);
+	// 	}
 
-		$data = $this -> get_openid_token($p['token']);
-		pr($data);
-		$this -> e(0);
-	}
-
-	public function t() {
-
-		$this -> _get($p);
-		// pr($p);
-	}
+	// 	$data = $this -> get_openid_token($p['token']);
+	// 	pr($data);
+	// 	$this -> e(0);
+	// }
 }
