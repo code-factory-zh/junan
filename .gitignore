@@ -1,3 +1,4 @@
 .idea/
 ThinkPHP/Library/Vendor/Wxpay/*
 sftp-config.json
+Public/cert/*
