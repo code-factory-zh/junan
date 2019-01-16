@@ -58,9 +58,6 @@ class LoginController extends CommonController {
 		if (!count($user)) {
 			$this -> e('登录失败!');
 		}
-		$token = md5(self::token_salt . $rel['openid'] . $p['company_id'] . time());
-		$this -> save_openid_token($token, $user);
-		$this -> rel(['token' => $token]) -> e();
 
 		$rel = $this -> get_open_id($p['code']);
 		if (!is_array($rel) || (!isset($rel['openid']) && !isset($rel['session_key']))) {
