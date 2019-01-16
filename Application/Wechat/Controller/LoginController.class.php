@@ -74,7 +74,7 @@ class LoginController extends CommonController {
 		}
 		$user['openid'] = $rel['openid'];
 
-		$token = md5(self::token_salt . $rel['openid'] . $p['company_id']);
+		$token = md5(self::token_salt . $rel['openid'] . $p['company_id'] . time());
 		$this -> save_openid_token($token, $user);
 		// pr($this -> get_openid_token($token));
 		$this -> rel(['token' => $token]) -> e();
@@ -89,13 +89,12 @@ class LoginController extends CommonController {
 	public function get_user_inf() {
 
 		$this -> _get($p);
-		$rel = $this -> get_openid_token($p['token']);
-		if (is_null($rel)) {
+		if (is_null($this -> u)) {
 			$this -> e('没有数据！');
 		}
 
-		unset($rel['openid'], $rel['open_id']);
-		$this -> rel($rel) -> e(0, '完成');
+		unset($this -> u['openid'], $this -> u['open_id']);
+		$this -> rel($this -> u) -> e();
 	}
 
 
