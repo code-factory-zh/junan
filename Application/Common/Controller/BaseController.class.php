@@ -370,10 +370,10 @@
 				return;
 			}
 			if (!($this -> token_str = $this -> requests('token'))) {
-				$this -> e('Invalid Token!');
+				$this -> e('Invalid Token2!' . $this -> token_str);
 			}
 			if (!($this -> u = $this -> getUserByToken($this -> token_str)) || !isset($this -> u['id'])) {
-				$this -> e('Invalid Token!');
+				$this -> e('Invalid Token3!' . $this -> token_str);
 			}
 			// 续期
 			$this -> save_token($this -> token_str, $this -> u);
@@ -513,11 +513,10 @@
      */
     protected function getUserByToken($token) {
 
-    	$tk = session($token);
-    	if (is_null($tk)) {
-    		return false;
-    	}
-    	return unserialize($tk);
+    	if (is_null(session($token))) {
+			return false;
+		}
+		return unserialize(session($token));
 
         // if (false !== ($token = self::redisInstance()->get($token))) {
         //     return unserialize($token);
