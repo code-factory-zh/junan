@@ -24,7 +24,6 @@ class LoginController extends CommonController {
 		$this -> user = new \Wechat\Model\UserModel;
 	}
 
-
 	/**
 	 * 根据code取得openid
 	 * @Author   邱湘城
