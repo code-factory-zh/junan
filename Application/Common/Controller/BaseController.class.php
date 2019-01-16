@@ -652,12 +652,12 @@
     {
 
         $ali = new \Ali\Msg\TopClient;
-        $ali->appkey = '23556318';
-        $ali->secretKey = 'f55f1a76af7304a8e1e4da6345729f0e';
+        $ali->appkey = '';
+        $ali->secretKey = '';
         $req = new \Ali\Msg\AlibabaAliqinFcSmsNumSendRequest;
         $req->setExtend("");
         $req->setSmsType("normal");
-        $req->setSmsFreeSignName("农博创新");
+        $req->setSmsFreeSignName("");
         $req->setSmsParam($tempLateMsg);
         $req->setRecNum($phone);
         $req->setSmsTemplateCode($smsId);
@@ -672,18 +672,24 @@
     {
 
         $c = new \Ali\Msg\TopClient;
-        $c->appkey = '23556318';
-        $c->secretKey = 'f55f1a76af7304a8e1e4da6345729f0e';
+        $c->appkey = '';
+        $c->secretKey = '';
         $req = new \Ali\Msg\AlibabaAliqinFcSmsNumSendRequest;
         $req->setExtend("");
         $req->setSmsType("normal");
-        $req->setSmsFreeSignName("农博创新");
+        $req->setSmsFreeSignName("");
         $req->setSmsParam("{code:'" . $verifyCode . "'}");
         $req->setRecNum($phone);
         $req->setSmsTemplateCode($sms);
         $resp = $c->execute($req);
         return $resp->code == 0 && 1;
     }
+
+	public function not_json($string) {
+
+		json_decode($string);
+		return !(json_last_error() == JSON_ERROR_NONE);
+	}
 
     // CURL GET
     protected function httpGet($url)
@@ -696,7 +702,7 @@
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $out = curl_exec($ch);
         curl_close($ch);
-        $out = $this->not_json($out) ? $out : json_decode($out, true);
+        $out = $this -> not_json($out) ? $out : json_decode($out, true);
         return $out;
     }
 
