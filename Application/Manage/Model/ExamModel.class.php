@@ -27,6 +27,14 @@ class ExamModel extends BaseModel {
 		return $this -> field($fields) -> where($where) -> select();
 	}
 
+    /**
+     * 根据条件取试题数据
+     * @DateTime 2019-01-10T13:17:10+0800
+     */
+    public function findExam($where) {
+
+        return $this -> where($where) -> find();
+    }
 
 	/**
 	 * 考生列表
