@@ -60,22 +60,22 @@ class LoginController extends CommonController {
 			$this -> e('登录失败!');
 		}
 
-		// $rel = $this -> get_open_id($p['code']);
-		// if (!is_array($rel) || (!isset($rel['openid']) && !isset($rel['session_key']))) {
-		// 	$this -> rel([]) -> e($rel['errcode'], '效验获取open_id失败！');
-		// }
+		$rel = $this -> get_open_id($p['code']);
+		if (!is_array($rel) || (!isset($rel['openid']) && !isset($rel['session_key']))) {
+			$this -> rel([]) -> e($rel['errcode'], '效验获取open_id失败！');
+		}
 
-		$rel['session_key'] = 'aaa';
-		$rel['openid'] = 'xxx';
+		// $rel['session_key'] = 'aaa';
+		// $rel['openid'] = 'xxx';
 
 		// 绑定用户OPEN_ID
 		$token = md5(self::token_salt . $rel['session_key'] . $p['company_id'] . time());
 		$data = ['open_id' => $rel['openid'], 'otime' => time() + self::session_otime, 'session_key' => $token];
 		$this -> user -> where($where) -> save($data);
 
-		if (!empty($user['open_id']) && $user['open_id'] != $rel['openid']) {
-			$this -> e('open_id 匹配出错！');
-		}
+		// if (!empty($user['open_id']) && $user['open_id'] != $rel['openid']) {
+		// 	$this -> e('open_id 匹配出错！');
+		// }
 		$user['openid'] = $rel['openid'];
 
 		$this -> save_openid_token($token, $user);
