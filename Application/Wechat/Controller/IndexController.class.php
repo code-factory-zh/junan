@@ -13,12 +13,14 @@ class IndexController extends CommonController {
 
 	private $company;
 	private $user;
+	private $account_course;
 
 	public function _initialize() {
 
 		parent::_initialize();
 		$this -> company = new \Wechat\Model\CompanyModel;
 		$this -> user = new \Wechat\Model\UserModel;
+		$this -> account_course = new \Wechat\Model\AccountcourseModel;
 	}
 
 
@@ -43,50 +45,16 @@ class IndexController extends CommonController {
 
 		$this -> _get($p);
 
-		// $jobs = $this -> user -> getUserJobs($this -> u['id']);
-		// if (!count($jobs)) {
-		// 	$this -> e('您没有课程!');
-		// }
+		$where = "cac.account_id = {$this -> u['id']}";
+		$list = $this -> account_course -> getListCourses($where);
+		foreach ($list as &$items) {
+			$items['btn'] = '考试';
+			$items['url'] = '';
+			$items['icon'] = '';
+			$items['type_icon'] = '';
+		}
 
-		$list = [
-			'banner' => 'http://5b0988e595225.cdn.sohucs.com/images/20171018/828c39a02b7d4aee9b579c1df3ceb30c.jpeg',
-			'list' => [
-				[
-					'id' 			=> 1,
-					'icon' 			=> '',
-					'type_icon'		=> 1,
-					'url' 			=> '',
-					'name' 			=> '安全生产意识',
-					'total_chapter' => 10,
-					'studied' 		=> 3,
-					'finished' 		=> 0,
-					'btn' 			=> '去考试',
-				],
-				[
-					'id' 			=> 2,
-					'icon' 			=> '',
-					'type_icon'		=> 1,
-					'url' 			=> '',
-					'name' 			=> '安全生产意识',
-					'total_chapter' => 10,
-					'studied' 		=> 2,
-					'finished' 		=> 0,
-					'btn' 			=> '去考试',
-				],
-				[
-					'id' 			=> 3,
-					'icon' 			=> '',
-					'type_icon'		=> 1,
-					'url' 			=> '',
-					'name' 			=> '安全生产意识',
-					'total_chapter' => 10,
-					'studied' 		=> 10,
-					'finished' 		=> 1,
-					'btn' 			=> '已完成',
-				],
-			],
-		];
-
-		$this -> rel($list) -> e();
+		$data = ['banner' => '/img/idx_banner.png', 'list' 	 => $list];
+		$this -> rel($data) -> e();
 	}
 }
