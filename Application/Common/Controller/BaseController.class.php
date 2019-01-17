@@ -7,8 +7,8 @@
 	 */
 	namespace Common\Controller;
 	use Think\Controller;
-	header('Access-Control-Allow-Origin:*');
-	header('content-type:application:json;charset=utf8');
+	header("Access-Control-Allow-Origin: *");
+	header('content-type:application/json;charset=utf8');
 	header('Access-Control-Allow-Headers:x-requested-with,content-type');
 	class BaseController extends Controller {
 
@@ -76,6 +76,17 @@
 		const admin_index = 'manage/account/list';
 
 		protected $userinfo;
+
+
+
+
+
+
+		/**
+		 * 微信小程序登录态
+		 */
+		protected $wxtoken;
+
 		public function _initialize() {
 
 			$this -> mca = trim($_SERVER['REQUEST_URI'], '/');
@@ -116,6 +127,32 @@
 				return $type['admin'];
 			}
 			return $type[$tmp[0]];
+		}
+
+
+		/**
+		 * 保存当前用户SESSION
+		 * @Author   邱湘城
+		 * @DateTime 2019-01-13T14:29:58+0800
+		 */
+		protected function save_openid_token($token, $data) {
+
+			// return session($token, serialize($data));
+			return session($token, serialize($data));
+		}
+
+
+		/**
+		 * 取得用户数据
+		 * @Author   邱湘城
+		 * @DateTime 2019-01-13T14:31:06+0800
+		 */
+		protected function get_openid_token($token) {
+
+			if (is_null(session($token))) {
+				return false;
+			}
+			return unserialize(session($token));
 		}
 
 
@@ -192,7 +229,7 @@
 			$r['code'] = $param;
 			$r['msg'] = $msg;
 			if ($this -> output == 1) {
-				$r['rel'] = [];
+				$r['data'] = [];
 			}
 			if (!is_numeric($param)) {
 				$r['msg']  = $param;
@@ -203,7 +240,7 @@
 				$r['msg'] = 'Field';
 			} else {
 				if (count($this -> rel) != 0) {
-					$r['rel'] = $this -> rel;
+					$r['data'] = $this -> rel;
 				}
 			}
 			return $this -> ajaxReturn($r);
@@ -333,16 +370,19 @@
 				return;
 			}
 			if (!($this -> token_str = $this -> requests('token'))) {
-				$this -> e('Invalid Token!');
+				$this -> e('Invalid Token,2!');
 			}
 			if (!($this -> u = $this -> getUserByToken($this -> token_str)) || !isset($this -> u['id'])) {
-				$this -> e('Invalid Token!');
+				$this -> e('Invalid Token,3!');
 			}
 			// 续期
 			$this -> save_token($this -> token_str, $this -> u);
-			if ($this -> use_bsid && !isset($this -> u['base_id'])) {
-				$this -> e('当前您没有进入任何养殖基地，无法继续下一步操作...');
-			}
+			// pr($this -> u);
+
+			// if ($this -> use_bsid && !isset($this -> u['base_id'])) {
+			// 	pr($this -> u);
+			// 	$this -> e('当前您没有进入任何养殖基地，无法继续下一步操作...');
+			// }
 			// 验证当前用户权限
 			// $this -> ctrl_auth();
 		}
@@ -461,8 +501,7 @@
 
     // 删除TOKEN
     // 当注销用户时
-    protected function token_flush($token)
-    {
+    protected function token_flush($token) {
 
         return self::redisInstance()->delete($token);
     }
@@ -472,19 +511,31 @@
      * @param $token
      * @return Array/bool
      */
-    protected function getUserByToken($token)
-    {
+    protected function getUserByToken($token) {
 
-        if (false !== ($token = self::redisInstance()->get($token))) {
-            return unserialize($token);
-        }
-        return false;
+    	$user = M('account') -> where(['session_key' => $token]) -> find();
+    	if (!count($user) || $user['otime'] == 0) {
+    		return false;
+    	}
+    	if (time() > intval($user['otime'])) {
+    		return false;
+    	}
+    	return $user;
+
+  //   	if (is_null(session($token))) {
+		// 	return false;
+		// }
+		// return unserialize(session($token));
+
+        // if (false !== ($token = self::redisInstance()->get($token))) {
+        //     return unserialize($token);
+        // }
+        // return false;
     }
 
     // 检测字符串长度 如果小于$len则跳出程序
     // $this -> lenCheck('pn_name,养殖池的名称', 3);
-    protected function lenCheck($str, $len, $end = 0)
-    {
+    protected function lenCheck($str, $len, $end = 0) {
 
         if (false == ($value = $this->requests($str))) {
             return;
@@ -609,12 +660,12 @@
     {
 
         $ali = new \Ali\Msg\TopClient;
-        $ali->appkey = '23556318';
-        $ali->secretKey = 'f55f1a76af7304a8e1e4da6345729f0e';
+        $ali->appkey = '';
+        $ali->secretKey = '';
         $req = new \Ali\Msg\AlibabaAliqinFcSmsNumSendRequest;
         $req->setExtend("");
         $req->setSmsType("normal");
-        $req->setSmsFreeSignName("农博创新");
+        $req->setSmsFreeSignName("");
         $req->setSmsParam($tempLateMsg);
         $req->setRecNum($phone);
         $req->setSmsTemplateCode($smsId);
@@ -629,18 +680,24 @@
     {
 
         $c = new \Ali\Msg\TopClient;
-        $c->appkey = '23556318';
-        $c->secretKey = 'f55f1a76af7304a8e1e4da6345729f0e';
+        $c->appkey = '';
+        $c->secretKey = '';
         $req = new \Ali\Msg\AlibabaAliqinFcSmsNumSendRequest;
         $req->setExtend("");
         $req->setSmsType("normal");
-        $req->setSmsFreeSignName("农博创新");
+        $req->setSmsFreeSignName("");
         $req->setSmsParam("{code:'" . $verifyCode . "'}");
         $req->setRecNum($phone);
         $req->setSmsTemplateCode($sms);
         $resp = $c->execute($req);
         return $resp->code == 0 && 1;
     }
+
+	public function not_json($string) {
+
+		json_decode($string);
+		return !(json_last_error() == JSON_ERROR_NONE);
+	}
 
     // CURL GET
     protected function httpGet($url)
@@ -653,7 +710,7 @@
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $out = curl_exec($ch);
         curl_close($ch);
-        $out = $this->not_json($out) ? $out : json_decode($out, true);
+        $out = $this -> not_json($out) ? $out : json_decode($out, true);
         return $out;
     }
 

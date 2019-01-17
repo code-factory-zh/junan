@@ -26,6 +26,32 @@ class AccountModel extends BaseModel {
 		return $this -> where($where) -> find();
 	}
 
+
+	/**
+	 * 根据条件取数据
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-11T21:50:38+0800
+	 */
+	public function getAccountsByWhere($where) {
+
+		return $this -> table('course c')
+		-> join('join account_job aj on aj.job_id = c.job_id')
+		-> join('join account a on a.id = aj.account_id')
+		-> where($where) -> select();
+	}
+
+
+	/**
+	 * 根据条件查找已购买课程的人
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-12T00:33:55+0800
+	 */
+	public function getCourseByCpnid($where) {
+
+		return $this -> table('company_account_course') -> where($where) -> getField('id, account_id');
+	}
+
+
 	/**
 	 * 取得所有的子帐户
 	 * @DateTime 2018-12-08T18:09:05+0800

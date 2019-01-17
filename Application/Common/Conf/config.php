@@ -1,6 +1,6 @@
 <?php
 return array(
-	'MODULE_ALLOW_LIST' => ['Manage'],
+	'MODULE_ALLOW_LIST' => ['Manage', 'Wechat'],
 	'DEFAULT_MODULE' => 'Manage',
 	'DEFAULT_GROUP' => 'Manage',
 
@@ -14,5 +14,11 @@ return array(
 	'DB_NAME' => 'junan',
 	'DB_USER' => 'root',
 	'DB_PWD' => 'Joinersafe111111',
+	'SESSION_OPTIONS' => array(
+        'path' => RUNTIME_PATH . 'Cache/Manage/',
+        'use_cookies' => 1,         //是否在客户端用 cookie 来存放会话 ID，1是开启
+        'use_trans_sid' => true,    //跨页传递
+        'expire' => 1800,
+    ),
 	'DB_PORT'   => 3306, // 端口
 );
