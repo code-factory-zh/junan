@@ -73,9 +73,9 @@ class LoginController extends CommonController {
 		$data = ['open_id' => $rel['openid'], 'otime' => time() + self::session_otime, 'session_key' => $token];
 		$this -> user -> where($where) -> save($data);
 
-		if (!empty($user['open_id']) && $user['open_id'] != $rel['openid']) {
-			$this -> e('open_id 匹配出错！');
-		}
+		// if (!empty($user['open_id']) && $user['open_id'] != $rel['openid']) {
+		// 	$this -> e('open_id 匹配出错！');
+		// }
 		$user['openid'] = $rel['openid'];
 
 		$this -> save_openid_token($token, $user);
