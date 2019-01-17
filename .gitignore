@@ -2,3 +2,4 @@
 ThinkPHP/Library/Vendor/Wxpay/*
 sftp-config.json
 Public/cert/*
+Application/Common/Controller/*
