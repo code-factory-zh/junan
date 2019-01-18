@@ -57,6 +57,7 @@ class ExamController extends CommonController
 
 //        $this->isInt(['course_id']);
 		$account_id = $this->u['id'];
+//		$account_id = 1;
 
         //是否已学习完成
 
