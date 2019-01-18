@@ -327,4 +327,99 @@ class ExamController extends CommonController
             $this->e('系统异常');
         }
     }
+
+	/**
+	 * 获取在考试题的每题的状态
+	 * @author cuiruijun
+	 * @date   2019/1/18 下午4:31
+	 * @method get
+	 *
+	 * @param  int exam_question_id
+	 * @return  array
+	 */
+    public function get_exam_question(){
+//    	$account_id = 1;
+		$account_id = $this->u['id'];
+		$g = I('get.');
+
+		$exam_question_info = $this->examQuestion->findExamQuestion(['id' => $g['exam_question_id'], 'account_id' => $account_id, 'status' => 1]);
+
+		if(!$exam_question_info){
+			$this->e('试题不存在');
+		}
+
+		//查询做题的状态
+		$exam_detail_list = $this->detail->get_exam_detail(['exam_question_id' => $g['exam_question_id']]);
+
+		$quesiton_ids = explode(',', $exam_question_info['question_ids']);
+
+		$exam_question_ids = array_column($exam_detail_list, 'question_id');
+
+		$result = [];
+		foreach($quesiton_ids as $k => $v){
+			$search_key = array_search($v, $exam_question_ids);
+			if($search_key === false){
+				//没答题
+				$tmp['order'] = $k + 1;
+				$tmp['is_answer'] = 0;
+				$tmp['answer_result'] = 0;
+			}else{
+				//答题了
+				$tmp['order'] = $k + 1;
+				$tmp['is_answer'] = 1;
+				$tmp['answer_result'] = (int)$exam_detail_list[$search_key]['status'];
+			}
+
+			$result[$k] = $tmp;
+		}
+
+		//当前总共得了多少分
+		$score = $this->detail->getSumScore(['account_id' => $account_id, 'exam_question_id' => $g['exam_question_id']]);
+
+		$data = [
+			'question_info' => $result,
+			'score' => $score,
+		];
+
+		$this->rel($data)->e();
+	}
+
+	/**
+	 * 交卷
+	 * @author cuiruijun
+	 * @date   2019/1/18 下午4:35
+	 * @method get
+	 *
+	 * @param  int exam_question_id
+	 * @return  array
+	 */
+	public function finish_exam(){
+		$account_id = 1;
+		$g = I('post.');
+
+		//插入memeber表
+		$score = $this->detail->getSumScore(['account_id' => $account_id, 'exam_question_id' => $g['exam_question_id']]);
+
+		$data = [
+			'score' => $score
+		];
+
+		$exam_question_info = $this->examQuestion->findExamQuestion(['id' => $g['exam_question_id'], 'account_id' => $account_id, 'status' => 1]);
+
+		//这时候要插入分数表
+		$exam_score_data = [
+			'account_id' => $account_id,
+			'exam_question_id' => $exam_question_info['id'],
+			'company_id' => $account_id,
+			'course_id' => $exam_question_info['course_id'],
+			'score' => $score,
+		];
+
+		$result = $this->member->add($exam_score_data);
+		if($result){
+			$this->rel($data)->e();
+		}else{
+			$this->e('交卷');
+		}
+	}
 }

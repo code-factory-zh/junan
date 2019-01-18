@@ -65,4 +65,10 @@ class ExamDetailModel extends BaseModel
 		return $this -> where($where) -> sum('score');
 	}
 
+	/**
+	 * 获取所有提交的答案
+	 */
+	public function get_exam_detail($where){
+		return $this->where($where)->select();
+	}
 }
