@@ -21,7 +21,7 @@ class ExamQuestionModel extends BaseModel
 
     public function findExamQuestion($where) {
 
-        return $this -> where($where) -> find();
+        return $this -> where($where) -> order('created_time desc') -> find();
     }
 
 }

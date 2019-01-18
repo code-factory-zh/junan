@@ -39,8 +39,9 @@ class ExamDetailModel extends BaseModel
      * 根据条件获取总数
      * @param array $where
      * @param string $field
+     *
      * **/
-    public function getField($where, $field)
+    public function getFieldByCondition($where, $field)
     {
         return $this -> field($field) -> where($where) -> find();
     }
@@ -55,5 +56,13 @@ class ExamDetailModel extends BaseModel
 
         return $this -> where($where) -> find();
     }
+
+    /**
+     *  获取成绩
+     */
+	public function getSumScore($where) {
+
+		return $this -> where($where) -> sum('score');
+	}
 
 }
