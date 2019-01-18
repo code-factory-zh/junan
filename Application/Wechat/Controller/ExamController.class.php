@@ -93,35 +93,33 @@ class ExamController extends CommonController
             //计算需要得出的考试类型题目数量
 			//查询课程对应的exam信息
 			$exam_info = $this->exam->getOne('course_id = '. $g['course_id']);
-//			var_dump($exam_info);
 
-			//随机7/3 考试
-//			$create_quesiton_info = create_exam_question($exam_info['dx_question_amount'], $exam_info['fx_question_amount'], $exam_info['pd_question_amount']);
-
-            $radioNum = $exam_info['dx_question_amount'] / $exam_info['dx_question_score'];
-            $checkboxNum = $exam_info['fx_question_amount'] / $exam_info['fx_question_score'];
-            $judgeNum = $exam_info['pd_question_amount'] / $exam_info['pd_question_score'];
+            $radioNum = $exam_info['dx_question_amount'];
+            $checkboxNum = $exam_info['fx_question_amount'];
+            $judgeNum = $exam_info['pd_question_amount'];
 
             $questionIds = $this -> question -> getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id']);
-
-//            $data['question_ids'] = json_encode($questionIds);
 
 			$data = [
 				'exam_id' => $exam_info['id'],
 				'account_id' => $account_id,
 				'exam_time' => $exam_info['time'],
-//				'status' => 1,
+				'status' => 1,
 				'course_id' => $g['course_id'],
 				'question_ids' => implode(',', $questionIds),
 			];
-//			var_dump($data);
             if ($result = $this ->examQuestion -> add($data)) {
-//                $return = [];
-//                foreach ($questionIds as $value) {
-//                    $return[$value] = 0;
-//                }
-				//此时应该返回第一题的题目信息
-                $this->e(0, $data);
+
+				//返回第一题的信息
+				$first_question = $this->question->getOne(['id' => $questionIds[0]]);
+				unset($first_question['answer']);
+
+            	$return_res = [
+            		'count' => count($questionIds),
+            		'first_question_info' => $first_question,
+				];
+
+                $this->e(200, $return_res);
             } else {
                 $this->el($result, 'fail');
             }
