@@ -77,7 +77,7 @@ class ExamController extends CommonController
 				//没过期,则取exam_question中的记录,下面统一处理
 
 				//如果这时候没有答题,则重新生成一套
-				$is_answerd_info = $this->detail->getRecord('id', ['exam_questions_id' => $exist['id']]);
+				$is_answerd_info = $this->detail->getRecord('id', ['exam_question_id' => $exist['id']]);
 
 				if(!$is_answerd_info){
 					//重新生成题库
@@ -103,7 +103,7 @@ class ExamController extends CommonController
 
 				}else{
 					//则将分数算出来
-					$score = $this->detail->getSumScore(['account_id' => $account_id, 'exam_questions_id' => $exist['id']]);
+					$score = $this->detail->getSumScore(['account_id' => $account_id, 'exam_question_id' => $exist['id']]);
 
 					$data = [
 						'score' => $score
@@ -155,7 +155,7 @@ class ExamController extends CommonController
 		unset($first_question['answer']);
 
 		//返回是否做了以及做对还是做错的状态
-		$is_answerd_info = $this->detail->getRecord('status', ['exam_questions_id' => $last_exam_questions['id'], 'question_id' => $question_ids[0], 'account_id' => $account_id]);
+		$is_answerd_info = $this->detail->getRecord('status', ['exam_question_id' => $last_exam_questions['id'], 'question_id' => $question_ids[0], 'account_id' => $account_id]);
 
 		$return_res = [
 			'count' => count($question_ids),
@@ -192,7 +192,7 @@ class ExamController extends CommonController
 
         $question['option'] = json_decode($question['option'], true);
         //查看是否有答题记录
-		$is_answerd_info = $this->detail->getRecord('status', ['exam_questions_id' => $g['exam_question_id'], 'question_id' => $g['question_id'], 'account_id' => $account_id]);
+		$is_answerd_info = $this->detail->getRecord('status', ['exam_question_id' => $g['exam_question_id'], 'question_id' => $g['question_id'], 'account_id' => $account_id]);
 
 		$question['is_answer'] = $is_answerd_info ? 1 : 0;
 		$question['answer_result'] = (int)$is_answerd_info;
@@ -205,12 +205,13 @@ class ExamController extends CommonController
      *
      * @pram int $exam_question_id 考试ID
      * @param int $question_id 题目ID
-     * @param int|array $answer_id 答案ID
+     * @param int|array $answer_id 答案ID,用逗号分隔开
      * return bool
      * */
     public function answer()
     {
-		$account_id = $this->u['id'];
+//		$account_id = $this->u['id'];
+		$account_id = 1;
 //        $this->_post($g, ['exam_question_id', 'question_id', 'answer_id']);
 //        $this->isInt(['id', 'question_id']);
 
@@ -225,7 +226,7 @@ class ExamController extends CommonController
 			if(!in_array($g['question_id'], explode(',', $examQuestion['question_ids']))){
 				$this->e('未找到该题目');
 			}else{
-				$question = $this -> question -> getQuestion(['id' => $g['question_id']]);
+				$question = $this->question->getQuestion(['id' => $g['question_id']]);
 				if (empty($question)) {
 					$this -> e('题目不存在哦');
 				}
@@ -251,64 +252,79 @@ class ExamController extends CommonController
 //        }
 
         //是否已答过
-		$is_answerd_info = $this->detail->getRecord('status', ['exam_questions_id' => $g['exam_question_id'], 'question_id' => $g['question_id'], 'account_id' => $account_id]);
+		$is_answerd_info = $this->detail->getRecord('id', ['exam_question_id' => $g['exam_question_id'], 'question_id' => $g['question_id'], 'account_id' => $account_id]);
         if ($is_answerd_info) {
             $this -> e('已经回答过这道题了');
         }
 
         //开始写入数据
-        $data['account_id'] = $this -> account_id;
-        $data['exam_questions_id'] = $g['id'];
+        $data['account_id'] = $account_id;
+        $data['exam_question_id'] = $g['exam_question_id'];
         $data['question_id'] = $g['question_id'];
         $data['type'] = $question['type'];
-        $data['answer_id'] = ($question['type'] == 2) ? json_encode($g['answer_id']) : $g['answer_id'];
-        if ($question['type'] == 2) {
-            $correct = implode(',', json_decode($question['answer'], true));
-            $data['status'] = ($correct != $g['answer_id']) ? 0 : 1;
-        } else {
-            $data['status'] = ($g['answer_id'] != $question['answer']) ? 0 : 1;
-        }
+
+		if($question['type'] == 2)
+		{
+			$answer_id = explode(',' , $g['answer_id']);
+			$answer_id = json_encode($answer_id);
+		}
+		else
+		{
+			$answer_id = $g['answer_id'];
+		}
+
+        $data['answer_id'] = $answer_id;
+        $data['status'] = $answer_id == $question['answer'] ? 1 : 0;
 
         if ($data['status']) {
             $data['score'] = $exam['dx_question_score'];
             if ($question['type'] == 2) $data['score'] = $exam['fx_question_score'];
             if ($question['type'] == 3) $data['score'] = $exam['pd_question_score'];
-        }
+        }else{
+			$data['score'] = 0;
+		}
 
-        //判断时间是否在范围内或者是最后一题,如果是，则返回分数
-        $time = $examQuestion['start_time'] + $examQuestion['exam_time'] >= time();
-        $num = $this -> detail -> getFieldByCondition(['account_id' => $this -> account_id, 'exam_questions_id' => $g['id'], 'status' => 1], 'count(1) as num');
+		$result = $this -> detail -> add($data);
 
-        $end = count($questions) == (!empty($num['num'])) ? $num['num'] + 1 : 0;
-
-        if (empty($num['num'])) {
-            $this -> examQuestion -> save(['id' => $g['id'], 'start_time' => time()]);
-
-            $result = $this -> detail -> add($data);
-        } elseif ((!$examQuestion['exam_time'] && $time) || $end) {
-            if ($end) {
-                $this -> detail -> add($data);
-            }
-
-            $score['exam_id'] = $examQuestion['exam_id'];
-            $score['course_id'] = $exam['course_id'];
-            $score['company_id'] = $this -> company;
-            $score['account_id'] = $this -> account_id;
-
-            $total = $this -> detail -> getFieldByCondition(['account_id' => $this -> account_id, 'exam_questions_id' => $g['id'], 'status' => 1], 'sum(score) as total');
-            $score['score'] = (!empty($total['total'])) ? $total['total'] : 0;
-            $result = $this -> member -> add($score);
-            if ($result) {
-                $this -> e(0, $total);
-            }
-        } else {
-            $result = $this -> detail -> add($data);
-        }
+//        //判断时间是否在范围内或者是最后一题,如果是，则返回分数
+//        $time = $examQuestion['start_time'] + $examQuestion['exam_time'] >= time();
+//        $num = $this -> detail -> getFieldByCondition(['account_id' => $this -> account_id, 'exam_questions_id' => $g['id'], 'status' => 1], 'count(1) as num');
+//
+//        $end = count($questions) == (!empty($num['num'])) ? $num['num'] + 1 : 0;
+//
+//        if (empty($num['num'])) {
+//            $this -> examQuestion -> save(['id' => $g['id'], 'start_time' => time()]);
+//
+//            $result = $this -> detail -> add($data);
+//        } elseif ((!$examQuestion['exam_time'] && $time) || $end) {
+//            if ($end) {
+//                $this -> detail -> add($data);
+//            }
+//
+//            $score['exam_id'] = $examQuestion['exam_id'];
+//            $score['course_id'] = $exam['course_id'];
+//            $score['company_id'] = $this -> company;
+//            $score['account_id'] = $this -> account_id;
+//
+//            $total = $this -> detail -> getFieldByCondition(['account_id' => $this -> account_id, 'exam_questions_id' => $g['id'], 'status' => 1], 'sum(score) as total');
+//            $score['score'] = (!empty($total['total'])) ? $total['total'] : 0;
+//            $result = $this -> member -> add($score);
+//            if ($result) {
+//                $this -> e(0, $total);
+//            }
+//        } else {
+//            $result = $this -> detail -> add($data);
+//        }
 
         if ($result) {
-            $this -> e();
+        	//返回答题的状态
+			$data = [
+				'answer_result' => $data['status'],
+				'answer' => $g['answer_id'],
+			];
+            $this->rel($data)->e();
         } else {
-            $this -> e('系统异常');
+            $this->e('系统异常');
         }
     }
 }
