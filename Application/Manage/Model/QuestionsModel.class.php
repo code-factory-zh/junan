@@ -52,7 +52,7 @@ class QuestionsModel extends BaseModel {
      * **/
     public function getIds($dx, $fx, $pd, $courseId)
     {
-        $count = questionCount($dx, $fx, $pd);
+        $count = create_exam_question($dx, $fx, $pd);
 
         $fxCount = $count['fx'];
         $dxCount = $count['dx'];

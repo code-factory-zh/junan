@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 子帐户模块
+ * 小程序考试
  * @Auther cuiruijun
  * @Date 2019/01/08
  */
@@ -12,6 +12,7 @@ class ExamController extends CommonController
     private $exam;
     private $member;
     private $question;
+    private $course_model;
     private $detail;
     private $examQuestion;
     private $account_id = 1;
@@ -24,6 +25,7 @@ class ExamController extends CommonController
 
         $this -> exam = new \Manage\Model\ExamModel;
         $this -> member = new \Manage\Model\ExamMemberModel;
+        $this -> course_model = new \Manage\Model\CourseModel;
         $this -> question = new \Manage\Model\QuestionsModel;
         $this -> detail = new \Wechat\Model\ExamDetailModel;
         $this -> examQuestion = new \Wechat\Model\ExamQuestionModel;
@@ -45,28 +47,33 @@ class ExamController extends CommonController
     /**
      * 前台题目获取
      *
-     * @param int $id 考试ID
+     * @param int $id 课程ID
      * return array
      * */
     public function questions()
     {
-        $this->_get($g, 'id');
-        $this->isInt(['id']);
+//        $this->_get($g, 'course_id');
+		$g = I('get.');
+
+//        $this->isInt(['course_id']);
+		$account_id = 1;
 
         //是否已学习完成
-        $done = $this -> member -> findData(['account_id' => $this -> account_id]);
+        $done = $this -> member -> findData(['account_id' => $account_id, 'course_id' => $g['course_id']]);
 
         if (!empty($done['score'])) {
             $this->e('该考试您已填写');
         }
 
-        $exam = $this -> exam -> findExam(['id' => $g['id'], 'is_deleted' => 0]);
-        if (empty($exam)) {
-            $this->e('考试不存在');
-        }
+//        $exam = $this -> exam -> findExam(['course_id' => $g['course_id'], 'is_deleted' => 0, 'account_id' => $account_id]);
+//        if (empty($exam)) {
+//            $this->e('考试不存在');
+//        }
+
+		//判断是否已经提交过答案
 
         //判断exam_questions表是否有记录
-        $exist = $this -> examQuestion -> findExamQuestion(['exam_id' => $g['id'], 'account_id' => $this -> account_id, 'status' => 1]);
+        $exist = $this -> examQuestion -> findExamQuestion(['course_id' => $g['course_id'], 'account_id' => $account_id, 'status' => 1]);
 
         if (!empty($exist)) {
             $questionIds = json_decode($exist['question_ids']);
@@ -81,22 +88,40 @@ class ExamController extends CommonController
                     $return[$value] = 1;
                 }
             }
-            $this->e(0, ['id' => $exist['id'], 'rows' => $return]);
+            $this->e(200, ['id' => $exist['id'], 'rows' => $return]);
         } else {
             //计算需要得出的考试类型题目数量
-            $radioNum = $exam['dx_question_amount'] / $exam['dx_question_score'];
-            $checkboxNum = $exam['fx_question_amount'] / $exam['fx_question_score'];
-            $judgeNum = $exam['pd_question_amount'] / $exam['pd_question_score'];
+			//查询课程对应的exam信息
+			$exam_info = $this->exam->getOne('course_id = '. $g['course_id']);
+//			var_dump($exam_info);
 
-            $questionIds = $this -> question -> getIds($radioNum, $checkboxNum, $judgeNum, $exam['course_id']);
-            $data['question_ids'] = json_encode($questionIds);
+			//随机7/3 考试
+//			$create_quesiton_info = create_exam_question($exam_info['dx_question_amount'], $exam_info['fx_question_amount'], $exam_info['pd_question_amount']);
 
+            $radioNum = $exam_info['dx_question_amount'] / $exam_info['dx_question_score'];
+            $checkboxNum = $exam_info['fx_question_amount'] / $exam_info['fx_question_score'];
+            $judgeNum = $exam_info['pd_question_amount'] / $exam_info['pd_question_score'];
+
+            $questionIds = $this -> question -> getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id']);
+
+//            $data['question_ids'] = json_encode($questionIds);
+
+			$data = [
+				'exam_id' => $exam_info['id'],
+				'account_id' => $account_id,
+				'exam_time' => $exam_info['time'],
+//				'status' => 1,
+				'course_id' => $g['course_id'],
+				'question_ids' => implode(',', $questionIds),
+			];
+//			var_dump($data);
             if ($result = $this ->examQuestion -> add($data)) {
-                $return = [];
-                foreach ($questionIds as $value) {
-                    $return[$value] = 0;
-                }
-                $this->e(0, ['id' => $result, 'rows' => $return]);
+//                $return = [];
+//                foreach ($questionIds as $value) {
+//                    $return[$value] = 0;
+//                }
+				//此时应该返回第一题的题目信息
+                $this->e(0, $data);
             } else {
                 $this->el($result, 'fail');
             }

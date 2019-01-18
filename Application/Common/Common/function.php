@@ -110,7 +110,7 @@
 	/**
 	 * 计算获取题木的数量（7:3）
 	 * **/
-	function questionCount($dx, $fx, $pd)
+	function create_exam_question($dx, $fx, $pd)
     {
         $arr = ['dx' => $dx, 'pd' => $pd, 'fx' => $fx];
         asort($arr);
