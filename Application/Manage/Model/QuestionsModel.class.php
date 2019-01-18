@@ -54,28 +54,48 @@ class QuestionsModel extends BaseModel {
     {
         $count = create_exam_question($dx, $fx, $pd);
 
-        $fxCount = $count['fx'];
-        $dxCount = $count['dx'];
-        $pdCount = $count['pd'];
+        $fxCount = (int)$count['fx'];
+        $dxCount = (int)$count['dx'];
+        $pdCount = (int)$count['pd'];
 
-        $data['dxMajor'] = $this -> getAll('id', ['course_id' => $courseId, 'is_deleted' => 0, 'type' => 1, 'common' => 2], 1, $dxCount);
-        $data['dxCommon'] = $this -> getAll('id', ['course_id' => $courseId, 'is_deleted' => 0, 'type' => 1, 'common' => 1], 1, $dx - $dxCount);
+		$dxMajor = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 1, 'common' => 2], 'id');
 
-        $data['fxMajor'] = $this -> getAll('id', ['course_id' => $courseId, 'is_deleted' => 0, 'type' => 2, 'common' => 2], 1, $fxCount);
-        $data['fxCommon'] = $this -> getAll('id', ['course_id' => $courseId, 'is_deleted' => 0, 'type' => 2, 'common' => 1], 1, $fx - $fxCount);
+		$data['dxMajor'] = array_rand_value(array_column($dxMajor, 'id'), $dxCount);
 
-        $data['pdMajor'] = $this -> getAll('id', ['course_id' => $courseId, 'is_deleted' => 0, 'type' => 3, 'common' => 2], 1, $pdCount);
-        $data['pdCommon'] = $this -> getAll('id', ['course_id' => $courseId, 'is_deleted' => 0, 'type' => 3, 'common' => 1], 1, $pd - $pdCount);
+		$dxCommon = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 1, 'common' => 1], 'id');
+		$data['dxCommon'] = array_rand_value(array_column($dxCommon, 'id'), ($dx - $dxCount));
+
+		$fxMajor = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 2, 'common' => 2], 'id');
+		$data['fxMajor'] = array_rand_value(array_column($fxMajor, 'id'), $fxCount);
+
+		$fxCommon = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 2, 'common' => 1], 'id');
+		$data['fxCommon'] = array_rand_value(array_column($fxCommon, 'id'), ($fx - $fxCount));
+
+		$pdMajor = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 3, 'common' => 2], 'id');
+		$data['pdMajor'] = array_rand_value(array_column($pdMajor, 'id'), $pdCount);
+
+		$pdCommon = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 3, 'common' => 1], 'id');
+		$data['pdCommon'] = array_rand_value(array_column($pdCommon, 'id'), ($pd - $pdCount));
 
         $return = [];
         foreach ($data as $key => $value) {
             if (!empty($value)) {
                 foreach ($value as $v) {
-                    $return[] = $v['id'];
+                    $return[] = $v;
                 }
             }
         }
 
         return $return;
     }
+
+	/**
+	 * 根据条件查找用户表
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-15T21:36:56+0800
+	 */
+	public function getList($where, $fields = '*') {
+
+		return $this -> where($where) -> field($fields) -> select();
+	}
 }

@@ -119,6 +119,8 @@
         $arrValues = array_values($arr);
         $count = ($fx + $dx + $pd) * 0.7;
 
+		$count = is_int($count) ? $count : floor($count);
+
         $arrFirstValue = 0;
         $arrSecondValue = 0;
         do{
@@ -149,3 +151,25 @@
 
         return [$arr_keys[0] => $minCount, $arr_keys[1] => $arrFirstValue, $arr_keys[2] => $arrSecondValue];
     }
+
+
+    /**
+     * 随机获取数组的值
+     */
+	function array_rand_value($arr, $rand_count){
+		if($rand_count > count($arr))
+		{
+			$rand_count = count($arr);
+		}
+		$rand_key = array_rand($arr, $rand_count);
+		if($rand_count == 1)
+		{
+			$res = [$arr[$rand_key]];
+		}else{
+			$res = [];
+			foreach($rand_key as $v){
+				$res[] = $arr[$v];
+			}
+		}
+		return $res;
+	}
