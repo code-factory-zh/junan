@@ -56,8 +56,8 @@ class ExamController extends CommonController
 		$g = I('get.');
 
 //        $this->isInt(['course_id']);
-		$account_id = $this->u['id'];
-//		$account_id = 1;
+//		$account_id = $this->u['id'];
+		$account_id = 1;
 
         //是否已学习完成
 
@@ -164,14 +164,27 @@ class ExamController extends CommonController
 		unset($first_question['answer']);
 
 		//返回是否做了以及做对还是做错的状态
-		$is_answerd_info = $this->detail->getRecord('status', ['exam_question_id' => $last_exam_questions['id'], 'question_id' => $question_ids[0], 'account_id' => $account_id]);
+		$is_answerd_info = $this->detail->getRecord('type,answer_id,status', ['exam_question_id' => $last_exam_questions['id'], 'question_id' => $question_ids[0], 'account_id' => $account_id]);
+		$is_answerd_info = $is_answerd_info ? array_values($is_answerd_info) : null;
+
+		//增加用户选择的答案
+		if($is_answerd_info){
+			if($is_answerd_info[0]['type'] == 2){
+				$answer = json_decode($is_answerd_info[0]['answer_id'], true);
+//				var_dump($answer);
+				$answer = implode(',', $answer);
+			}else{
+				$answer = $is_answerd_info[0]['answer_id'];
+			}
+		}
 
 		$return_res = [
 			'count' => count($question_ids),
 			'first_question_info' => $first_question,
 			'is_answer' => $is_answerd_info ? 1 : 0,
-			'answer_result' => (int)$is_answerd_info,
+			'answer_result' => (int)$is_answerd_info[0]['status'],
 			'exam_question_id' => (int)$last_exam_questions['id'],
+			'answer' => $answer,
 		];
 
 		$this->rel($return_res)->e();
@@ -201,10 +214,23 @@ class ExamController extends CommonController
 
         $question['option'] = json_decode($question['option'], true);
         //查看是否有答题记录
-		$is_answerd_info = $this->detail->getRecord('status', ['exam_question_id' => $g['exam_question_id'], 'question_id' => $g['question_id'], 'account_id' => $account_id]);
+		$is_answerd_info = $this->detail->getRecord('type,answer_id,status', ['exam_question_id' => $g['exam_question_id'], 'question_id' => $g['question_id'], 'account_id' => $account_id]);
+		$is_answerd_info = $is_answerd_info ? array_values($is_answerd_info) : null;
+
+		//增加用户选择的答案
+		if($is_answerd_info){
+			if($is_answerd_info[0]['type'] == 2){
+				$answer = json_decode($is_answerd_info[0]['answer_id'], true);
+				//				var_dump($answer);
+				$answer = implode(',', $answer);
+			}else{
+				$answer = $is_answerd_info[0]['answer_id'];
+			}
+		}
 
 		$question['is_answer'] = $is_answerd_info ? 1 : 0;
-		$question['answer_result'] = (int)$is_answerd_info;
+		$question['answer_result'] = (int)$is_answerd_info[0]['status'];
+		$question['answer'] = $answer;
 
         $this->rel($question)->e();
     }
@@ -262,9 +288,9 @@ class ExamController extends CommonController
 
         //是否已答过
 		$is_answerd_info = $this->detail->getRecord('id', ['exam_question_id' => $g['exam_question_id'], 'question_id' => $g['question_id'], 'account_id' => $account_id]);
-        if ($is_answerd_info) {
-            $this -> e('已经回答过这道题了');
-        }
+//        if ($is_answerd_info) {
+//            $this -> e('已经回答过这道题了');
+//        }
 
         //开始写入数据
         $data['account_id'] = $account_id;
@@ -283,7 +309,7 @@ class ExamController extends CommonController
 		}
 
         $data['answer_id'] = $answer_id;
-        $data['status'] = $answer_id == $question['answer'] ? 1 : 0;
+        $data['status'] = ($answer_id == $question['answer']) ? 1 : 0;
 
         if ($data['status']) {
             $data['score'] = $exam['dx_question_score'];
@@ -293,7 +319,13 @@ class ExamController extends CommonController
 			$data['score'] = 0;
 		}
 
-		$result = $this -> detail -> add($data);
+		if($is_answerd_info){
+			//如果已经存在,就修改
+			$data['id'] = $is_answerd_info;
+			$result = $this->detail->save($data);
+		}else{
+			$result = $this -> detail -> add($data);
+		}
 
 //        //判断时间是否在范围内或者是最后一题,如果是，则返回分数
 //        $time = $examQuestion['start_time'] + $examQuestion['exam_time'] >= time();
