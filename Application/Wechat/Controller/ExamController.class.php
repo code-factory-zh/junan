@@ -210,8 +210,8 @@ class ExamController extends CommonController
      * */
     public function answer()
     {
-//		$account_id = $this->u['id'];
-		$account_id = 1;
+		$account_id = $this->u['id'];
+//		$account_id = 1;
 //        $this->_post($g, ['exam_question_id', 'question_id', 'answer_id']);
 //        $this->isInt(['id', 'question_id']);
 
