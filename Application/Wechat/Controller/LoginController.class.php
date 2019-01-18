@@ -60,13 +60,13 @@ class LoginController extends CommonController {
 			$this -> e('登录失败!');
 		}
 
-		// $rel = $this -> get_open_id($p['code']);
-		// if (!is_array($rel) || (!isset($rel['openid']) && !isset($rel['session_key']))) {
-		// 	$this -> rel([]) -> e($rel['errcode'], '效验获取open_id失败！');
-		// }
+		$rel = $this -> get_open_id($p['code']);
+		if (!is_array($rel) || (!isset($rel['openid']) && !isset($rel['session_key']))) {
+			$this -> rel([]) -> e($rel['errcode'], '效验获取open_id失败！');
+		}
 
-		$rel['session_key'] = 'aaa';
-		$rel['openid'] = 'xxx';
+		// $rel['session_key'] = 'aaa';
+		// $rel['openid'] = 'xxx';
 
 		// 绑定用户OPEN_ID
 		$token = md5(self::token_salt . $rel['session_key'] . $p['company_id'] . time());
