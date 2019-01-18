@@ -61,7 +61,7 @@ class DetailController extends CommonController {
 		$this -> _get($p, ['id']);
 
 		// 默认取第一条数据
-		$fields = ['cd.id', 'cd.type', 'cd.course_id', 'c.name course_name', 'cd.chapter chapter_name', 'cd.content'];
+		$fields = ['cd.id', 'cd.type', 'cd.course_id', 'cd.detail course_detail', 'c.name course_name', 'cd.chapter chapter_name', 'cd.content'];
 		$data = $this -> account_course -> getCourseList(['cd.id' => $p['id']], $fields);
 		if (!count($data)) {
 			$this -> e('没有章节数据！');
