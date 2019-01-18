@@ -109,6 +109,9 @@ class ExamController extends CommonController
 						'score' => $score
 					];
 
+					//是否通过考试字段
+					$is_pass_exam_info = $this->exam->getOne(['id' => $exist['exam_id']]);
+
 					//这时候要插入分数表
 					$exam_score_data = [
 						'account_id' => $account_id,
@@ -116,10 +119,15 @@ class ExamController extends CommonController
 						'company_id' => $account_id,
 						'course_id' => $g['course_id'],
 						'score' => $score,
+						'is_pass_exam' => ($score >= $is_pass_exam_info['pass_score']) ? 1 : 0,
 					];
 
 					$result = $this->member->add($exam_score_data);
-					$this->rel($data)->e();
+					if($result){
+						$this->rel($data)->e();
+					}else{
+						$this->e('系统错误');
+					}
 				}
 			}
         } else {
@@ -394,7 +402,8 @@ class ExamController extends CommonController
 	 * @return  array
 	 */
 	public function finish_exam(){
-		$account_id = 1;
+//		$account_id = 1;
+		$account_id = $this->u['id'];
 		$g = I('post.');
 
 		//插入memeber表
@@ -406,20 +415,24 @@ class ExamController extends CommonController
 
 		$exam_question_info = $this->examQuestion->findExamQuestion(['id' => $g['exam_question_id'], 'account_id' => $account_id, 'status' => 1]);
 
+		//是否通过考试字段
+		$is_pass_exam_info = $this->exam->getOne(['id' => $exam_question_info['exam_id']]);
+
 		//这时候要插入分数表
 		$exam_score_data = [
 			'account_id' => $account_id,
 			'exam_question_id' => $exam_question_info['id'],
 			'company_id' => $account_id,
 			'course_id' => $exam_question_info['course_id'],
-			'score' => $score,
+			'score' => (int)$score,
+			'is_pass_exam' => ($score >= $is_pass_exam_info['pass_score']) ? 1 : 0,
 		];
 
 		$result = $this->member->add($exam_score_data);
 		if($result){
 			$this->rel($data)->e();
 		}else{
-			$this->e('交卷');
+			$this->e('交卷失败');
 		}
 	}
 }
