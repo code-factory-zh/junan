@@ -32,7 +32,7 @@ class IndexController extends CommonController {
 	public function get_companys() {
 
 		$list = $this -> company -> getList(['status' => 0], ['id', 'company_name']);
-		$this -> rel($list) -> e();
+		$this -> rel(['company_name' => '君安', 'list' => $list]) -> e();
 	}
 
 

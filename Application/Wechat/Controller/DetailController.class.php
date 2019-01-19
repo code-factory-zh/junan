@@ -69,6 +69,7 @@ class DetailController extends CommonController {
 			$this -> e('没有章节数据！');
 		}
 
+		// ppt、视频
 		if (in_array($data[0]['type'], [2, 3])) {
 			$data[0]['content'] = $this -> host . $data[0]['content'];
 		}

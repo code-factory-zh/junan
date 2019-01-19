@@ -72,7 +72,7 @@
 				'photo' => array('jpg', 'jpeg', 'png'),
 				'flash' => array('swf', 'flv'),
 				'media' => array('swf', 'flv', 'mp3', 'mp4', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'),
-				'file' => array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2','pdf')
+				'file' => array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2','pdf')
 			);
 		if(!empty($_FILES)){
 			// 上传文件配置
