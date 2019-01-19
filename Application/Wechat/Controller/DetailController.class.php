@@ -71,7 +71,7 @@ class DetailController extends CommonController {
 
 		// ppt、视频
 		if (in_array($data[0]['type'], [2, 3])) {
-			$data[0]['content'] = $this -> host . $data[0]['content'];
+			$data[0]['content'] = $this -> host . 'Uploads/' . $data[0]['content'];
 		}
 		$this -> rel($data[0]) -> e();
 	}
