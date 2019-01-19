@@ -124,10 +124,10 @@ class CourseDetailController extends BaseController
 
         if (in_array($ext, ['ppt', 'pptx'])) {
             $type = 2;
-            $dir = 'Uploads/file';
+            $dir = 'file';
         } elseif (in_array($ext, ['mp4', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'])) {
             $type = 3;
-            $dir = '/media';
+            $dir = 'media';
         } else {
             $this -> e('上传类型必须是PPT或者视频文件');
         }
