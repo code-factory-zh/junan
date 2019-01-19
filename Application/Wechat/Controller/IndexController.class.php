@@ -54,7 +54,7 @@ class IndexController extends CommonController {
 			$items['type_icon'] = '';
 		}
 
-		$data = ['banner' => 'http://admin.junan.com/img/idx_banner.png', 'list' => $list];
+		$data = ['banner' => 'http://admin.joinersafe.com/img/idx_banner.png', 'list' => $list];
 		$this -> rel($data) -> e();
 	}
 }
