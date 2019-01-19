@@ -78,7 +78,7 @@
 			// 上传文件配置
 			$config=array(
 					'maxSize'   =>  $maxSize,               // 上传文件最大为50M
-					'rootPath'  =>  './Uploads/',                   // 文件上传保存的根路径
+					'rootPath'  =>  $_SERVER['DOCUMENT_ROOT'] . '/Uploads/',                   // 文件上传保存的根路径
 					'savePath'  =>  $path,         // 文件上传的保存路径（相对于根路径）
 					'saveName'  =>  array('uniqid',''),     // 上传文件的保存规则，支持数组和字符串方式定义
 					'autoSub'   =>  true,                   // 自动使用子目录保存上传文件 默认为true
