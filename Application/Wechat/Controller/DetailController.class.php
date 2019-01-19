@@ -12,10 +12,12 @@ use Wechat\Model\AdminModel;
 class DetailController extends CommonController {
 
 	private $account_course;
+	private $host;
 
 	public function _initialize() {
 
 		parent::_initialize();
+		$this -> host = 'http://admin.joinersafe.com/';
 		$this -> account_course = new \Wechat\Model\DetailcourseModel;
 	}
 
@@ -67,6 +69,9 @@ class DetailController extends CommonController {
 			$this -> e('没有章节数据！');
 		}
 
+		if (in_array($data[0]['type'], [2, 3])) {
+			$data[0]['content'] = $this -> host . $data[0]['content'];
+		}
 		$this -> rel($data[0]) -> e();
 	}
 }
