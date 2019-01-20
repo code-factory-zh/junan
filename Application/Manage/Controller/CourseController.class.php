@@ -59,6 +59,7 @@ class CourseController extends BaseController {
 				if($res){
 					$this->e('通用课程只能有一个');
 				}
+
 				if($result = $this->course->add($data)){
 					$this->e();
 				}else{
