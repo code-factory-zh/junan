@@ -63,16 +63,33 @@ class DetailController extends CommonController {
 		$this -> _get($p, ['id']);
 
 		// 默认取第一条数据
-		$fields = ['cd.id', 'cd.type', 'cd.course_id', 'cd.detail course_detail', 'c.name course_name', 'cd.chapter chapter_name', 'cd.content'];
+		$fields = ['cd.id', 'cd.type', 'cd.type', 'cd.course_id', 'cd.detail course_detail', 'c.name course_name', 'cd.chapter chapter_name', 'cd.content'];
 		$data = $this -> account_course -> getCourseList(['cd.id' => $p['id']], $fields);
 		if (!count($data)) {
 			$this -> e('没有章节数据！');
 		}
+		$data = $data[0];
+
+		$arr = [
+			'company_id'  => $this -> u['company_id'],
+			'account_id'  => $this -> u['id'],
+			'course_id'   => $data['course_id'],
+			'chapter_id'  => $p['id'],
+			'cource_type' => $data['type'],
+			'created_time'=> time(),
+			'updated_time'=> time(),
+		];
+
+		// 检查是否已学习过 塞数据
+		$amount = $this -> account_course -> check($arr);
+		if (!$amount) {
+			M('company_account_course_chapter') -> add($arr);
+		}
 
 		// ppt、视频
-		if (in_array($data[0]['type'], [2, 3])) {
-			$data[0]['content'] = $this -> host . 'Uploads/' . $data[0]['content'];
+		if (in_array($data['type'], [2, 3])) {
+			$data['content'] = $this -> host . 'Uploads/' . $data['content'];
 		}
-		$this -> rel($data[0]) -> e();
+		$this -> rel($data) -> e();
 	}
 }
