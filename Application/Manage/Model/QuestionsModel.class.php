@@ -48,9 +48,10 @@ class QuestionsModel extends BaseModel {
      * @param int $fx
      * @param int $pd
      * @param int $courseId
+     * @param int $common_course_id 通用课程id
      * return array
      * **/
-    public function getIds($dx, $fx, $pd, $courseId)
+    public function getIds($dx, $fx, $pd, $courseId, $common_course_id)
     {
         $count = create_exam_question($dx, $fx, $pd);
 
@@ -58,23 +59,22 @@ class QuestionsModel extends BaseModel {
         $dxCount = (int)$count['dx'];
         $pdCount = (int)$count['pd'];
 
-		$dxMajor = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 1, 'common' => 2], 'id');
-
+		$dxMajor = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 1], 'id');
 		$data['dxMajor'] = array_rand_value(array_column($dxMajor, 'id'), $dxCount);
 
-		$dxCommon = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 1, 'common' => 1], 'id');
+		$dxCommon = $this -> getList(['course_id' => $common_course_id, 'is_deleted' => 0, 'type' => 1], 'id');
 		$data['dxCommon'] = array_rand_value(array_column($dxCommon, 'id'), ($dx - $dxCount));
 
-		$fxMajor = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 2, 'common' => 2], 'id');
+		$fxMajor = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 2], 'id');
 		$data['fxMajor'] = array_rand_value(array_column($fxMajor, 'id'), $fxCount);
 
-		$fxCommon = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 2, 'common' => 1], 'id');
+		$fxCommon = $this -> getList(['course_id' => $common_course_id, 'is_deleted' => 0, 'type' => 2], 'id');
 		$data['fxCommon'] = array_rand_value(array_column($fxCommon, 'id'), ($fx - $fxCount));
 
-		$pdMajor = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 3, 'common' => 2], 'id');
+		$pdMajor = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 3], 'id');
 		$data['pdMajor'] = array_rand_value(array_column($pdMajor, 'id'), $pdCount);
 
-		$pdCommon = $this -> getList(['course_id' => $courseId, 'is_deleted' => 0, 'type' => 3, 'common' => 1], 'id');
+		$pdCommon = $this -> getList(['course_id' => $common_course_id, 'is_deleted' => 0, 'type' => 3], 'id');
 		$data['pdCommon'] = array_rand_value(array_column($pdCommon, 'id'), ($pd - $pdCount));
 
         $return = [];

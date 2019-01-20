@@ -71,6 +71,12 @@ class ExamController extends CommonController
         //判断exam_questions表是否有记录
         $exist = $this->examQuestion->findExamQuestion(['course_id' => $g['course_id'], 'account_id' => $account_id, 'status' => 1]);
 
+		//查询通用课程id
+		$common_course = $this->course->getOne('type=1 and is_deleted=0');
+		if($common_course){
+			$common_course_id = $common_course['id'];
+		}
+
         if ($exist) {
         	//查询是否已经过期
 			$expired_time = $exist['created_time'] + ($exist['exam_time'] * 60);
@@ -87,7 +93,7 @@ class ExamController extends CommonController
 					$checkboxNum = $exam_info['fx_question_amount'];
 					$judgeNum = $exam_info['pd_question_amount'];
 
-					$questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id']);
+					$questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
 
 					$data = [
 						'exam_id' => $exam_info['id'],
@@ -148,7 +154,7 @@ class ExamController extends CommonController
             $checkboxNum = $exam_info['fx_question_amount'];
             $judgeNum = $exam_info['pd_question_amount'];
 
-            $questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id']);
+            $questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
 
 			$data = [
 				'exam_id' => $exam_info['id'],

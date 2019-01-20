@@ -37,7 +37,7 @@ class CourseController extends BaseController {
 	}
 
 	/**
-	 * 编辑岗位
+	 * 编辑课程
 	 * @author cuiruijun
 	 * @date   2018/12/10 下午11:59
 	 * @url    manage/job/edit
@@ -54,10 +54,15 @@ class CourseController extends BaseController {
 
 			if(!$data['id']){
 				//新增
+				//通用课程只能有一个
+				$res = $this->course->getOne('type = 1 and is_deleted = 0');
+				if($res){
+					$this->e('通用课程只能有一个');
+				}
 				if($result = $this->course->add($data)){
 					$this->e();
 				}else{
-					$this->el($result, 'fail');
+					$this->e('fail');
 				}
 			}else{
 				//修改
