@@ -185,6 +185,7 @@ class ExamController extends CommonController
 			'answer_result' => (int)$is_answerd_info[0]['status'],
 			'exam_question_id' => (int)$last_exam_questions['id'],
 			'answer' => $answer,
+			'question_id' => 1,
 		];
 
 		$this->rel($return_res)->e();
