@@ -398,7 +398,7 @@ class ExamController extends CommonController
 			$data = [
 				'answer_result' => $data['status'],
 				'answer' => $g['answer_id'],
-				'question' => $g['qeustion_id'],
+				'question_id' => (int)$g['question_id'],
 			];
             $this->rel($data)->e();
         } else {
