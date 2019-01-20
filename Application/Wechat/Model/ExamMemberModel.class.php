@@ -30,6 +30,8 @@ class ExamMemberModel extends BaseModel
 		}
 
 		//更新章节状态status=1
+		$account_course_model = new Wechat\Model\AccountcourseModel;
+		$company_account_course_model->where(['company_id' => $data['company_id'], 'account_id' => $data['account_id'], 'course_id' => $data['course_id']])->save(['status' => 1]);
 	}
 
 
