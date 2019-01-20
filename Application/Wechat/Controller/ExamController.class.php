@@ -56,8 +56,8 @@ class ExamController extends CommonController
 		$g = I('get.');
 
 //        $this->isInt(['course_id']);
-//		$account_id = $this->u['id'];
-		$account_id = 1;
+		$account_id = $this->u['id'];
+//		$account_id = 1;
 
         //是否已学习完成
 
@@ -195,33 +195,47 @@ class ExamController extends CommonController
      *
      * @param int question_id 题目ID
      * @param int exam_question_id 试题ID
-     * @param int $id 题目ID
+     * @param int $id 题目ID-第几题
      * return array
      * */
     public function detail()
     {
     	$account_id = $this->u['id'];
+//    	$account_id = 1;
+//		echo $account_id;
 
 //        $this->_get($g, I('get.'));
 //        $this->isInt(['question_id']);
 
 		$g = I('get.');
 
-        $question = $this->question-> getQuestion(['id' => $g['question_id']], 'id, type, title, option');
+		$question_sort = $g['question_id'] - 1;
+
+		//查看当前question_id
+		$examQuestion = $this -> examQuestion -> findExamQuestion(['id' => $g['exam_question_id'], 'status' => 1, 'account_id' => $account_id]);
+
+		if(!$examQuestion){
+			$this->e('考题不存在');
+		}
+
+		$question_ids = explode(',' , $examQuestion['question_ids']);
+
+		$question_id = $question_ids[$question_sort];
+
+        $question = $this->question-> getQuestion(['id' => $question_id], 'id, type, title, option');
         if (empty($question)) {
             $this->e('题目不存在');
         }
 
         $question['option'] = json_decode($question['option'], true);
         //查看是否有答题记录
-		$is_answerd_info = $this->detail->getRecord('type,answer_id,status', ['exam_question_id' => $g['exam_question_id'], 'question_id' => $g['question_id'], 'account_id' => $account_id]);
+		$is_answerd_info = $this->detail->getRecord('type,answer_id,status', ['exam_question_id' => $g['exam_question_id'], 'question_id' => $question_id, 'account_id' => $account_id]);
 		$is_answerd_info = $is_answerd_info ? array_values($is_answerd_info) : null;
 
 		//增加用户选择的答案
 		if($is_answerd_info){
 			if($is_answerd_info[0]['type'] == 2){
 				$answer = json_decode($is_answerd_info[0]['answer_id'], true);
-				//				var_dump($answer);
 				$answer = implode(',', $answer);
 			}else{
 				$answer = $is_answerd_info[0]['answer_id'];
@@ -252,16 +266,29 @@ class ExamController extends CommonController
 
 		$g = I('post.');
 
+		$question_sort = $g['question_id'] - 1;
+
+		//查看当前question_id
+		$examQuestion = $this -> examQuestion -> findExamQuestion(['id' => $g['exam_question_id'], 'status' => 1, 'account_id' => $account_id]);
+
+		if(!$examQuestion){
+			$this->e('考题不存在');
+		}
+
+		$question_ids = explode(',' , $examQuestion['question_ids']);
+
+		$question_id = $question_ids[$question_sort];
+
         //该考生题库是否存在
         $examQuestion = $this -> examQuestion -> findExamQuestion(['id' => $g['exam_question_id'], 'status' => 1, 'account_id' => $account_id]);
         if (!$examQuestion) {
             $this->e('该套试题已经下架或者删除');
         }else{
         	//查看该套试题中是否有这道题
-			if(!in_array($g['question_id'], explode(',', $examQuestion['question_ids']))){
+			if(!in_array($question_id, explode(',', $examQuestion['question_ids']))){
 				$this->e('未找到该题目');
 			}else{
-				$question = $this->question->getQuestion(['id' => $g['question_id']]);
+				$question = $this->question->getQuestion(['id' => $question_id]);
 				if (empty($question)) {
 					$this -> e('题目不存在哦');
 				}
@@ -287,7 +314,7 @@ class ExamController extends CommonController
 //        }
 
         //是否已答过
-		$is_answerd_info = $this->detail->getRecord('id', ['exam_question_id' => $g['exam_question_id'], 'question_id' => $g['question_id'], 'account_id' => $account_id]);
+		$is_answerd_info = $this->detail->getRecord('id', ['exam_question_id' => $g['exam_question_id'], 'question_id' => $question_id, 'account_id' => $account_id]);
 //        if ($is_answerd_info) {
 //            $this -> e('已经回答过这道题了');
 //        }
@@ -295,7 +322,7 @@ class ExamController extends CommonController
         //开始写入数据
         $data['account_id'] = $account_id;
         $data['exam_question_id'] = $g['exam_question_id'];
-        $data['question_id'] = $g['question_id'];
+        $data['question_id'] = $question_id;
         $data['type'] = $question['type'];
 
 		if($question['type'] == 2)

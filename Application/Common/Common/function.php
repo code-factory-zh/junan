@@ -119,7 +119,7 @@
         $arrValues = array_values($arr);
         $count = ($fx + $dx + $pd) * 0.7;
 
-		$count = is_int($count) ? $count : floor($count);
+		$count = is_int($count) ? $count : (int)floor($count);
 
         $arrFirstValue = 0;
         $arrSecondValue = 0;
