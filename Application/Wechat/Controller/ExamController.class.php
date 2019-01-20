@@ -201,8 +201,6 @@ class ExamController extends CommonController
      * */
     public function detail()
     {
-    	echo 111;
-		exit;
     	$account_id = $this->u['id'];
 //    	$account_id = 1;
 //		echo $account_id;
