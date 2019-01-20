@@ -274,6 +274,8 @@ class ExamController extends CommonController
 //        $this->isInt(['id', 'question_id']);
 
 		$g = I('post.');
+		var_dump($g);
+		exit;
 
 		$question_sort = $g['question_id'] - 1;
 
