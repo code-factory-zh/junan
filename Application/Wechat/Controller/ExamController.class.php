@@ -113,6 +113,13 @@ class ExamController extends CommonController
 					//是否通过考试字段
 					$is_pass_exam_info = $this->exam->getOne(['id' => $exist['exam_id']]);
 
+					//加入考试总共做题时间
+					if(time() - $exist['created_time'] < $exist['exam_time'] * 60){
+						$use_time = (time() - $exist['created_time']) * 60;
+					}else{
+						$use_time = $exist['exam_time'] * 60;
+					}
+
 					//这时候要插入分数表
 					$exam_score_data = [
 						'account_id' => $account_id,
@@ -121,6 +128,7 @@ class ExamController extends CommonController
 						'course_id' => $g['course_id'],
 						'score' => $score,
 						'is_pass_exam' => ($score >= $is_pass_exam_info['pass_score']) ? 1 : 0,
+						'use_time' => $use_time
 					];
 
 					$result = $this->member->add($exam_score_data);
@@ -477,8 +485,19 @@ class ExamController extends CommonController
 
 		$exam_question_info = $this->examQuestion->findExamQuestion(['id' => $g['exam_question_id'], 'account_id' => $account_id, 'status' => 1]);
 
+		if($exam_question_info){
+			$this->e('考试不存在');
+		}
+
 		//是否通过考试字段
 		$is_pass_exam_info = $this->exam->getOne(['id' => $exam_question_info['exam_id']]);
+
+		//加入考试总共做题时间
+		if(time() - $exam_question_info['created_time'] < $exam_question_info['exam_time'] * 60){
+			$use_time = (time() - $exam_question_info['created_time']) * 60;
+		}else{
+			$use_time = $exam_question_info['exam_time'] * 60;
+		}
 
 		//这时候要插入分数表
 		$exam_score_data = [
@@ -488,6 +507,7 @@ class ExamController extends CommonController
 			'course_id' => $exam_question_info['course_id'],
 			'score' => (int)$score,
 			'is_pass_exam' => ($score >= $is_pass_exam_info['pass_score']) ? 1 : 0,
+			'use_time' => $use_time,
 		];
 
 		$result = $this->member->add($exam_score_data);
@@ -504,6 +524,22 @@ class ExamController extends CommonController
 
 		$list = $this->member->getUserScoreList($accout_id);
 
-		$this->rel($list)->e();
+		$count = $this->member->getAnswerResultCount($accout_id);
+		foreach($count as $k => $v){
+			if($v['status'] == 1){
+				$true_count = $v['count'];
+			}
+
+			if($v['status'] == 0){
+				$false_count = $v['count'];
+			}
+		}
+
+		$data['true_count'] = (int)$true_count;
+		$data['false_count'] = (int)$false_count;
+
+		$data['list'] = $list;
+
+		$this->rel($data)->e();
 	}
 }

@@ -37,6 +37,15 @@ class ExamMemberModel extends BaseModel
     public function getUserScoreList($account_id){
 
     	//连表查询
-		return $this-> alias('m')->field('m.score, m.created_time,c.name')->where(['account_id' => $account_id])->join('course c on m.course_id=c.id', 'left')->select();
+		return $this-> alias('m')->field('m.score, m.use_time, m.created_time,c.name')->where(['account_id' => $account_id])->join('course c on m.course_id=c.id', 'left')->select();
+	}
+
+	/**
+	 * 答对题答错题总数
+	 */
+	public function getAnswerResultCount($account_id, $where = null){
+		$sql = 'select status, count(id) as count from exam_detail where exam_question_id in (select exam_question_id from exam_member where is_pass_exam = 1 and account_id=' . $account_id . ') group by status';
+
+		return $this->query($sql);
 	}
 }
