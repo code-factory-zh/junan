@@ -226,6 +226,10 @@ class ExamController extends CommonController
 			$this->e('考题不存在');
 		}
 
+		if($examQuestion['is_pass_exam']){
+			$this->e('您已经通过了这次考试,无须再次考试');
+		}
+
 		$question_ids = explode(',' , $examQuestion['question_ids']);
 
 		$question_id = $question_ids[$question_sort];
@@ -286,6 +290,10 @@ class ExamController extends CommonController
 
 		if(!$examQuestion){
 			$this->e('考题不存在');
+		}
+
+		if($examQuestion['is_pass_exam']){
+			$this->e('您已经通过了这次考试,无须再次考试');
 		}
 
 		$question_ids = explode(',' , $examQuestion['question_ids']);
@@ -434,6 +442,10 @@ class ExamController extends CommonController
 			$this->e('试题不存在');
 		}
 
+		if($examQuestion['is_pass_exam']){
+			$this->e('您已经通过了这次考试,无须再次考试');
+		}
+
 		//查询做题的状态
 		$exam_detail_list = $this->detail->get_exam_detail(['exam_question_id' => $g['exam_question_id']]);
 
@@ -495,6 +507,10 @@ class ExamController extends CommonController
 
 		if($exam_question_info){
 			$this->e('考试不存在');
+		}
+
+		if($exam_question_info['is_pass_exam']){
+			$this->e('您已经通过了这次考试,无须再次考试');
 		}
 
 		//是否通过考试字段
