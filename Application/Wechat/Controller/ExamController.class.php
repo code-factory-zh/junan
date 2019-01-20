@@ -255,6 +255,9 @@ class ExamController extends CommonController
 		$question['answer'] = $answer;
 		$question['question_id'] = $g['question_id'];
 
+		//是否是最后一题
+		$question['is_last_question'] = count($question_ids) == $g['question_id'] ? 1 : 0;
+
         $this->rel($question)->e();
     }
 
@@ -401,6 +404,10 @@ class ExamController extends CommonController
 				'answer' => $g['answer_id'],
 				'question_id' => (int)$g['question_id'],
 			];
+
+			//是否是最后一题
+			$data['is_last_question'] = count($question_ids) == $g['question_id'] ? 1 : 0;
+
             $this->rel($data)->e();
         } else {
             $this->e('系统异常');
