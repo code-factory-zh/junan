@@ -518,6 +518,13 @@ class ExamController extends CommonController
 		}
 	}
 
+	/**
+	 * 考试成绩列表
+	 * @author cuiruijun
+	 * @date   2019/1/20 下午6:18
+	 * @method get
+	 * @return  array
+	 */
 	public function score_list(){
 //		$accout_id = $this->u['id'];
 		$accout_id = 1;
