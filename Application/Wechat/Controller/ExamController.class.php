@@ -253,7 +253,7 @@ class ExamController extends CommonController
 		$question['is_answer'] = $is_answerd_info ? 1 : 0;
 		$question['answer_result'] = (int)$is_answerd_info[0]['status'];
 		$question['answer'] = $answer;
-		$question['question_id'] = $question_id;
+		$question['question_id'] = $g['question_id'];
 
         $this->rel($question)->e();
     }
@@ -398,7 +398,7 @@ class ExamController extends CommonController
 			$data = [
 				'answer_result' => $data['status'],
 				'answer' => $g['answer_id'],
-				'question' => $question_id,
+				'question' => $g['qeustion_id'],
 			];
             $this->rel($data)->e();
         } else {
