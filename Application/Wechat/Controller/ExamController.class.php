@@ -195,6 +195,7 @@ class ExamController extends CommonController
 			'answer' => $answer,
 			'question_id' => 1,
 			'exam_time' => (int)$last_exam_questions['exam_time'],
+			'exam_create_time' => $last_exam_questions['create_time'],
 		];
 
 		$this->rel($return_res)->e();
