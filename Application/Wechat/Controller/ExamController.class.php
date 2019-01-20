@@ -273,9 +273,8 @@ class ExamController extends CommonController
 //        $this->_post($g, ['exam_question_id', 'question_id', 'answer_id']);
 //        $this->isInt(['id', 'question_id']);
 
-		$g = I('post.');
-		var_dump($g);
-		exit;
+//		$g = I('post.');
+		$this->ignore_token()-> _post($g, ['exam_question_id', 'question_id', 'answer_id']);
 
 		$question_sort = $g['question_id'] - 1;
 
