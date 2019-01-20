@@ -9,6 +9,7 @@ namespace Wechat\Controller;
 
 class ExamController extends CommonController
 {
+    private $course;
     private $exam;
     private $member;
     private $question;
@@ -23,6 +24,7 @@ class ExamController extends CommonController
         parent::_initialize();
         $this -> ignore_token(0);
 
+        $this -> course = new \Manage\Model\CourseModel;
         $this -> exam = new \Manage\Model\ExamModel;
         $this -> member = new \Wechat\Model\ExamMemberModel;
         $this -> course_model = new \Manage\Model\CourseModel;
