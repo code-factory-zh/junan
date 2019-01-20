@@ -20,8 +20,14 @@ class ExamMemberModel extends BaseModel
         $data['is_deleted'] = 0;
     }
 
+    public function _after_insert($data, $options)
+	{
+		//插入表以后更新章节表的状态status=1 和 company_account_course 表的is_pass_exam 字段
+		
+	}
 
-    /**
+
+	/**
      * 根据条件取考试数据
      * @DateTime 2019-01-10T13:17:10+0800
      */

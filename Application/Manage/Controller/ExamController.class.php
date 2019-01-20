@@ -64,7 +64,7 @@ class ExamController extends BaseController {
 			$score = $p['dx_question_amount'] * $p['dx_question_score'] + $p['fx_question_amount'] * $p['fx_question_score'] + $p['pd_question_amount'] * $p['pd_question_score'];
 			if($score != 100)
 			{
-				$this -> e('总分固定100分');
+				$this->e('总分固定100分');
 			}
 
 			$p['score'] = $score;
