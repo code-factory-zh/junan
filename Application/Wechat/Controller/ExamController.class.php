@@ -209,7 +209,6 @@ class ExamController extends CommonController
 //        $this->isInt(['question_id']);
 
 		$g = I('get.');
-
 		$question_sort = $g['question_id'] - 1;
 
 		//查看当前question_id
