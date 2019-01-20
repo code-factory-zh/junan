@@ -62,10 +62,10 @@ class ExamController extends CommonController
         //是否已学习完成
 
 		//是否已经考过试
-        $done = $this->member->findData(['account_id' => $account_id, 'course_id' => $g['course_id']]);
+        $done = $this->member->findData(['account_id' => $account_id, 'course_id' => $g['course_id'], 'is_pass_exam' => 1]);
 
         if (!empty($done['score'])) {
-            $this->e('该考试您已填写');
+            $this->e('该考试您已通过');
         }
 
         //判断exam_questions表是否有记录
