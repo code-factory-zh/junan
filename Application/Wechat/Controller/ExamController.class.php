@@ -24,7 +24,7 @@ class ExamController extends CommonController
         $this -> ignore_token(0);
 
         $this -> exam = new \Manage\Model\ExamModel;
-        $this -> member = new \Manage\Model\ExamMemberModel;
+        $this -> member = new \Wechat\Model\ExamMemberModel;
         $this -> course_model = new \Manage\Model\CourseModel;
         $this -> question = new \Manage\Model\QuestionsModel;
         $this -> detail = new \Wechat\Model\ExamDetailModel;
@@ -117,7 +117,7 @@ class ExamController extends CommonController
 					$exam_score_data = [
 						'account_id' => $account_id,
 						'exam_question_id' => $exist['id'],
-						'company_id' => $account_id,
+						'company_id' => $this->u['company_id'],
 						'course_id' => $g['course_id'],
 						'score' => $score,
 						'is_pass_exam' => ($score >= $is_pass_exam_info['pass_score']) ? 1 : 0,
@@ -484,7 +484,7 @@ class ExamController extends CommonController
 		$exam_score_data = [
 			'account_id' => $account_id,
 			'exam_question_id' => $exam_question_info['id'],
-			'company_id' => $account_id,
+			'company_id' => $this->u['company_id'],
 			'course_id' => $exam_question_info['course_id'],
 			'score' => (int)$score,
 			'is_pass_exam' => ($score >= $is_pass_exam_info['pass_score']) ? 1 : 0,
@@ -496,5 +496,14 @@ class ExamController extends CommonController
 		}else{
 			$this->e('交卷失败');
 		}
+	}
+
+	public function score_list(){
+		$accout_id = $this->u['id'];
+//		$accout_id = 1;
+
+		$list = $this->member->getUserScoreList($accout_id);
+
+		$this->rel($list)->e();
 	}
 }
