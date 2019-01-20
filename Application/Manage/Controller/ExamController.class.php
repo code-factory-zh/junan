@@ -90,7 +90,7 @@ class ExamController extends BaseController {
 		$data = $this -> exam -> where(['id' => $p['id']]) -> find();
 
 		//取所有的课程
-		$data['course'] = $this->course->getList(['type' => 0]);
+		$data['course'] = $this->course->getNotExamCourse();
 
 		$this -> assign($data);
 		$this -> display('Exam/edit');
