@@ -452,7 +452,7 @@ class ExamController extends CommonController
 			$this->e('试题不存在');
 		}
 
-		if($examQuestion['is_pass_exam']){
+		if($exam_question_info['is_pass_exam']){
 			$this->e('您已经通过了这次考试,无须再次考试');
 		}
 
@@ -504,7 +504,8 @@ class ExamController extends CommonController
 	public function finish_exam(){
 		$account_id = 1;
 //		$account_id = $this->u['id'];
-		$g = I('post.');
+//		$g = I('post.');
+		$this->ignore_token()-> _post($g, ['exam_question_id']);
 
 		//插入memeber表
 		$score = $this->detail->getSumScore(['account_id' => $account_id, 'exam_question_id' => $g['exam_question_id']]);
@@ -515,7 +516,7 @@ class ExamController extends CommonController
 
 		$exam_question_info = $this->examQuestion->findExamQuestion(['id' => $g['exam_question_id'], 'account_id' => $account_id, 'status' => 1]);
 
-		if($exam_question_info){
+		if(!$exam_question_info){
 			$this->e('考试不存在');
 		}
 
@@ -537,7 +538,8 @@ class ExamController extends CommonController
 		$exam_score_data = [
 			'account_id' => $account_id,
 			'exam_question_id' => $exam_question_info['id'],
-			'company_id' => $this->u['company_id'],
+//			'company_id' => $this->u['company_id'],
+			'company_id' => 1,
 			'course_id' => $exam_question_info['course_id'],
 			'score' => (int)$score,
 			'is_pass_exam' => ($score >= $is_pass_exam_info['pass_score']) ? 1 : 0,
