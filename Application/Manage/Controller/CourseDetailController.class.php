@@ -69,7 +69,7 @@ class CourseDetailController extends BaseController
 
                 $ext = substr(strrchr($p['content'], '.'), 1);
 
-                if ($p['type'] == 2 && $ext != 'ppt') {
+                if ($p['type'] == 2 && !in_array($ext, ['ppt', 'pptx'])) {
                     $this -> e('文件必须是PPT');
                 } elseif ($p['type'] == 3 && !in_array($ext, ['mp4', 'flv', 'mp3', 'wav', 'wma', 'wmv', 'mid', 'avi', 'mpg', 'asf', 'rm', 'rmvb'])) {
                     $this->e('文件必须是视频');
