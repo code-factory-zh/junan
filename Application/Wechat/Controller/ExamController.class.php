@@ -438,12 +438,12 @@ class ExamController extends CommonController
 			$search_key = array_search($v, $exam_question_ids);
 			if($search_key === false){
 				//没答题
-				$tmp['order'] = $k + 1;
+				$tmp['question_id'] = $k + 1;
 				$tmp['is_answer'] = 0;
 				$tmp['answer_result'] = 0;
 			}else{
 				//答题了
-				$tmp['order'] = $k + 1;
+				$tmp['question_id'] = $k + 1;
 				$tmp['is_answer'] = 1;
 				$tmp['answer_result'] = (int)$exam_detail_list[$search_key]['status'];
 			}
