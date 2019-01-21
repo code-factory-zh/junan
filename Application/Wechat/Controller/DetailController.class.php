@@ -70,6 +70,11 @@ class DetailController extends CommonController {
 		}
 		$data = $data[0];
 
+		// 取得上一章和下一章的ID
+		$prevNext = $this -> account_course -> getPrevNext($data['id']);
+		$data['next'] = $prevNext['next'];
+		$data['prev'] = $prevNext['prev'];
+
 		$arr = [
 			'company_id'  => $this -> u['company_id'],
 			'account_id'  => $this -> u['id'],

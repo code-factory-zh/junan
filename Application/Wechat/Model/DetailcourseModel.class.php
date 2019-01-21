@@ -25,9 +25,28 @@ class DetailcourseModel extends CommonModel {
 
         $where['cd.is_deleted'] = 0;
         return $this -> table('course_detail cd') -> field($fields) -> where($where) ->
-        join('join course c ON c.id = cd.course_id') -> 
+        join('join course c ON c.id = cd.course_id') ->
         order($order) -> select();
     }
+
+
+    /**
+     * 取某课程上一章和下一章的ID
+     * @Author   邱湘城
+     * @DateTime 2019-01-21T22:21:24+0800
+     */
+    public function getPrevNext($id) {
+
+        $next    = $this -> table('course_detail cd') -> where('id >' . $id) -> order('id desc') -> limit(1) -> getField('id');
+        $prev    = $this -> table('course_detail cd') -> where('id <' . $id) -> order('id desc') -> limit(1) -> getField('id');
+        $hasNext = $this -> table('course_detail cd') -> where('id = ' . $next) -> count();
+        $hasPrev = $this -> table('course_detail cd') -> where('id = ' . $prev) -> count();
+
+        if (!$hasNext) $next = 0;
+        if (!$hasPrev) $prev = 0;
+        return ['prev' => $prev, 'next' => $next];
+    }
+
 
     /**
      * 将某个章节置为已学习
