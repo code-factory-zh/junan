@@ -48,6 +48,18 @@ class IndexController extends CommonController {
 		$where = "cac.account_id = {$this -> u['id']}";
 		$list = $this -> account_course -> getListCourses($where);
 		foreach ($list as &$items) {
+
+			// 全部学完可以考试
+			// 按钮点亮
+			if ($items['total_chapter'] == $items['studied']) {
+				$items['finished'] = 1;
+			}
+
+			// 但如果已有考试通过按钮熄灭
+			if ($items['is_pass_exam']) {
+				$items['finished'] = 0;
+			}
+
 			$items['btn'] = '考试';
 			$items['url'] = '';
 			$items['icon'] = '';

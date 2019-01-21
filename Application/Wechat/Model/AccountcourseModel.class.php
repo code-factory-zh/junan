@@ -33,7 +33,7 @@ class AccountcourseModel extends CommonModel {
      */
     public function getListCourses($where) {
 
-        $sql = "SELECT cac.id, cac.course_id, c.name, cac.is_pass_exam finished, 
+        $sql = "SELECT cac.id, cac.course_id, c.name, cac.is_pass_exam, 
                 (SELECT COUNT(*) FROM course_detail cd WHERE cd.course_id = cac.course_id) total_chapter,
                 (SELECT COUNT(*) FROM company_account_course_chapter cacc WHERE cacc.status = 0 AND cacc.course_id = cac.course_id) studied
                 FROM company_account_course cac
