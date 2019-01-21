@@ -56,7 +56,7 @@ class CourseController extends BaseController {
 				//新增
 				//通用课程只能有一个
 				$res = $this->course->getOne('type = 1 and is_deleted = 0');
-				if($res){
+				if($res && ($data['type'] == 1)){
 					$this->e('通用课程只能有一个');
 				}
 
