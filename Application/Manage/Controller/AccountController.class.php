@@ -77,6 +77,12 @@ class AccountController extends BaseController {
 			$job_id = $p['job_id'];
 			$p['company_id'] = $this -> userinfo['id'];
 
+			// 检查是否存在当前用户手机号
+			$check = M('account') -> where(['company_id' => $this -> userinfo['id'], 'mobile' => $p['mobile']]) -> count();
+			if ($check) {
+				$this -> e('您已添加过该用户，请不要重复添加！');
+			}
+
 			unset($p['job_id']);
 			if (!($id = $this -> account -> add($p))) {
 				$this -> e('增加子帐户失败!');
@@ -84,7 +90,6 @@ class AccountController extends BaseController {
 
 			// 插入关系数据
 			$time = time();
-			// $account_job = M('account_job');
 			$done = M('account_job') -> table('account_job') -> add([
 				'company_id' => $this -> userinfo['id'],
 				'account_id' => $id,
