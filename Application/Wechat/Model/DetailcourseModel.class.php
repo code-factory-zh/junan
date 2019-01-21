@@ -37,7 +37,7 @@ class DetailcourseModel extends CommonModel {
      */
     public function getPrevNext($id) {
 
-        $next    = $this -> table('course_detail cd') -> where('id >' . $id) -> order('id desc') -> limit(1) -> getField('id');
+        $next    = $this -> table('course_detail cd') -> where('id >' . $id) -> order('id asc') -> limit(1) -> getField('id');
         $prev    = $this -> table('course_detail cd') -> where('id <' . $id) -> order('id desc') -> limit(1) -> getField('id');
         $hasNext = $this -> table('course_detail cd') -> where('id = ' . $next) -> count();
         $hasPrev = $this -> table('course_detail cd') -> where('id = ' . $prev) -> count();
