@@ -581,8 +581,8 @@ class ExamController extends CommonController
 	 * @return  array
 	 */
 	public function score_list(){
-//		$accout_id = $this->u['id'];
-		$accout_id = 1;
+		$accout_id = $this->u['id'];
+//		$accout_id = 1;
 
 		$list = $this->member->getUserScoreList($accout_id);
 
