@@ -61,7 +61,7 @@ class CurriculumController extends BaseController {
 		// session($session_key, null);
 
 		$this -> _get($p, ['course_id']);
-		$where = ['c.id' => $p['course_id'], 'aj.company_id' => $this -> userinfo['id'], 'a.status' => 0, 'c.is_deleted' => 0];
+		$where = ['c.id' => $p['course_id'], 'a.company_id' => $this -> userinfo['id'], 'a.status' => 0, 'c.is_deleted' => 0];
 		$list = $this -> account -> getAccountsByWhere($where);
 
 		// 去重

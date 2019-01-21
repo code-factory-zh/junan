@@ -34,10 +34,10 @@ class AccountModel extends BaseModel {
 	 */
 	public function getAccountsByWhere($where) {
 
-		return $this -> table('course c')
-		-> join('join account_job aj on aj.job_id = c.job_id')
-		-> join('join account a on a.id = aj.account_id')
-		-> where($where) -> select();
+		return $this -> table('account a') ->
+				join('account_job aj on aj.account_id = a.id') ->
+				join('join course c on c.job_id = aj.job_id') ->
+				where($where) -> select();
 	}
 
 

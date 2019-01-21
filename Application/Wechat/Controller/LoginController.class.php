@@ -101,6 +101,14 @@ class LoginController extends CommonController {
 	}
 
 
+	// 检查用户是否已登录过
+	public function check() {
+
+		$this -> _get($p, ['token']);
+		$this -> e();
+	}
+
+
 	public function x() {
 
 		$_SESSION["wwxw"] = 1;
