@@ -23,7 +23,16 @@ class ExamMemberModel extends BaseModel
     public function _after_insert($data, $options)
 	{
 		//插入表以后更新章节表的状态status=1 和 company_account_course 表的is_pass_exam 字段
-		
+		if($data['is_pass_exam'] == 1){
+			//只有考过了才更新company_account_course表
+			$company_account_course_model = new \Wechat\Model\CompanyAccountModel;
+			$company_account_course_model->where(['account_id' => $data['account_id'], 'course_id' => $data['course_id']])->save(['is_pass_exam' => 1]);
+		}
+
+		//更新章节状态status=1
+		$account_course_model = new \Wechat\Model\AccountcourseModel;
+		$account_course_model->where(['account_id' => $data['account_id'], 'course_id' => $data['course_id']])->save(['status' => 1]);
+
 	}
 
 

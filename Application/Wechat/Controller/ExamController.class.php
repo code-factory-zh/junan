@@ -58,8 +58,8 @@ class ExamController extends CommonController
 		$g = I('get.');
 
 //        $this->isInt(['course_id']);
-//		$account_id = $this->u['id'];
-		$account_id = 1;
+		$account_id = $this->u['id'];
+//		$account_id = 1;
 
         //是否已学习完成
 
@@ -79,22 +79,25 @@ class ExamController extends CommonController
 			$common_course_id = $common_course['id'];
 		}
 
+		//将考试信息抽出来
+		$exam_info = $this->exam->getOne('course_id = '. $g['course_id']);
+		$radioNum = $exam_info['dx_question_amount'];
+		$checkboxNum = $exam_info['fx_question_amount'];
+		$judgeNum = $exam_info['pd_question_amount'];
+
         if ($exist) {
         	//查询是否已经过期
 			$expired_time = $exist['created_time'] + ($exist['exam_time'] * 60);
-			if(time() - $expired_time > 0){
+
+			if((time() - $expired_time > 0)){
 				//没过期,则取exam_question中的记录,下面统一处理
 
 				//如果这时候没有答题,则重新生成一套
-				$is_answerd_info = $this->detail->getRecord('id', ['exam_question_id' => $exist['id']]);
+				$exist_exam_question_id = $not_pass_exam ? $not_pass_exam['exam_question_id'] : $exist['id'];
+				$is_answerd_info = $this->detail->getRecord('id', ['exam_question_id' => $exist_exam_question_id]);
 
 				if(!$is_answerd_info){
 					//重新生成题库
-					$exam_info = $this->exam->getOne('course_id = '. $g['course_id']);
-					$radioNum = $exam_info['dx_question_amount'];
-					$checkboxNum = $exam_info['fx_question_amount'];
-					$judgeNum = $exam_info['pd_question_amount'];
-
 					$questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
 
 					$data = [
@@ -146,16 +149,32 @@ class ExamController extends CommonController
 						$this->e('系统错误');
 					}
 				}
+			}else{
+				//如果没过期,而且考试不及格,则重新出题
+				$not_pass_exam = $this->member->findData(['account_id' => $account_id, 'course_id' => $g['course_id'], 'is_pass_exam' => 0]);
+
+				if($not_pass_exam && $not_pass_exam['exam_question_id'] == $exist['id']){
+					//重新出题
+					//重新生成题库
+					$questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
+
+					$data = [
+						'exam_id' => $exam_info['id'],
+						'account_id' => $account_id,
+						'exam_time' => $exam_info['time'],
+						'status' => 1,
+						'course_id' => $g['course_id'],
+						'question_ids' => implode(',', $questionIds),
+					];
+					if (!$this->examQuestion->add($data))
+					{
+						$this->e('重新生成题库失败');
+					}
+				}
 			}
         } else {
             //计算需要得出的考试类型题目数量
-			//查询课程对应的exam信息
-			$exam_info = $this->exam->getOne('course_id = '. $g['course_id']);
-
-            $radioNum = $exam_info['dx_question_amount'];
-            $checkboxNum = $exam_info['fx_question_amount'];
-            $judgeNum = $exam_info['pd_question_amount'];
-
+			//查询课程对应的exam信
             $questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
 
 			$data = [
@@ -219,8 +238,8 @@ class ExamController extends CommonController
      * */
     public function detail()
     {
-//    	$account_id = $this->u['id'];
-    	$account_id = 1;
+    	$account_id = $this->u['id'];
+//    	$account_id = 1;
 //		echo $account_id;
 
 //        $this->_get($g, I('get.'));
@@ -285,8 +304,8 @@ class ExamController extends CommonController
      * */
     public function answer()
     {
-//		$account_id = $this->u['id'];
-		$account_id = 1;
+		$account_id = $this->u['id'];
+//		$account_id = 1;
 //        $this->_post($g, ['exam_question_id', 'question_id', 'answer_id']);
 //        $this->isInt(['id', 'question_id']);
 
@@ -442,8 +461,8 @@ class ExamController extends CommonController
 	 * @return  array
 	 */
     public function get_exam_question(){
-    	$account_id = 1;
-//		$account_id = $this->u['id'];
+//    	$account_id = 1;
+		$account_id = $this->u['id'];
 		$g = I('get.');
 
 		$exam_question_info = $this->examQuestion->findExamQuestion(['id' => $g['exam_question_id'], 'account_id' => $account_id, 'status' => 1]);
@@ -502,8 +521,8 @@ class ExamController extends CommonController
 	 * @return  array
 	 */
 	public function finish_exam(){
-		$account_id = 1;
-//		$account_id = $this->u['id'];
+//		$account_id = 1;
+		$account_id = $this->u['id'];
 //		$g = I('post.');
 		$this->ignore_token()-> _post($g, ['exam_question_id']);
 
@@ -538,8 +557,8 @@ class ExamController extends CommonController
 		$exam_score_data = [
 			'account_id' => $account_id,
 			'exam_question_id' => $exam_question_info['id'],
-//			'company_id' => $this->u['company_id'],
-			'company_id' => 1,
+			'company_id' => $this->u['company_id'],
+//			'company_id' => 1,
 			'course_id' => $exam_question_info['course_id'],
 			'score' => (int)$score,
 			'is_pass_exam' => ($score >= $is_pass_exam_info['pass_score']) ? 1 : 0,
