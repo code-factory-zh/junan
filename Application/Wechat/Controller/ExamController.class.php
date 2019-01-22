@@ -37,17 +37,6 @@ class ExamController extends CommonController
     }
 
     /**
-     * 前台考试列表
-     * */
-    public function list()
-    {
-        $data = ['list' => []];
-        $data['list'] = $this -> exam -> getlist(['is_deleted' => 0], 'id, name');
-
-        $this -> e(0, $data['list']);
-    }
-
-    /**
      * 前台题目获取
      *
      * @param int $id 课程ID
@@ -55,8 +44,8 @@ class ExamController extends CommonController
      * */
     public function questions()
     {
-//        $this->_get($g, 'course_id');
-		$g = I('get.');
+        $this->_get($g, 'course_id');
+//		$g = I('get.');
 
 //        $this->isInt(['course_id']);
 		$account_id = $this->u['id'];
@@ -170,7 +159,7 @@ class ExamController extends CommonController
 					];
 					if (!$this->examQuestion->add($data))
 					{
-						$this->e('重新生成题库失败');
+						$this->e('重新生成题库失败'.$account_id . '---'.json_encode($data));
 					}
 				}
 			}
@@ -189,7 +178,7 @@ class ExamController extends CommonController
 			];
             if (! $this->examQuestion->add($data)) {
 
-				$this->e('生成题库失败');
+				$this->e('生成题库失败'.$account_id . '---'.json_encode($data));
             }
         }
 
