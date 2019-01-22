@@ -57,7 +57,7 @@ class IndexController extends CommonController {
 
 			// 但如果已有考试通过按钮熄灭
 			if ($items['is_pass_exam']) {
-				$items['finished'] = 0;
+				$items['finished'] = 1;
 			}
 
 			$items['btn'] = '考试';
