@@ -22,7 +22,7 @@ class ExamController extends CommonController
     public function _initialize()
     {
         parent::_initialize();
-        $this -> ignore_token(0);
+//        $this -> ignore_token(0);
 
         $this -> course = new \Manage\Model\CourseModel;
         $this -> exam = new \Manage\Model\ExamModel;
@@ -31,6 +31,7 @@ class ExamController extends CommonController
         $this -> question = new \Manage\Model\QuestionsModel;
         $this -> detail = new \Wechat\Model\ExamDetailModel;
         $this -> examQuestion = new \Wechat\Model\ExamQuestionModel;
+		$this -> host = 'https://study.joinersafe.com/';
 
         $this -> account_id = 1;
     }
