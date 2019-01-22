@@ -159,7 +159,7 @@ class ExamController extends CommonController
 					];
 					if (!$this->examQuestion->add($data))
 					{
-						$this->e('重新生成题库失败'.$account_id . '---'.json_encode($data));
+						$this->e('重新生成题库失败');
 					}
 				}
 			}
@@ -178,7 +178,7 @@ class ExamController extends CommonController
 			];
             if (! $this->examQuestion->add($data)) {
 
-				$this->e('生成题库失败'.$account_id . '---'.json_encode($data));
+				$this->e('生成题库失败');
             }
         }
 
@@ -236,7 +236,8 @@ class ExamController extends CommonController
 //        $this->_get($g, I('get.'));
 //        $this->isInt(['question_id']);
 
-		$g = I('get.');
+//		$g = I('get.');
+		$this->_get($g, 'exam_question_id', 'question_id');
 		$question_sort = $g['question_id'] - 1;
 
 		//查看当前question_id
@@ -301,7 +302,7 @@ class ExamController extends CommonController
 //        $this->isInt(['id', 'question_id']);
 
 //		$g = I('post.');
-		$this->ignore_token()-> _post($g, ['exam_question_id', 'question_id', 'answer_id']);
+		$this->_post($g, ['exam_question_id', 'question_id', 'answer_id']);
 
 		$question_sort = $g['question_id'] - 1;
 
@@ -454,7 +455,8 @@ class ExamController extends CommonController
     public function get_exam_question(){
 //    	$account_id = 1;
 		$account_id = $this->u['id'];
-		$g = I('get.');
+//		$g = I('get.');
+		$this->_get($g, 'exam_question_id');
 
 		$exam_question_info = $this->examQuestion->findExamQuestion(['id' => $g['exam_question_id'], 'account_id' => $account_id, 'status' => 1]);
 
@@ -515,7 +517,7 @@ class ExamController extends CommonController
 //		$account_id = 1;
 		$account_id = $this->u['id'];
 //		$g = I('post.');
-		$this->ignore_token()-> _post($g, ['exam_question_id']);
+		$this->_post($g, ['exam_question_id']);
 
 		//插入memeber表
 		$score = $this->detail->getSumScore(['account_id' => $account_id, 'exam_question_id' => $g['exam_question_id']]);
