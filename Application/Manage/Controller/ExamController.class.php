@@ -92,6 +92,11 @@ class ExamController extends BaseController {
 		//取所有的课程
 		$data['course'] = $this->course->getNotExamCourse();
 
+		if($p['id']){
+			//增加一个当前已经取到的
+			$data['course'][] = $this->course->getOne(['id' => $data['course_id']]);
+		}
+
 		$this -> assign($data);
 		$this -> display('Exam/edit');
 	}
