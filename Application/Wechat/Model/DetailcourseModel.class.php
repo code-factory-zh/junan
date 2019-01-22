@@ -35,12 +35,12 @@ class DetailcourseModel extends CommonModel {
      * @Author   邱湘城
      * @DateTime 2019-01-21T22:21:24+0800
      */
-    public function getPrevNext($id) {
+    public function getPrevNext($id, $course_id) {
 
-        $next    = $this -> table('course_detail cd') -> where('id >' . $id) -> order('id asc') -> limit(1) -> getField('id');
-        $prev    = $this -> table('course_detail cd') -> where('id <' . $id) -> order('id desc') -> limit(1) -> getField('id');
-        $hasNext = $this -> table('course_detail cd') -> where('id = ' . $next) -> count();
-        $hasPrev = $this -> table('course_detail cd') -> where('id = ' . $prev) -> count();
+        $next    = $this -> table('course_detail cd') -> where('cd.id >' . $id . ' AND cd.course_id = ' . $course_id) -> order('id asc') -> limit(1) -> getField('id');
+        $prev    = $this -> table('course_detail cd') -> where('cd.id <' . $id . ' AND cd.course_id = ' . $course_id) -> order('id desc') -> limit(1) -> getField('id');
+        $hasNext = $this -> table('course_detail cd') -> where('cd.id = ' . $next . ' AND cd.course_id = ' . $course_id) -> count();
+        $hasPrev = $this -> table('course_detail cd') -> where('cd.id = ' . $prev . ' AND cd.course_id = ' . $course_id) -> count();
 
         if (!$hasNext) $next = 0;
         if (!$hasPrev) $prev = 0;

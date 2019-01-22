@@ -60,7 +60,7 @@ class DetailController extends CommonController {
 	 */
 	public function detailById() {
 
-		$this -> _get($p, ['id']);
+		$this -> _get($p, ['id', 'course_id']);
 
 		// 默认取第一条数据
 		$fields = ['cd.id', 'cd.type', 'cd.type', 'cd.sort num', 'cd.course_id', 'cd.detail course_detail', 'c.name course_name', 'cd.chapter chapter_name', 'cd.content'];
@@ -71,7 +71,7 @@ class DetailController extends CommonController {
 		$data = $data[0];
 
 		// 取得上一章和下一章的ID
-		$prevNext = $this -> account_course -> getPrevNext($data['id']);
+		$prevNext = $this -> account_course -> getPrevNext($data['id'], $p['course_id']);
 		$data['next'] = $prevNext['next'];
 		$data['prev'] = $prevNext['prev'];
 
