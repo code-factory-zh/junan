@@ -240,7 +240,7 @@ class ExamController extends CommonController
 		$this->_get($g, 'exam_question_id', 'question_id');
 		$question_sort = $g['question_id'] - 1;
 
-		$this->e('exam_question_id = '.$g['exam_question_id'] . ' ---question_id='.$g['question_id']);
+		$this->e('exam_question_id = '.$g['exam_question_id'] . ' ---question_id='.$g['question_id']  .'--account_id='.$account_id);
 		exit;
 
 		//查看当前question_id
