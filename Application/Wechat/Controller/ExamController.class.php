@@ -77,6 +77,9 @@ class ExamController extends CommonController
 		$checkboxNum = $exam_info['fx_question_amount'];
 		$judgeNum = $exam_info['pd_question_amount'];
 
+		//如果没过期,而且考试不及格,则重新出题
+		$not_pass_exam = $this->member->findData(['account_id' => $account_id, 'course_id' => $g['course_id'], 'is_pass_exam' => 0]);
+
         if ($exist) {
         	//查询是否已经过期
 			$expired_time = $exist['created_time'] + ($exist['exam_time'] * 60);
@@ -142,9 +145,6 @@ class ExamController extends CommonController
 					}
 				}
 			}else{
-				//如果没过期,而且考试不及格,则重新出题
-				$not_pass_exam = $this->member->findData(['account_id' => $account_id, 'course_id' => $g['course_id'], 'is_pass_exam' => 0]);
-
 				if($not_pass_exam && $not_pass_exam['exam_question_id'] == $exist['id']){
 					//重新出题
 					//重新生成题库
