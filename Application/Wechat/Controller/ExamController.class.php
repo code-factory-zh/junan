@@ -240,6 +240,9 @@ class ExamController extends CommonController
 		$this->_get($g, 'exam_question_id', 'question_id');
 		$question_sort = $g['question_id'] - 1;
 
+		$this->e('exam_question_id = '.$g['exam_question_id'] . ' ---question_id='.$g['question_id']);
+		exit;
+
 		//查看当前question_id
 		$examQuestion = $this -> examQuestion -> findExamQuestion(['id' => $g['exam_question_id'], 'status' => 1, 'account_id' => $account_id]);
 
