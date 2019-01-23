@@ -582,6 +582,7 @@ class ExamController extends CommonController
 	 * @return  array
 	 */
 	public function score_list(){
+		$this->_get();
 		$accout_id = $this->u['id'];
 //		$accout_id = 1;
 
