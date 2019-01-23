@@ -549,7 +549,7 @@ class ExamController extends CommonController
 
 		//加入考试总共做题时间
 		if(time() - $exam_question_info['created_time'] < $exam_question_info['exam_time'] * 60){
-			$use_time = (time() - $exam_question_info['created_time']) * 60;
+			$use_time = time() - $exam_question_info['created_time'];
 		}else{
 			$use_time = $exam_question_info['exam_time'] * 60;
 		}
