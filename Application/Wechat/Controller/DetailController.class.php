@@ -89,6 +89,8 @@ class DetailController extends CommonController {
 		$amount = $this -> account_course -> check($arr);
 		if (!$amount) {
 			M('company_account_course_chapter') -> add($arr);
+			echo M('company_account_course_chapter') -> getLastSql();
+			exit;
 		}
 		// pr($data);
 

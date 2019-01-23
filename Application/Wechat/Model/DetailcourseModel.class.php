@@ -55,7 +55,7 @@ class DetailcourseModel extends CommonModel {
      */
     public function check($data) {
 
-        $where = ['account_id' => $data['account_id'], 'course_id' => $data['course_id'], 'chapter_id' => $data['chapter_id']];
+        $where = ['account_id' => $data['account_id'], 'status' => 0, 'course_id' => $data['course_id'], 'chapter_id' => $data['chapter_id']];
         return $this -> table('company_account_course_chapter') -> where($where) -> count();
     }
 }
