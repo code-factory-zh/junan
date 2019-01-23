@@ -49,6 +49,7 @@ class IndexController extends CommonController {
 		$list = $this -> account_course -> getListCourses($where);
 		foreach ($list as &$items) {
 
+			$items['finished'] = 0;
 			// 全部学完可以考试
 			// 按钮点亮
 			if ($items['total_chapter'] == $items['studied'] && $items['total_chapter'] > 0) {
@@ -57,6 +58,7 @@ class IndexController extends CommonController {
 
 			// 但如果已有考试通过按钮熄灭
 			if ($items['is_pass_exam']) {
+				$items['studied'] = $items['total_chapter'];
 				$items['finished'] = 0;
 			}
 
