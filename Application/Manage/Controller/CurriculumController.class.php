@@ -117,9 +117,10 @@ class CurriculumController extends BaseController {
 			if (!in_array($data['job_id'], $accounts[$items])) {
 				$this -> e('用户"' . $items . '"的工作岗位不适用于该课程！');
 			}
-			$data['price'] += intval($course_price);
+			$data['price'] += floatval($course_price);
 			$data['phone_list'][] = $items;
 		}
+		// pr($data);
 
 		// 保存课程
 		$session_list = session($session_key);
@@ -159,7 +160,7 @@ class CurriculumController extends BaseController {
 			$users = $this -> account -> getAccountColumn(['company_id' => $this -> userinfo['id']]);
 			foreach ($list as $k => $items) {
 				$tmp = [
-					'job_name' => $jobs[$items['job_id']],
+					'job_name' => $jobs[$items['course_id']],
 					'users' => [],
 					'price' => $items['price'],
 				];
