@@ -84,7 +84,24 @@ class ExamController extends CommonController
         	//查询是否已经过期
 			$expired_time = $exist['created_time'] + ($exist['exam_time'] * 60);
 
-			if((time() - $expired_time > 0)){
+			if($not_pass_exam && $not_pass_exam['exam_question_id'] == $exist['id']){
+				//重新出题
+				//重新生成题库
+				$questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
+
+				$data = [
+					'exam_id' => $exam_info['id'],
+					'account_id' => $account_id,
+					'exam_time' => $exam_info['time'],
+					'status' => 1,
+					'course_id' => $g['course_id'],
+					'question_ids' => implode(',', $questionIds),
+				];
+				if (!$this->examQuestion->add($data))
+				{
+					$this->e('重新生成题库失败');
+				}
+			}else((time() - $expired_time > 0)){
 				//没过期,则取exam_question中的记录,下面统一处理
 
 				//如果这时候没有答题,则重新生成一套
@@ -142,25 +159,6 @@ class ExamController extends CommonController
 						$this->rel($data)->e();
 					}else{
 						$this->e('系统错误');
-					}
-				}
-			}else{
-				if($not_pass_exam && $not_pass_exam['exam_question_id'] == $exist['id']){
-					//重新出题
-					//重新生成题库
-					$questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
-
-					$data = [
-						'exam_id' => $exam_info['id'],
-						'account_id' => $account_id,
-						'exam_time' => $exam_info['time'],
-						'status' => 1,
-						'course_id' => $g['course_id'],
-						'question_ids' => implode(',', $questionIds),
-					];
-					if (!$this->examQuestion->add($data))
-					{
-						$this->e('重新生成题库失败');
 					}
 				}
 			}
