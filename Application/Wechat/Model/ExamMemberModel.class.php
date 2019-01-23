@@ -42,7 +42,7 @@ class ExamMemberModel extends BaseModel
      */
     public function findData($where) {
 
-        return $this -> where($where) -> find();
+        return $this -> where($where)->order('created_time desc') -> find();
     }
 
 	/**
