@@ -51,7 +51,7 @@ class IndexController extends CommonController {
 
 			// 全部学完可以考试
 			// 按钮点亮
-			if ($items['total_chapter'] == $items['studied']) {
+			if ($items['total_chapter'] == $items['studied'] && $items['total_chapter'] > 0) {
 				$items['finished'] = 1;
 			}
 
