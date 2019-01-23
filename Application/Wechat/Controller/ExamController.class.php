@@ -49,7 +49,7 @@ class ExamController extends CommonController
 
 //        $this->isInt(['course_id']);
 		$account_id = $this->u['id'];
-		$this->e('account_id'.$account_id);
+//		$this->e('account_id'.$account_id);
 //		$this->e($account_id);
 //		$account_id = 1;
 
@@ -230,7 +230,6 @@ class ExamController extends CommonController
      * */
     public function detail()
     {
-    	$account_id = $this->u['id'];
 //    	$account_id = 1;
 //		echo $account_id;
 
@@ -240,6 +239,8 @@ class ExamController extends CommonController
 //		$g = I('get.');
 		$this->_get($g, 'exam_question_id', 'question_id');
 		$question_sort = $g['question_id'] - 1;
+
+		$account_id = $this->u['id'];
 
 		$this->e('exam_question_id = '.$g['exam_question_id'] . ' ---question_id='.$g['question_id']  .'--account_id='.$account_id);
 		exit;
