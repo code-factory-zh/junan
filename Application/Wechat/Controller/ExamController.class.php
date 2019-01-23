@@ -49,6 +49,7 @@ class ExamController extends CommonController
 
 //        $this->isInt(['course_id']);
 		$account_id = $this->u['id'];
+		$this->e($account_id);
 //		$this->e($account_id);
 //		$account_id = 1;
 
