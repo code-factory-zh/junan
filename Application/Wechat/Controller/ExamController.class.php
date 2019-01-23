@@ -242,8 +242,8 @@ class ExamController extends CommonController
 
 		$account_id = $this->u['id'];
 
-		$this->e('exam_question_id = '.$g['exam_question_id'] . ' ---question_id='.$g['question_id']  .'--account_id='.$account_id);
-		exit;
+//		$this->e('exam_question_id = '.$g['exam_question_id'] . ' ---question_id='.$g['question_id']  .'--account_id='.$account_id);
+//		exit;
 
 		//查看当前question_id
 		$examQuestion = $this -> examQuestion -> findExamQuestion(['id' => $g['exam_question_id'], 'status' => 1, 'account_id' => $account_id]);
@@ -301,7 +301,6 @@ class ExamController extends CommonController
      * */
     public function answer()
     {
-		$account_id = $this->u['id'];
 //		$account_id = 1;
 //        $this->_post($g, ['exam_question_id', 'question_id', 'answer_id']);
 //        $this->isInt(['id', 'question_id']);
@@ -310,6 +309,8 @@ class ExamController extends CommonController
 		$this->_post($g, ['exam_question_id', 'question_id', 'answer_id']);
 
 		$question_sort = $g['question_id'] - 1;
+
+		$account_id = $this->u['id'];
 
 		//查看当前question_id
 		$examQuestion = $this -> examQuestion -> findExamQuestion(['id' => $g['exam_question_id'], 'status' => 1, 'account_id' => $account_id]);
@@ -459,9 +460,10 @@ class ExamController extends CommonController
 	 */
     public function get_exam_question(){
 //    	$account_id = 1;
-		$account_id = $this->u['id'];
 //		$g = I('get.');
 		$this->_get($g, 'exam_question_id');
+
+		$account_id = $this->u['id'];
 
 		$exam_question_info = $this->examQuestion->findExamQuestion(['id' => $g['exam_question_id'], 'account_id' => $account_id, 'status' => 1]);
 
@@ -520,9 +522,10 @@ class ExamController extends CommonController
 	 */
 	public function finish_exam(){
 //		$account_id = 1;
-		$account_id = $this->u['id'];
 //		$g = I('post.');
 		$this->_post($g, ['exam_question_id']);
+
+		$account_id = $this->u['id'];
 
 		//插入memeber表
 		$score = $this->detail->getSumScore(['account_id' => $account_id, 'exam_question_id' => $g['exam_question_id']]);
