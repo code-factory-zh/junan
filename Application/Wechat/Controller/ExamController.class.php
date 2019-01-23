@@ -101,7 +101,7 @@ class ExamController extends CommonController
 				{
 					$this->e('重新生成题库失败');
 				}
-			}else((time() - $expired_time > 0)){
+			}elseif((time() - $expired_time > 0)){
 				//没过期,则取exam_question中的记录,下面统一处理
 
 				//如果这时候没有答题,则重新生成一套
