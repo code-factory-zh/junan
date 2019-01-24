@@ -70,9 +70,9 @@ class LoginController extends CommonController {
 		$this -> isint(['company_id', 'mobile']);
 		$this -> phoneCheck($p['mobile']);
 
-		$where = ['company_id' => $p['company_id'], 'mobile' => $p['mobile']];
+		$where = ['a.company_id' => $p['company_id'], 'a.mobile' => $p['mobile'], 'a.status' => 0, 'c.status' => 0];
 		$user = $this -> user -> getCompanyUserByWhere($where);
-		if (!count($user)) {
+		if (!$user || !count($user)) {
 			$this -> e('登录失败!');
 		}
 

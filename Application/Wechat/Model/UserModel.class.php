@@ -23,9 +23,9 @@ class UserModel extends CommonModel {
      * @Author   邱湘城
      * @DateTime 2019-01-15T21:36:56+0800
      */
-    public function getCompanyUserByWhere($where, $fields = '*') {
+    public function getCompanyUserByWhere($where, $fields = 'a.*') {
 
-    	return $this -> where($where) -> find();
+    	return $this -> table('account a') -> where($where) -> join('join company c on c.id = a.company_id') -> find();
     }
 
     public function getUserJobs($account_id) {
