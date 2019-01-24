@@ -36,7 +36,7 @@ class LoginController extends CommonController {
 		$this -> ignore_token() -> _post($p, ['mobile']);
 		$us = $this -> user -> getCompanyInfo($p['mobile'], 'a.id company_id, c.company_name');
 		if (!count($us)) {
-			$this -> e('该手机号匹配不到企业！');
+			$this -> e('获取企业列表失败！');
 		}
 		$this -> rel($us) -> e();
 	}
