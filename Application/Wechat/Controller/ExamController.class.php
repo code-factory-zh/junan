@@ -130,7 +130,7 @@ class ExamController extends CommonController
 					$score = $this->detail->getSumScore(['account_id' => $account_id, 'exam_question_id' => $exist['id']]);
 
 					$data = [
-						'score' => $score
+						'score' => (int)$score
 					];
 
 					//是否通过考试字段
@@ -149,7 +149,7 @@ class ExamController extends CommonController
 						'exam_question_id' => $exist['id'],
 						'company_id' => $this->u['company_id'],
 						'course_id' => $g['course_id'],
-						'score' => $score,
+						'score' => (int)$score,
 						'is_pass_exam' => ($score >= $is_pass_exam_info['pass_score']) ? 1 : 0,
 						'use_time' => $use_time
 					];
@@ -503,7 +503,7 @@ class ExamController extends CommonController
 
 		$data = [
 			'question_info' => $result,
-			'score' => $score,
+			'score' => (int)$score,
 		];
 
 		$this->rel($data)->e();
@@ -529,7 +529,7 @@ class ExamController extends CommonController
 		$score = $this->detail->getSumScore(['account_id' => $account_id, 'exam_question_id' => $g['exam_question_id']]);
 
 		$data = [
-			'score' => $score
+			'score' => (int)$score
 		];
 
 		$exam_question_info = $this->examQuestion->findExamQuestion(['id' => $g['exam_question_id'], 'account_id' => $account_id, 'status' => 1]);
