@@ -25,6 +25,22 @@ class LoginController extends CommonController {
 		$this -> user = new \Wechat\Model\UserModel;
 	}
 
+
+	/**
+	 * 根据用户手机号取企业数据
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-25T00:22:33+0800
+	 */
+	public function getCompanyId() {
+
+		$this -> ignore_token() -> _post($p, ['mobile']);
+		$us = $this -> user -> getCompanyInfo($p['mobile'], 'a.id company_id, c.company_name');
+		if (!count($us)) {
+			$this -> e('没有找到数据！');
+		}
+		$this -> rel($us) -> e();
+	}
+
 	/**
 	 * 根据code取得openid
 	 * @Author   邱湘城
