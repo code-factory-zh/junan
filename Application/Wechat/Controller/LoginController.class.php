@@ -34,7 +34,7 @@ class LoginController extends CommonController {
 	public function getCompanyId() {
 
 		$this -> ignore_token() -> _post($p, ['mobile']);
-		$us = $this -> user -> getCompanyInfo($p['mobile'], 'a.id company_id, c.company_name');
+		$us = $this -> user -> getCompanyInfo($p['mobile'], 'a.company_id, c.company_name');
 		if (!count($us)) {
 			$this -> e('获取企业列表失败！');
 		}
