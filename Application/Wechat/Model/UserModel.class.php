@@ -38,6 +38,6 @@ class UserModel extends CommonModel {
         return $this -> table('account a') -> field($fields) -> 
                join('join company c on c.id = a.company_id') ->
                where(['a.mobile' => $mobile, 'a.status' => 0, 'c.status' => 0]) ->
-               find();
+               select();
     }
 }
