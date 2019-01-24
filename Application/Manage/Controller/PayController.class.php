@@ -160,7 +160,7 @@ class PayController extends BaseController {
 		}
 		$totalPrice = bcmul($totalPrice, 100, 2);
 
-$totalPrice = 1;
+// $totalPrice = 1;
 
 		vendor("Wxpay.lib.WxPayApi");
 		vendor("Wxpay.example.WxPayNativePay");
