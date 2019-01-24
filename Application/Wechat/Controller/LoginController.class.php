@@ -87,11 +87,9 @@ class LoginController extends CommonController {
 		// 绑定用户OPEN_ID
 		$token = md5(self::token_salt . $rel['session_key'] . $p['company_id'] . time());
 		$data = ['open_id' => $rel['openid'], 'otime' => time() + self::session_otime, 'session_key' => $token];
+		$where = ['company_id' => $p['company_id'], 'mobile' => $p['mobile']];
 		$this -> user -> where($where) -> save($data);
 
-		// if (!empty($user['open_id']) && $user['open_id'] != $rel['openid']) {
-		// 	$this -> e('open_id 匹配出错！');
-		// }
 		$user['openid'] = $rel['openid'];
 
 		$this -> save_openid_token($token, $user);
