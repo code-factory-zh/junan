@@ -483,7 +483,7 @@ class ExamController extends CommonController
 		$result = [];
 		foreach($quesiton_ids as $k => $v){
 			$search_key = array_search($v, $exam_question_ids);
-			if($search_key === false){
+			if($search_key === false || $search_key === null){
 				//没答题
 				$tmp['question_id'] = $k + 1;
 				$tmp['is_answer'] = 0;
