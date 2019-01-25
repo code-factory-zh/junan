@@ -61,9 +61,10 @@
                     <p class="course_name">{$v.job_name}</p>
                 </div>
                 <div>
-                  <foreach name="v.users" item="value">
+                  <foreach name="v.users" key="ksx" item="value">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-sm-offset-3 line">
-                        <span>{$value.name}</span><span class="middle">{$value.mobile}</span><span class="glyphicon glyphicon-remove remove_icon"></span>
+                        <span>{$value.name}</span><span class="middle">{$value.mobile}</span>
+                        <a href="/manage/curriculum/delShoppingCar?key={$k},{$ksx}"><span class="glyphicon glyphicon-remove remove_icon"></span></a>
                     </div>
                   </foreach>
                    <div class="col-md-6 col-xs-12 col-sm-offset-3 line" style="margin-top:20px;">
@@ -72,11 +73,13 @@
                 </div>
               </foreach>
             </div>
+            <if condition="$list">
             <!-- /购买的课程循环此列表 -->
             <div class="col-md-6 col-sm-6 col-xs-12 col-sm-offset-3">
                 <!-- <b style="display:inline-block;">ww</b> -->
                 <button class="btn btn-sm btn-success fr pay_btn" style="" onclick="pay()">确认支付</button>
             </div>
+            </if>
           </div>
         </div>
         <!-- 二维码弹窗 -->

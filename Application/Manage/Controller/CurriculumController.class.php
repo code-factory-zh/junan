@@ -172,8 +172,31 @@ class CurriculumController extends BaseController {
 			}
 		}
 
+		// pr($data);
 		$this -> assign('total', $total);
 		$this -> assign('list', $data);
 		$this -> display('Curriculum/buy');
+	}
+
+	// 删除购物车东西
+	public function delShoppingCar() {
+
+		$this -> _get($p);
+		if (empty($p['key'])) {
+			echo "<script>alert('错误！');</script>";
+		}
+
+		$del = explode(',', $p['key']);
+		$session_key = 'company_id:order:' . $this -> userinfo['id'];
+		$list = session($session_key);
+
+		$list[$del[0]]['price'] = $list[$del[0]]['price'] - ($list[$del[0]]['price'] / count($list[$del[0]]['phone_list']));
+		unset($list[$del[0]]['phone_list'][$del[1]]);
+		if (empty($list[$del[0]]['phone_list'])) {
+			unset($list[$del[0]]);
+		}
+
+		session($session_key, $list);
+		exit(header('Location: /manage/curriculum/order_list'));
 	}
 }
