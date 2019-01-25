@@ -25,6 +25,22 @@ class LoginController extends CommonController {
 		$this -> user = new \Wechat\Model\UserModel;
 	}
 
+
+	/**
+	 * 根据用户手机号取企业数据
+	 * @Author   邱湘城
+	 * @DateTime 2019-01-25T00:22:33+0800
+	 */
+	public function getCompanyId() {
+
+		$this -> ignore_token() -> _post($p, ['mobile']);
+		$us = $this -> user -> getCompanyInfo($p['mobile'], 'a.company_id, c.company_name');
+		if (!count($us)) {
+			$this -> e('获取企业列表失败！');
+		}
+		$this -> rel($us) -> e();
+	}
+
 	/**
 	 * 根据code取得openid
 	 * @Author   邱湘城
@@ -54,9 +70,9 @@ class LoginController extends CommonController {
 		$this -> isint(['company_id', 'mobile']);
 		$this -> phoneCheck($p['mobile']);
 
-		$where = ['company_id' => $p['company_id'], 'mobile' => $p['mobile']];
+		$where = ['a.company_id' => $p['company_id'], 'a.mobile' => $p['mobile'], 'a.status' => 0, 'c.status' => 0];
 		$user = $this -> user -> getCompanyUserByWhere($where);
-		if (!count($user)) {
+		if (!$user || !count($user)) {
 			$this -> e('登录失败!');
 		}
 
@@ -71,11 +87,9 @@ class LoginController extends CommonController {
 		// 绑定用户OPEN_ID
 		$token = md5(self::token_salt . $rel['session_key'] . $p['company_id'] . time());
 		$data = ['open_id' => $rel['openid'], 'otime' => time() + self::session_otime, 'session_key' => $token];
+		$where = ['company_id' => $p['company_id'], 'mobile' => $p['mobile']];
 		$this -> user -> where($where) -> save($data);
 
-		// if (!empty($user['open_id']) && $user['open_id'] != $rel['openid']) {
-		// 	$this -> e('open_id 匹配出错！');
-		// }
 		$user['openid'] = $rel['openid'];
 
 		$this -> save_openid_token($token, $user);

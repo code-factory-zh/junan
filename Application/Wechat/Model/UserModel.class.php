@@ -23,13 +23,21 @@ class UserModel extends CommonModel {
      * @Author   邱湘城
      * @DateTime 2019-01-15T21:36:56+0800
      */
-    public function getCompanyUserByWhere($where, $fields = '*') {
+    public function getCompanyUserByWhere($where, $fields = 'a.*') {
 
-    	return $this -> where($where) -> find();
+    	return $this -> table('account a') -> where($where) -> join('join company c on c.id = a.company_id') -> find();
     }
 
     public function getUserJobs($account_id) {
 
         return $this -> table('account_job') -> where(['account_id' => $account_id]) -> getField('job_id', true);
+    }
+
+    public function getCompanyInfo($mobile, $fields = '*') {
+
+        return $this -> table('account a') -> field($fields) -> 
+               join('join company c on c.id = a.company_id') ->
+               where(['a.mobile' => $mobile, 'a.status' => 0, 'c.status' => 0]) ->
+               select();
     }
 }
