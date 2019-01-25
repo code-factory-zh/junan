@@ -79,7 +79,7 @@ class ExamController extends BaseController {
 			if(!$p['course_id']){
 				$this->e('必须选择一门课程');
 			}
-			
+
 			if($score != 100)
 			{
 				$this->e('总分固定100分');
