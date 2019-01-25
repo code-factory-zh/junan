@@ -92,15 +92,15 @@ class ExamController extends BaseController {
 				if($t_v['type'] == 1){
 					//单选
 					if($p['dx_question_amount'] > $t_v['count']){
-						$this->e('出题单选题总数超出了已有单选题总数');
+						$this->e('出题单选题总数超出了本课程已有单选题总数');
 					}
 				}elseif($t_v['type'] == 2){
 					if($p['fx_question_amount'] > $t_v['count']){
-						$this->e('出题复选题总数超出了已有复选题总数');
+						$this->e('出题复选题总数超出了本课程已有复选题总数');
 					}
 				}elseif($t_v['type'] == 3){
 					if($p['pd_question_amount'] > $t_v['count']){
-						$this->e('出题判断题总数超出了已有判断题总数');
+						$this->e('出题判断题总数超出了本课程已有判断题总数');
 					}
 				}
 			}
