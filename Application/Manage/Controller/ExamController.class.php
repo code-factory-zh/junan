@@ -22,6 +22,7 @@ class ExamController extends BaseController {
 		$this -> exam = new \Manage\Model\ExamModel;
 		$this -> course = new \Manage\Model\CourseModel;
 		$this -> curri = new \Manage\Model\CurriculumModel;
+		$this -> questions = new \Manage\Model\QuestionsModel;
 	}
 
 
@@ -83,6 +84,25 @@ class ExamController extends BaseController {
 			if($score != 100)
 			{
 				$this->e('总分固定100分');
+			}
+
+			//题型总数不能超出已有题目总数,否则报错
+			$type_count_info = $this->questions->getQuestionByType();
+			foreach($type_count_info as $t_k => $t_v){
+				if($t_v['type'] == 1){
+					//单选
+					if($p['dx_question_amount'] > $t_v['count']){
+						$this->e('出题单选题总数超出了已有单选题总数');
+					}
+				}elseif($t_v['type'] == 2){
+					if($p['fx_question_amount'] > $t_v['count']){
+						$this->e('出题复选题总数超出了已有复选题总数');
+					}
+				}elseif($t_v['type'] == 3){
+					if($p['pd_question_amount'] > $t_v['count']){
+						$this->e('出题判断题总数超出了已有判断题总数');
+					}
+				}
 			}
 
 			$p['score'] = $score;

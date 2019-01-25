@@ -98,4 +98,13 @@ class QuestionsModel extends BaseModel {
 
 		return $this -> where($where) -> field($fields) -> select();
 	}
+
+	/**
+	 * 获取每种题型的总数
+	 */
+	public function getQuestionByType(){
+		$sql = 'select type,count(id) as count from questions where is_deleted=0 GROUP BY type';
+
+		return $this->query($sql);
+	}
 }
