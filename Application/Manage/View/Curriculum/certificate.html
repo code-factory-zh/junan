@@ -65,6 +65,7 @@
                          <th>手机号码</th>
                        </tr>
                      </thead>
+                     <if condition="$list">
                      <foreach name="list" key="k" item="v">
                      <tr>
                        <td><input type="checkbox" name="account[]" value="{$v.mobile}" /></td>
@@ -72,6 +73,13 @@
                        <td class="btn_div">{$v.mobile}</td>
                      </tr>
                      </foreach>
+                     <else />
+                     <tr>
+                     <td colspan="10">
+                     没有学员符合当前课程所对应的岗位！
+                     </td>
+                     </tr>
+                     </if>
                    </table>
                    <div>
                         <a href="/manage/curriculum/order_list">
