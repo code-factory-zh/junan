@@ -57,7 +57,7 @@ class ExamController extends BaseController {
 	public function edit() {
 
 		if (IS_POST) {
-			$needle = ['name', 'time', 'pass_score', 'dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'course_id',  'pd_question_score', 'detail'];
+			$needle = ['name', 'time', 'pass_score', 'dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'course_id',  'pd_question_score'];
 			$this -> _post($p, $needle);
 			$this -> isInt(['dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'course_id', 'pd_question_score']);
 

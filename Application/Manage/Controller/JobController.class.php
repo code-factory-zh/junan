@@ -47,11 +47,16 @@ class JobController extends BaseController {
 //			$this->_post($data, ['name']);
 
 			if (!$data['name']) {
-				$this->el(0, '岗位名称不能为空!');
+				$this->e('岗位名称不能为空!');
 			}
 
 			if(!$data['id']){
 				//新增
+				$is_name_exist = $this->job->getJobs('name', ['name' => $data['name']]);
+				if($is_name_exist){
+					$this->e('岗位名称已经存在了');
+				}
+
 				if($result = $this->job->add($data)){
 					$this->e();
 				}else{
@@ -62,7 +67,7 @@ class JobController extends BaseController {
 				if($result = $this->job->save($data)){
 					$this->e();
 				}else{
-					$this->el($result, 'fail');
+					$this->e('修改失败');
 				}
 			}
 		}
@@ -91,7 +96,7 @@ class JobController extends BaseController {
 			if($result){
 				$this->e();
 			}else{
-				$this->el($result, '删除失败');
+				$this->e('删除失败');
 			}
 		}
 	}

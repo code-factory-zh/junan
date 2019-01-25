@@ -11,6 +11,9 @@ use Common\Model\BaseModel;
 class JobModel extends BaseModel {
 
 	protected $tableName = 'job';
+	protected $_validate = array(
+		array('name','','岗位已经存在！不要重复创建',0,'unique',1), // 在新增的时候验证name字段是否唯一
+	);
 
 	public function _initialize() {
 
