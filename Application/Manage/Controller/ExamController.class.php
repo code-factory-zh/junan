@@ -62,6 +62,24 @@ class ExamController extends BaseController {
 			$this -> isInt(['dx_question_amount', 'fx_question_amount', 'pd_question_amount', 'dx_question_score', 'fx_question_score', 'course_id', 'pd_question_score']);
 
 			$score = $p['dx_question_amount'] * $p['dx_question_score'] + $p['fx_question_amount'] * $p['fx_question_score'] + $p['pd_question_amount'] * $p['pd_question_score'];
+
+			//没填参数的提示
+			if(!$p['name']){
+				$this->e('试题名称不能为空');
+			}
+
+			if(!$p['time']){
+				$this->e('考试时长不能为空');
+			}
+
+			if(!$p['pass_score']){
+				$this->e('及格分数必须大于0');
+			}
+
+			if(!$p['course_id']){
+				$this->e('必须选择一门课程');
+			}
+			
 			if($score != 100)
 			{
 				$this->e('总分固定100分');
