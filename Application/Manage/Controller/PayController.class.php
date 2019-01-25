@@ -156,9 +156,9 @@ class PayController extends BaseController {
 
 		$totalPrice = 0.00;
 		foreach ($list as $items) {
-			$totalPrice += intval($items['price']);
+			$totalPrice += floatval($items['price']);
 		}
-		$totalPrice = bcmul($totalPrice, 100, 2);
+		$totalPrice = intval(bcmul($totalPrice, 100, 2));
 
 // $totalPrice = 1;
 
