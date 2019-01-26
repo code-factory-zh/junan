@@ -35,7 +35,8 @@ class AdminModel extends BaseModel
 
     public function check($data, $args)
     {
-        if ($data['account'] != $args['account'] or password_verify($data['password'], $args['password'])) {
+        if ($data['account'] != $args['account'] || $data['password'] != $args['password']) {
+        // if ($data['account'] != $args['account'] or password_verify($data['password'], $args['password'])) {
             return false;
         }
         return true;
