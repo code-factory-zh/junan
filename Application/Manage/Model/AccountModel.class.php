@@ -32,9 +32,9 @@ class AccountModel extends BaseModel {
 	 * @Author   邱湘城
 	 * @DateTime 2019-01-11T21:50:38+0800
 	 */
-	public function getAccountsByWhere($where) {
+	public function getAccountsByWhere($where, $fields = '*, a.name uname') {
 
-		return $this -> table('account a') ->
+		return $this -> table('account a') -> field($fields) ->
 				join('account_job aj on aj.account_id = a.id') ->
 				join('join course c on c.job_id = aj.job_id') ->
 				where($where) -> select();

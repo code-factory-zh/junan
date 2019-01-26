@@ -39,6 +39,9 @@ class AdminController extends CommonController
     {
         if (IS_POST) {
             $post = I('post.');
+            if (empty($post['account']) || empty($post['password'])) {
+                $this -> e('用户名或密码不得为空！');
+            }
             $this->ignore_token();
             $user = $this->user->getAdmin(['account' => $post['account']]);
             if (!($u = $this->user->check($post, $user))) {
@@ -63,6 +66,6 @@ class AdminController extends CommonController
         if (!is_null(session('userinfo'))) {
             session('userinfo', null);
         }
-        header('Location:/' . self::login_page);
+        header('Location:/manage/admin/login');
     }
 }

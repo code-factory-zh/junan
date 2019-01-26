@@ -76,6 +76,7 @@ class CurriculumController extends CommonController {
 			}
 			$items['selected'] = 0;
 		}
+		$list = array_values($list);
 
 		// 默认选中刚刚已经点过的人
 		$ss = session($session_key);
