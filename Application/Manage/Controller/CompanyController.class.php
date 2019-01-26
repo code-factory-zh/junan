@@ -90,7 +90,7 @@ class CompanyController extends CommonController
             $this->ignore_token();
             $user = $this->company->getCompany(['company_name' => $post['company_name']]);
             if (!($u = $this->company->check($post, $user))) {
-                $this->e('公司名称或密码不正确');
+                $this->e('密码不正确或公司被禁用！');
             }
             $token = $this->token_fetch($u);
             $this->save_token('token', 1);
