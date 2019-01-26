@@ -66,6 +66,7 @@ class CourseController extends CommonController {
 					$this->e('fail');
 				}
 			}else{
+				$data['type'] == 1 && $data['job_id'] = 0;
 				//修改
 				if($result = $this->course->save($data)){
 					$this->e();
