@@ -153,6 +153,6 @@ class CompanyController extends CommonController
         if (!is_null(session('userinfo'))) {
             session('userinfo', null);
         }
-        header('Location:' . self::login_page_company);
+        header('Location:/' . self::login_page_company);
     }
 }

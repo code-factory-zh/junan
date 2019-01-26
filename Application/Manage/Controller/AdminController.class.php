@@ -63,6 +63,6 @@ class AdminController extends CommonController
         if (!is_null(session('userinfo'))) {
             session('userinfo', null);
         }
-        header('Location:' . self::login_page);
+        header('Location:/' . self::login_page);
     }
 }
