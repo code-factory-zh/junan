@@ -30,7 +30,7 @@ class IndexController extends CommonController {
 		if ($this -> select_domain() == 1) {
 			$this -> redirect(self::login_page);
 		}
-		$this -> redirect(self::login_page_company);
+		$this -> redirect(self::course_index);
 	    // $this->display('Index');
     }
 
