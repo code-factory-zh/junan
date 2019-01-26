@@ -7,7 +7,7 @@
  */
 namespace Manage\Controller;
 use Common\Controller\BaseController;
-class CurriculumController extends BaseController {
+class CurriculumController extends CommonController {
 
 	private $account;
 	private $curriculum;

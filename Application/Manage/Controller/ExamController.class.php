@@ -8,7 +8,7 @@
 namespace Manage\Controller;
 use Common\Controller\BaseController;
 
-class ExamController extends BaseController {
+class ExamController extends CommonController {
 
 	private $exam;
 	private $curri;

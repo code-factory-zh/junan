@@ -8,7 +8,7 @@
 namespace Manage\Controller;
 use Common\Controller\BaseController;
 
-class CourseDetailController extends BaseController
+class CourseDetailController extends CommonController
 {
     private $courseDetail;
     private $course;

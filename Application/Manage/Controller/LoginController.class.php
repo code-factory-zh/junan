@@ -6,7 +6,7 @@
  * @Date   2017/12/12
  */
 namespace Manage\Controller;
-use Manage\Controller\CommonController;
+use Common\Controller\BaseController;
 class LoginController extends CommonController {
 
 	private $user;

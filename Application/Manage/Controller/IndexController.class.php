@@ -7,7 +7,7 @@
  */
 namespace Manage\Controller;
 use Common\Controller\BaseController;
-class IndexController extends BaseController {
+class IndexController extends CommonController {
 
 	// 针对HTTP接口的固定TOKEN
 	CONST HTTP_TOKEN_N1 = '8FA02B017FCDE7836A6FDB5D00AC638F';

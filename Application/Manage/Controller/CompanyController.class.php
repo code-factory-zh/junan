@@ -10,7 +10,7 @@ namespace Manage\Controller;
 
 use Common\Controller\BaseController;
 
-class CompanyController extends BaseController
+class CompanyController extends CommonController
 {
 
 
@@ -150,11 +150,9 @@ class CompanyController extends BaseController
      */
     public function logout()
     {
-        if (session('userinfo')) {
+        if (!is_null(session('userinfo'))) {
             session('userinfo', null);
-            $this->display('Company/login');
         }
-        echo '<script>alert("尚未登录用户！");document.location.href="/"</script>';
-        exit();
+        header('Location:' . self::login_page_company);
     }
 }

@@ -51,9 +51,9 @@ var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
 
 
 //top_nav
-function init_top_nav(){
-	$('.top_nav_user').load('/static/build/components/top_nav.html');
-}
+// function init_top_nav(){
+// 	$('.top_nav_user').load('/static/build/components/top_nav.html');
+// }
 
 // Sidebar
 function init_sidebar() {
@@ -5045,7 +5045,7 @@ if (typeof NProgress != 'undefined') {
 		init_autosize();
 		init_autocomplete();
 		// 头部导航栏引用
-		init_top_nav();
+		// init_top_nav();
 	});
 	
 

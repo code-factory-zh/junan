@@ -23,6 +23,8 @@ class CommonController extends BaseController {
 	public function _initialize() {
 
 		parent::_initialize();
+		$this -> assign('uf', $this -> userinfo);
+		$this -> assign('domain', $this -> select_domain());
 	}
 
 	// 生成字母随机数

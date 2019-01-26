@@ -7,7 +7,7 @@
  */
 namespace Manage\Controller;
 use Common\Controller\BaseController;
-class AccountController extends BaseController {
+class AccountController extends CommonController {
 
 
 	private $job;

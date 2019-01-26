@@ -8,7 +8,7 @@
 namespace Manage\Controller;
 use Common\Controller\BaseController;
 header("Content-type:text/html;charset=utf-8");
-class PayController extends BaseController {
+class PayController extends CommonController {
 
 	public function _initialize() {
 

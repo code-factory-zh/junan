@@ -10,7 +10,7 @@ use Common\Controller\BaseController;
 use Manage\Model\CourseModel;
 use Manage\Model\QuestionsModel;
 
-class QuestionController extends BaseController {
+class QuestionController extends CommonController {
 
     private $question;
     private $course;
