@@ -69,7 +69,7 @@
                      <if condition="$list">
                      <foreach name="list" key="k" item="v">
                      <tr>
-                       <td><input type="checkbox" name="account[]" value="{$v.mobile}" /></td>
+                       <td><input type="checkbox" name="account[]" value="{$v.mobile}" <if condition="$v.selected eq 1">checked</if> /></td>
                        <td>{$v.name}</td>
                        <td class="btn_div">{$v.mobile}</td>
                      </tr>

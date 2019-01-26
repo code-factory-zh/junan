@@ -57,6 +57,7 @@
                     <thead>
                     <tr>
                         <th>课程名称</th>
+                        <th>课程价格</th>
                         <th>已报名人数</th>
                         <th>操作</th>
                     </tr>
@@ -64,6 +65,7 @@
                     <foreach name="list" key="k" item="v">
                     <tr>
                       <td>{$v.name}</td>
+                      <td>￥ {$v.price}</td>
                       <td>{$v.amount}</td>
                       <td class="btn_div">
                           <a href="/manage/curriculum/show_account?course_id={$v.id}&job_id={$v.job_id}"><button class="btn btn-success btn-sm add_class">添加课程</button></a>

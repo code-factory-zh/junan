@@ -36,7 +36,7 @@ class CurriculumController extends CommonController {
 		// session($session_key, null);
 
 		$where = 1;
-		$data['list'] = $this -> curriculum -> getCourseListByWhere($where, 'c.id, c.name, c.job_id, cac.amount');
+		$data['list'] = $this -> curriculum -> getCourseListByWhere($where, 'c.id, c.name, c.amount price, c.job_id, cac.amount');
 		$data['course_id'] = $g['course_id'];
 		$data['job_id'] = $g['job_id'];
 
@@ -57,7 +57,8 @@ class CurriculumController extends CommonController {
 	 */
 	public function show_account() {
 
-		// $session_key = 'company_id:order:' . $this -> userinfo['id'];
+		$session_key = 'company_id:order:' . $this -> userinfo['id'];
+		// pr(session($session_key));
 		// session($session_key, null);
 
 		$this -> _get($p, ['course_id']);
@@ -68,9 +69,28 @@ class CurriculumController extends CommonController {
 		$where = ['company_id' => $this -> userinfo['id'], 'course_id' => $p['course_id'], 'status' => 0];
 		$accounts = $this -> account -> getCourseByCpnid($where);
 		$accounts = array_values($accounts);
-		foreach ($list as $k => $items) {
+		foreach ($list as $k => &$items) {
 			if (in_array($items['account_id'], $accounts)) {
 				unset($list[$k]);
+				continue;
+			}
+			$items['selected'] = 0;
+		}
+
+		// 默认选中刚刚已经点过的人
+		$ss = session($session_key);
+		if (!is_null($ss)) {
+			if (isset($ss[$p['course_id']])) {
+				if (isset($ss[$p['course_id']]['phone_list'])) {
+					$record = $ss[$p['course_id']]['phone_list'];
+					if (count($record)) {
+						foreach ($list as &$values) {
+							if (in_array($values['mobile'], $record)) {
+								$values['selected'] = 1;
+							}
+						}
+					}
+				}
 			}
 		}
 
