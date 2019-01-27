@@ -87,4 +87,22 @@ class CourseController extends CommonController {
 		$this->display();
 	}
 
+	/**
+	 * 删除课程
+	 * @author cuiruijun
+	 * @url    manage/course/del
+	 * @return  array
+	 */
+	public function del()
+	{
+		if (!empty(I('post.id'))){
+			$result = $this->course->del('id = ' . I('post.id'));
+			if($result){
+				$this->e();
+			}else{
+				$this->e('删除失败');
+			}
+		}
+	}
+
 }
