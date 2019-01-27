@@ -119,6 +119,9 @@
         <div class="btns col-xs-12 twoBtn" style="text-align: center;margin-top:50px;">
             <a href="/manage/course_detail/index?id={$course_id}"><button class="btn btn-default btn-sm" type="button">取消</button></a>
             <button class="btn btn-success btn-sm" id="save" onclick="formSubmit()">保存</button>
+            <if condition="$courseid && $id">
+                <button class="btn btn-error btn-sm" id="preview" onclick="previewSubmit()">预览</button>
+            </if>
         </div>
         </div>
     <!-- /页面内容 -->
@@ -169,6 +172,21 @@
         })
         return false
     })
+
+    function previewSubmit() {
+
+        var course_id = {$courseid}
+
+        $.ajax({
+            url:  '/manage/courseDetail/preview',
+            data: {course_id: course_id},
+            dataType: "json",
+            type: "post",
+            success: function(r) {
+                alert(r.msg)
+            },
+        })
+    }
 </script>
 </body>
 </html>
