@@ -24,4 +24,11 @@ class CompanyAccountModel extends CommonModel {
 	{
 		$data['updated_time'] = time();
 	}
+
+	/**
+	 * 根据条件查询结果
+	 */
+	public function getRecord($where){
+		return $this->where($where)->select();
+	}
 }

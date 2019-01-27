@@ -12,6 +12,7 @@ class ExamController extends CommonController {
 
 	private $exam;
 	private $curri;
+	private $exam_member;
 
 	public function _initialize() {
 
@@ -23,6 +24,7 @@ class ExamController extends CommonController {
 		$this -> course = new \Manage\Model\CourseModel;
 		$this -> curri = new \Manage\Model\CurriculumModel;
 		$this -> questions = new \Manage\Model\QuestionsModel;
+		$this -> exam_member = new \Manage\Model\ExamMemberModel();
 	}
 
 
@@ -161,5 +163,40 @@ class ExamController extends CommonController {
 
 		$this -> assign($data);
 		$this -> display('Exam/mlist');
+	}
+
+	/**
+	 * 删除
+	 * @author cuiruijun
+	 * @date   2019/1/27 上午11:59
+	 * @url    exam/del
+	 * @method post
+	 *
+	 * @param  int id
+	 * @return  array
+	 */
+	public function del(){
+		if (!empty(I('post.id'))){
+			//判断是否有相应课程,如果有,就不能删除
+			$exam_info = $this->exam_member->isDelExam(I('post.id'));
+			if($exam_info){
+				foreach($exam_info as $k => $v){
+					if($v['account_id'] && !$v['is_pass_exam']){
+						$this->e('该试题还有未完成考试或者考试失败的用户,不能删除');
+					}
+				}
+			}
+
+			$data = [
+				'id' => I('post.id'),
+				'is_deleted' => 1,
+			];
+			$result = $this->exam->save($data);
+			if($result){
+				$this->e();
+			}else{
+				$this->e('删除失败');
+			}
+		}
 	}
 }

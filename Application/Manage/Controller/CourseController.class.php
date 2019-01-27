@@ -12,6 +12,7 @@ class CourseController extends CommonController {
 
 	private $course;
 	private $job;
+	private $company_account;
 
 	public function _initialize() {
 
@@ -19,6 +20,7 @@ class CourseController extends CommonController {
 		$this -> islogin();
 		$this->course = new \Manage\Model\CourseModel;
 		$this->job = new \Manage\Model\JobModel;
+		$this->company_account = new \Wechat\Model\CompanyAccountModel;
 	}
 
 	/**
@@ -29,9 +31,9 @@ class CourseController extends CommonController {
 	 * @return  array
 	 */
 	public function index() {
-		$jobs = $this->course->getList();
+		$courses = $this->course->getList();
 
-		$data['list'] = $jobs;
+		$data['list'] = $courses;
 		$this->assign($data);
 		$this->display();
 	}
@@ -85,6 +87,36 @@ class CourseController extends CommonController {
 		$data['jobs'] = $this->job->getJobs('id, name');
 		$this->assign($data);
 		$this->display();
+	}
+
+	/**
+	 * 删除课程
+	 * @author cuiruijun
+	 * @url    manage/course/del
+	 * @return  array
+	 */
+	public function del()
+	{
+		if (!empty(I('post.id'))){
+			$data = [
+				'is_deleted' => 1,
+				'id' =>  I('post.id')
+			];
+			//1.该课程是否有有人购买且学习进度还有效。
+			//2.该课程是否有人购买，在学习进度无效的时候是否考试通过了，如果没通过也不给删除。
+			$is_not_pass_list = $this->company_account->getRecord(['course_id' => $data['id'], 'is_pass_exam' => 0]);
+
+			if($is_not_pass_list){
+				$this->e('此课程正在被使用,不能被删除');
+			}
+
+			$result = $this->course->save($data);
+			if($result){
+				$this->e();
+			}else{
+				$this->e('删除失败');
+			}
+		}
 	}
 
 }
