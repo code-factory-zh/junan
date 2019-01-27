@@ -183,8 +183,22 @@ class QuestionController extends CommonController {
             $this -> el($record, '记录不存在');
         }
 
+        //是否能够删除,判定条件:判断出题的时候，有没有随机到这道题。 如果没随机到，则可以直接删除。 如果有，还要根据exam_question_id去判断这套题有没有出考试结果，出了考试结果，不管过没过，都可以删除
         //删除
-        $result = $this -> question -> del('id = ' .$p['id']);
+		$question_info = $this->question->isDelQuestion($p['id']);
+		if($question_info){
+			foreach($question_info as $K => $v){
+				if($v['account_id'] &&  ($v['question_id'] === null)){
+					$this->e('有在使用这道题,不能删除');
+				}
+			}
+		}
+
+		$data = [
+			'id' => $p['id'],
+			'is_deleted' => 1,
+		];
+        $result = $this -> question -> save($data);
         if ($result) {
             $this -> e();
         } else {
