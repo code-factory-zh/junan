@@ -11,12 +11,15 @@ class JobController extends CommonController {
 
 
 	private $job;
+	private $course;
 
 	public function _initialize() {
 
 		parent::_initialize();
 		$this -> islogin();
 		$this->job = new \Manage\Model\JobModel;
+		$this->course = new \Manage\Model\CourseModel;
+		$this->exam_member = new \Manage\Model\ExamMemberModel;
 	}
 
 	/**
@@ -92,7 +95,17 @@ class JobController extends CommonController {
 	public function del()
 	{
 		if (!empty(I('post.id'))){
-			$result = $this->job->del('id = ' . I('post.id'));
+			//判断是否有相应课程,如果有,就不能删除
+			$course_info = $this->exam_member->getList(['job_id' => I('post.id')]);
+			if($course_info){
+				$this->e('该岗位已经有相应课程,不能删除');
+			}
+
+			$data = [
+				'id' => I('post.id'),
+				'is_deleted' => 1,
+			];
+			$result = $this->job->save($data);
 			if($result){
 				$this->e();
 			}else{

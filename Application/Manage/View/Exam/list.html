@@ -73,6 +73,7 @@
                         <td class="btn_div">
                             <a href="/manage/exam/edit?id={$v.id}"><button class="btn btn-success btn-sm">编辑</button></a>
                             <a href="/manage/exam/mlist?course_id={$v.course_id}"><button class="btn btn-success btn-sm">考生列表</button></a>
+                            <button class="btn btn-danger btn-sm del" idvalue="{$v.id}">删除</button>
                         </td>
                       </tr>
                   </foreach>
@@ -103,6 +104,29 @@
 
     <!-- Custom Theme Scripts -->
     <script src="/static/build/js/custom.js"></script>
+
+    <script>
+        $(".del").click(function () {
+            if(confirm("确认删除?") == true){
+                id = $(this).attr('idvalue');
+
+                $.ajax({
+                    url: '/manage/exam/del',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: {"id":id},
+                    success: function (e) {
+                        if (e.code != 0) {
+                            alert(e.msg)
+                        } else {
+                            window.location.href = '/manage/exam';
+                        }
+                    }
+                })
+            }
+            return false
+        })
+    </script>
 
   </body>
 </html>
