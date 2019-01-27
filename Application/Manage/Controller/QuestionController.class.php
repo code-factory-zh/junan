@@ -192,4 +192,17 @@ class QuestionController extends CommonController {
         }
     }
 
+	/**
+	 * 导入题库
+	 * @author cuiruijun
+	 * @date   2019/1/27 上午10:34
+	 * @url    question/batch_add_questions
+	 * @method post
+	 *
+	 * @param  int param
+	 * @return  array
+	 */
+    public function batch_add_questions(){
+
+	}
 }

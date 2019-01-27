@@ -82,9 +82,9 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="course_price" class="control-label col-md-3 col-sm-3 col-xs-12">及格分数</label>
+                <label for="pass_score" class="control-label col-md-3 col-sm-3 col-xs-12">及格分数</label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="number" name="pass_score" value="{$pass_score}" id="course_price" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填写及格分数">
+                  <input type="number" name="pass_score" value="{$pass_score}" id="pass_score" class="form-control col-md-7 col-xs-12 parsley-success" placeholder="请填写及格分数">
                 </div>
               </div>
               <div class="form-group">
@@ -176,6 +176,31 @@
 //          提交
           $("#submit").click(function(e){
             var totalscore = $("#totalscore").text();
+            var course_name = $("#course_name").text();
+            var course_price = $("#course_price").text();
+            var course_id = $("#course_id").text();
+            var pass_score = $("#pass_score").text();
+
+            if(!course_name){
+              alert('请填写试题名称');
+              return false;
+            }
+
+            if(!course_price){
+              alert('请填写考试时长');
+              return false;
+            }
+
+            if(!course_id){
+              alert('请选择一个课程');
+              return false;
+            }
+
+            if(!pass_score){
+              alert('请填写及格分数');
+              return false;
+            }
+
             if( parseInt(totalscore) != 100 ){
               alert('总分只能为100');
               return false;
