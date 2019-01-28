@@ -224,6 +224,7 @@ class QuestionController extends CommonController {
 	 */
     public function batch_add_questions(){
 
+        var_dump($_FILES);die;
 		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel.php";
 		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/IOFactory.php";
 		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/Reader/Excel5.php";

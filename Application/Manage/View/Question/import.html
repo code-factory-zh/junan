@@ -53,10 +53,10 @@
         <!-- /顶部导航栏 -->
 
         <!-- 页面内容 -->
+        <form action="/manage/question/batch_add_questions" method="post" class="form-horizontal form-label-left" id="form" enctype ="multipart/form-data">
         <div class="right_col" role="main">
             <div id="add_edit_course">
                 <h3 class="title">导入题目</h3>
-                <form action="/manage/question/batch_add_questions" method="post" class="form-horizontal form-label-left" id="form" enctype ="multipart/form-data">
 
 
                     <div class="form-group">
@@ -81,7 +81,6 @@
 
 
             <!--<input type="hidden" id="content" name="content" value="{$record.content}">-->
-            </form>
             <!--<form class="form-horizontal form-label-left">-->
                 <!--<div class="form-group toggleShow" >-->
                 <!--<div class="control-label col-md-3 col-sm-3 col-xs-12">上传文件</div>-->
@@ -106,6 +105,7 @@
         </div>
     </div>
     <!-- /页面内容 -->
+        </form>
 </div>
 
 <!-- 底部 -->
@@ -134,10 +134,6 @@
 <script src="/static/build/js/chapter_add_edit.js"></script>
 <script>
     function formSubmit() {
-        $('#form').submit();
-    }
-    $("#form").submit(function () {
-        var course_id = $('input[name="course_id"]').val();
         $.ajax({
             url: $(this).attr('action'),
             type: 'POST',
@@ -151,9 +147,7 @@
                 }
             }
         })
-        return false
-    })
-
+    }
 </script>
 </body>
 </html>
