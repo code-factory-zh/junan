@@ -224,14 +224,24 @@ class QuestionController extends CommonController {
 	 */
     public function batch_add_questions(){
 
-        var_dump($_FILES);die;
 		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel.php";
 		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/IOFactory.php";
 		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/Reader/Excel5.php";
 
+		$course_id = I('post.course_id');
+		if(!$course_id){
+			$this->e('请选择课程');
+		}
+
+		$question_type = [
+			'单选题' => 1,
+			'复选题' => 2,
+			'判断题' => 3,
+		];
 
 		if($_FILES){
-			$path = $_FILES['file']['tmp_name'];
+			move_uploaded_file($_FILES['file']['tmp_name'], 'Uploads/file/'.$_FILES['file']['name']);
+			$path = 'Uploads/file/'.$_FILES['file']['name'];
 			$extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
 			if ($extension =='xlsx') {
@@ -244,7 +254,7 @@ class QuestionController extends CommonController {
 			$sheet=$objPHPExcel->getSheet(0);//获取第一个工作表
 			$highestRow=$sheet->getHighestRow();//取得总行数
 			$highestColumn=$sheet->getHighestColumn(); //取得总列数
-			$data = array();
+//			$data = array();
 			//循环读取excel文件,读取一条,插入一条
 			for($j=2; $j<=$highestRow; $j++){
 				//从第一行开始读取数据
@@ -257,15 +267,20 @@ class QuestionController extends CommonController {
 				$strs=explode("\\",$str);
 				$d["title"] = $strs[0];
 				$d["explain"] = $strs[1];
-				$d["course_id"] = $strs[2];
-				$d["type"] = $strs[3];
-				$d["options"] = json_encode(explode('||', $strs[4]));
-				$d["answer"] = $strs[5];
-				$d["add_time"] = time();
-				array_push($data,$d);
-			}
+				$d["type"] = $question_type[$strs[2]];
+				$d["option"] = json_encode(explode('||', $strs[3]));
+				$d["answer"] = str_replace(',', ',' , $strs[4]);
+				$d["course_id"] = $course_id;
+				$d["source"] = 2;
+//				array_push($data,$d);
 
-			var_dump($data);
+				//先一条一条的插入
+				$result = $this->question->add($d);
+			}
+			unlink($path);
+			redirect('/manage/question/index');
 		}
+
+		$this->e('文件上传失败');
 	}
 }

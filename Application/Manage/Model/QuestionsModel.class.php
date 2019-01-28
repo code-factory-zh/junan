@@ -13,7 +13,16 @@ class QuestionsModel extends BaseModel {
 
     protected $tableName = 'questions';
 
-    /**
+	public function _before_insert(&$data, $options){
+		$data['created_time'] = time();
+		$data['updated_time'] = time();
+	}
+
+	public function _before_update(&$data, $options){
+		$data['updated_time'] = time();
+	}
+
+	/**
      * 获取多条记录
      * return array
      * */
