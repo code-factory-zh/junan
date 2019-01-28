@@ -227,16 +227,11 @@ class QuestionController extends CommonController {
 		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel.php";
 		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/IOFactory.php";
 		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/Reader/Excel5.php";
-		$file = 1;
-
-		var_dump($_FILES);
-		EXIT;
 
 
-
-		if($file){
-			$path = '3.xlsx';
-			$extension = strtolower(pathinfo($path, PATHINFO_EXTENSION) );
+		if($_FILES){
+			$path = $_FILES['file']['tmp_name'];
+			$extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
 			if ($extension =='xlsx') {
 				$objReader = \PHPExcel_IOFactory::createReader('Excel2007');
