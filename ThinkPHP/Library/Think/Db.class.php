@@ -49,6 +49,8 @@ class Db {
     // 参数绑定
     protected $bind       = array();
 
+    const HANDLE_LOG_TABLE = 'handle_log';
+
     /**
      * 取得数据库类实例
      * @static
@@ -701,6 +703,9 @@ class Db {
         $sql   =  ($replace?'REPLACE':'INSERT').' INTO '.$this->parseTable($options['table']).' ('.implode(',', $fields).') VALUES ('.implode(',', $values).')';
         $sql   .= $this->parseLock(isset($options['lock'])?$options['lock']:false);
         $sql   .= $this->parseComment(!empty($options['comment'])?$options['comment']:'');
+
+        $this -> hlog($data, $options, 1);
+        $this -> execute($sqls,$this->parseBind(array()));
         return $this->execute($sql,$this->parseBind(!empty($options['bind'])?$options['bind']:array()));
     }
 
@@ -738,7 +743,21 @@ class Db {
             .$this->parseLimit(!empty($options['limit'])?$options['limit']:'')
             .$this->parseLock(isset($options['lock'])?$options['lock']:false)
             .$this->parseComment(!empty($options['comment'])?$options['comment']:'');
+
+        $this -> hlog($data, $options, 3);
         return $this->execute($sql,$this->parseBind(!empty($options['bind'])?$options['bind']:array()));
+    }
+
+    // 记录日志
+    private function hlog($data, $options, $type = 1) {
+
+        if ($type == 2) {
+            $rdata = $data;
+        } else {
+            $rdata = sprintf("%s", json_encode($data, true));
+        }
+        $sqls = sprintf("INSERT INTO `" . self::HANDLE_LOG_TABLE . "` (`type`,`table_name`, `data`) VALUES(%d, '%s', '%s')", $type, $options['table'], $rdata);
+        $this -> execute($sqls, $this -> parseBind([]));
     }
 
     /**
@@ -756,6 +775,8 @@ class Db {
             .$this->parseLimit(!empty($options['limit'])?$options['limit']:'')
             .$this->parseLock(isset($options['lock'])?$options['lock']:false)
             .$this->parseComment(!empty($options['comment'])?$options['comment']:'');
+
+        $this -> hlog($sql, $options, 2);
         return $this->execute($sql,$this->parseBind(!empty($options['bind'])?$options['bind']:array()));
     }
 
