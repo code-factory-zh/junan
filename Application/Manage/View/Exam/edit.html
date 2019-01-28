@@ -176,10 +176,10 @@
 //          提交
           $("#submit").click(function(e){
             var totalscore = $("#totalscore").text();
-            var course_name = $("#course_name").text();
-            var course_price = $("#course_price").text();
-            var course_id = $("#course_id").text();
-            var pass_score = $("#pass_score").text();
+            var course_name = $("#course_name").val();
+            var course_price = $("#course_price").val();
+            var course_id = $("#course_id").val();
+            var pass_score = $("#pass_score").val();
 
             if(!course_name){
               alert('请填写试题名称');
