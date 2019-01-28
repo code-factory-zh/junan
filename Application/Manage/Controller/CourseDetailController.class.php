@@ -57,6 +57,8 @@ class CourseDetailController extends CommonController
 //            $this -> _get($a, ['course_id']);
             $data['course_id'] = I('get.course_id');
             $id = I('get.id');
+            $this -> assign('courseid', $data['course_id']);
+            $this -> assign('id', $id);
         }
 
         if (IS_POST) {
@@ -114,6 +116,34 @@ class CourseDetailController extends CommonController
 
         $this -> assign($data);
         $this->display('Course_detail/edit');
+    }
+
+
+    /**
+     * 预览
+     * @Author   邱湘城
+     * @DateTime 2019-01-27T15:02:57+0800
+     */
+    public function preview() {
+
+        $this -> ignore_token() -> _post($p, ['course_id']);
+        $this -> isint(['course_id']);
+
+        $data = [
+            'company_id'   => 1,
+            'account_id'   => 1,
+            'status'       => 0,
+            'course_id'    => $p['course_id'],
+            'created_time' => time(),
+            'updated_time' => time(),
+        ];
+
+        // 新增记录
+        $done = M('company_account_course') -> add($data);
+        if (!$done) {
+            $this -> e('新增预览失败，可能您已经添加过预览，请登录小程序查看！');
+        }
+        $this -> e(0, '新增预览完成，请在小程序查看。');
     }
 
 	/**
