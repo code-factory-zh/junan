@@ -100,8 +100,8 @@
             <!--</form>-->
         </div>
         <div class="btns col-xs-12 twoBtn" style="text-align: center;margin-top:50px;">
-            <a href="/manage/question/import"><button class="btn btn-default btn-sm" type="button">取消</button></a>
-            <button class="btn btn-success btn-sm" id="save" onclick="formSubmit()">保存</button>
+            <button class="btn btn-default btn-sm" type="button">取消</button>
+            <button class="btn btn-success btn-sm" id="save">保存</button>
         </div>
     </div>
     <!-- /页面内容 -->
@@ -135,7 +135,7 @@
 <script>
     function formSubmit() {
         $.ajax({
-            url: $(this).attr('action'),
+            url: '/manage/question/batch_add_questions',
             type: 'POST',
             dataType: 'JSON',
             data: $(this).serialize(),

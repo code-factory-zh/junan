@@ -255,6 +255,9 @@ class QuestionController extends CommonController {
 			$highestColumn=$sheet->getHighestColumn(); //取得总列数
 //			$data = array();
 			//循环读取excel文件,读取一条,插入一条
+			//开启事务
+			$this->question->startTrans();
+
 			for($j=2; $j<=$highestRow; $j++){
 				//从第一行开始读取数据
 				$str='';
@@ -267,17 +270,63 @@ class QuestionController extends CommonController {
 				$d["title"] = $strs[0];
 				$d["explain"] = $strs[1];
 				$d["type"] = $question_type[$strs[2]];
-				$d["option"] = json_encode(explode('||', $strs[3]));
-				$d["answer"] = str_replace(',', ',' , $strs[4]);
+				$options = explode('||', $strs[3]);
+				$d["option"] = json_encode($options);
+				$d["answer"] = str_replace('，', ',' , $strs[4]);
 				$d["course_id"] = $course_id;
 				$d["source"] = 2;
 //				array_push($data,$d);
 
+				if(!$d['title']){
+					$this->e('第' .$j . '行数据不符合输入规范!试题名称不能为空');
+				}
+
+				if(!$d['type']){
+					$this->e('第' .$j . '行数据不符合输入规范!试题类型有误');
+				}
+
+				if(count($options) <= 2){
+					$this->e('第' .$j . '行数据不符合输入规范!选项必须大于两项');
+				}
+
+				$answer_arr = explode(',', $d['answer']);
+				//判断是否符合规则
+				$max_answer_value = max($answer_arr);
+				if($max_answer_value > count($options) || count($answer_arr) > count($options)){
+					$this->e('第' .$j . '行数据不符合输入规范!请检查题目数和答案数');
+				}
+
+				switch($d['type']){
+					case 1:
+					case 3:
+						if(count($answer_arr) > 1){
+							$this->e('第' .$j . '行数据不符合输入规范!答案只能有1个');
+						}
+					break;
+
+					case 2:
+						if(count($answer_arr) < 2){
+							$this->e('第' .$j . '行数据不符合输入规范!复选答案不能小于1个');
+						}
+					break;
+				}
+
+//				array_push($data,$d);
 				//先一条一条的插入
+				//开启事务
 				$result = $this->question->add($d);
+				if(!$result){
+					//如果有提交不成功的,就回滚
+					$this->question->rollback();
+					$this->e('文件解析失败,出错行数为:' . $j);
+				}
 			}
+
+			$this->question->commit();
 			unlink($path);
 			redirect('/manage/question/index');
+		}else{
+			$this->e('请上传文件');
 		}
 
 		$this->e('文件上传失败');
