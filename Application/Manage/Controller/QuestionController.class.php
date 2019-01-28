@@ -206,6 +206,12 @@ class QuestionController extends CommonController {
         }
     }
 
+    public function import(){
+		$data['course'] = $this -> course -> getList();
+		$this -> assign($data);
+		$this -> display('Question/import');
+	}
+
 	/**
 	 * 导入题库
 	 * @author cuiruijun
@@ -218,5 +224,52 @@ class QuestionController extends CommonController {
 	 */
     public function batch_add_questions(){
 
+		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel.php";
+		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/IOFactory.php";
+		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/Reader/Excel5.php";
+		$file = 1;
+
+		var_dump($_FILES);
+		EXIT;
+
+
+
+		if($file){
+			$path = '3.xlsx';
+			$extension = strtolower(pathinfo($path, PATHINFO_EXTENSION) );
+
+			if ($extension =='xlsx') {
+				$objReader = \PHPExcel_IOFactory::createReader('Excel2007');
+			} else if ($extension =='xls') {
+				$objReader = \PHPExcel_IOFactory::createReader('Excel5');
+			}
+
+			$objPHPExcel=$objReader->load($path);//$file_url即Excel文件的路径
+			$sheet=$objPHPExcel->getSheet(0);//获取第一个工作表
+			$highestRow=$sheet->getHighestRow();//取得总行数
+			$highestColumn=$sheet->getHighestColumn(); //取得总列数
+			$data = array();
+			//循环读取excel文件,读取一条,插入一条
+			for($j=2; $j<=$highestRow; $j++){
+				//从第一行开始读取数据
+				$str='';
+				for($k='A';$k<=$highestColumn;$k++){ //从A列读取数据
+					//这种方法简单，但有不妥，以'\\'合并为数组，再分割\为字段值插入到数据库,实测在excel中，如果某单元格的值包含了\\导入的数据会为空
+					$str.=$objPHPExcel->getActiveSheet()->getCell("$k$j")->getValue().'\\';//读取单元格
+				}
+				//explode:函数把字符串分割为数组。
+				$strs=explode("\\",$str);
+				$d["title"] = $strs[0];
+				$d["explain"] = $strs[1];
+				$d["course_id"] = $strs[2];
+				$d["type"] = $strs[3];
+				$d["options"] = json_encode(explode('||', $strs[4]));
+				$d["answer"] = $strs[5];
+				$d["add_time"] = time();
+				array_push($data,$d);
+			}
+
+			var_dump($data);
+		}
 	}
 }
