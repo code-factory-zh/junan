@@ -112,7 +112,7 @@ class QuestionsModel extends BaseModel {
 	 * 是否可以删除题目
 	 */
 	public function isDelQuestion($id){
-		$sql = 'select tmp.*,m.id as question_id  from (select account_id,max(id) as id from exam_questions where question_ids like %'. $id .'% GROUP BY account_id) as tmp left join exam_member m on tmp.account_id=m.account_id and tmp.id=m.exam_question_id
+		$sql = 'select tmp.*,m.id as question_id  from (select account_id,max(id) as id from exam_questions where CONCAT(",", question_ids, ",") like %,'. $id .',% GROUP BY account_id) as tmp left join exam_member m on tmp.account_id=m.account_id and tmp.id=m.exam_question_id
 ';
 
 		return $this->query($sql);
