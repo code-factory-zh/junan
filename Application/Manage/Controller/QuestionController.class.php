@@ -223,10 +223,9 @@ class QuestionController extends CommonController {
 	 * @return  array
 	 */
     public function batch_add_questions(){
-
-		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel.php";
-		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/IOFactory.php";
-		require_once APP_PATH."myclass/PHPExcel/Classes/PHPExcel/Reader/Excel5.php";
+		Vendor('PHPExcel.Classes.PHPExcel');
+		Vendor('PHPExcel.Classes.PHPExcel.IOFactory');
+		Vendor('PHPExcel.Classes.PHPExcel.Reader.Excel5');
 
 		$course_id = I('post.course_id');
 		if(!$course_id){
