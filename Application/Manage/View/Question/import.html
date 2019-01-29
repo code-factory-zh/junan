@@ -53,59 +53,38 @@
         <!-- /顶部导航栏 -->
 
         <!-- 页面内容 -->
-        <form action="/manage/question/batch_add_questions" method="post" class="form-horizontal form-label-left" id="form" enctype ="multipart/form-data">
         <div class="right_col" role="main">
             <div id="add_edit_course">
-                <h3 class="title">导入题目</h3>
 
-
-                    <div class="form-group">
-                        <label for="gangwei" class="control-label col-md-3 col-sm-3 col-xs-12">课程</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select id="gangwei" name="course_id" class="form-control">
-                                <option value="">请选择科目</option>
-                                <foreach name="course" key="k" item="v">
-                                    <option value="{$k}" >{$v.name}</option>
-                                </foreach>
-                            </select>
+                <form action="#" method="post" class="form-horizontal form-label-left" id="form"  enctype="multipart/form-data">
+                    <h3 class="title">导入题目</h3>
+                        <div class="form-group">
+                            <label for="gangwei" class="control-label col-md-3 col-sm-3 col-xs-12">课程</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select id="gangwei" name="course_id" class="form-control">
+                                    <option value="">请选择科目</option>
+                                    <foreach name="course" key="k" item="v">
+                                        <option value="{$k}" >{$v.name}</option>
+                                    </foreach>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="gangwei" class="control-label col-md-3 col-sm-3 col-xs-12">上传题目</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                           <input type="file" name="file">
+                        <div class="form-group">
+                            <label for="gangwei" class="control-label col-md-3 col-sm-3 col-xs-12">上传题目</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                               <input type="file" name="file" id="file">
+                            </div>
                         </div>
+                    <div class="btns col-xs-12 twoBtn" style="text-align: center;margin-top:50px;">
+                        <button class="btn btn-default btn-sm" type="button">取消</button>
+                        <button class="btn btn-success btn-sm" id="save">保存</button>
                     </div>
+                </form>
 
-
-
-            <!--<input type="hidden" id="content" name="content" value="{$record.content}">-->
-            <!--<form class="form-horizontal form-label-left">-->
-                <!--<div class="form-group toggleShow" >-->
-                <!--<div class="control-label col-md-3 col-sm-3 col-xs-12">上传文件</div>-->
-                <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-                    <!--<div id="uploader" class="wu-example">-->
-                        <!--&lt;!&ndash;用来存放文件信息&ndash;&gt;-->
-                        <!--<div id="thelist" class="uploader-list"></div>-->
-                        <!--<div class="btns" style="position: relative;height: 40px;">-->
-                            <!--<div id="picker">选择文件</div>-->
-                            <!--<button id="ctlBtn" class="btn btn-sm btn-success" type="button">开始上传</button>-->
-                            <!--<button class="btn btn-sm btn-default stop" type="button">暂停</button>-->
-                            <!--<button class="btn btn-sm btn-default upload" type="button">继续</button>-->
-                            <!--<button class="btn btn-sm btn-danger cancel" type="button">取消</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</form>-->
+            </div>
         </div>
-        <div class="btns col-xs-12 twoBtn" style="text-align: center;margin-top:50px;">
-            <button class="btn btn-default btn-sm" type="button">取消</button>
-            <button class="btn btn-success btn-sm" id="save">保存</button>
-        </div>
-    </div>
     <!-- /页面内容 -->
-        </form>
 </div>
 
 <!-- 底部 -->
@@ -132,13 +111,16 @@
 <script src="/static/build/js/webuploader.min.js"></script>
 <!-- 新增、编辑章节js -->
 <script src="/static/build/js/chapter_add_edit.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
 <script>
-    function formSubmit() {
-        $.ajax({
+    $('#save').click(function () {
+        $('#form').ajaxSubmit({
             url: '/manage/question/batch_add_questions',
             type: 'POST',
-            dataType: 'JSON',
-            data: $(this).serialize(),
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
             success: function (e) {
                 if (e.code != 0) {
                     alert(e.msg)
@@ -146,8 +128,9 @@
                     window.location.href = '/manage/question/index';
                 }
             }
-        })
-    }
+        });
+        return false
+    })
 </script>
 </body>
 </html>

@@ -324,7 +324,7 @@ class QuestionController extends CommonController {
 
 			$this->question->commit();
 			unlink($path);
-			redirect('/manage/question/index');
+            $this->e();
 		}else{
 			$this->e('请上传文件');
 		}
