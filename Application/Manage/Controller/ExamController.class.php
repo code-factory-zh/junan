@@ -152,7 +152,7 @@ class ExamController extends CommonController {
 		$this -> isInt(['course_id']);
 
 		$data = ['list' => []];
-		$where = ['em.is_deleted' => 0, 'em.company_id' => $this -> company_id, 'course_id' => $g['course_id']];
+		$where = ['em.is_deleted' => 0, 'course_id' => $g['course_id']];
 		$data['list'] = $this -> exam -> getMlist($where);
 
 		if (count($data['list'])) {
