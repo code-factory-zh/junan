@@ -311,6 +311,11 @@ class QuestionController extends CommonController {
 					break;
 				}
 
+				//如果是复选,答案json_encode下
+				if($d['type'] == 2){
+					$d['answer'] = json_encode($answer_arr);;
+				}
+
 //				array_push($data,$d);
 				//先一条一条的插入
 				//开启事务
