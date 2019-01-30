@@ -285,7 +285,7 @@ class QuestionController extends CommonController {
 					$this->e('第' .$j . '行数据不符合输入规范!试题类型有误');
 				}
 
-				if(count($options) <= 2){
+				if(count($options) < 2){
 					$this->e('第' .$j . '行数据不符合输入规范!选项必须大于两项');
 				}
 
