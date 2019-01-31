@@ -81,11 +81,11 @@ $(function(){
         $('#content').val(response.name);
         $( '#'+file.id ).find('p.state').text('已上传');
     });
-    
+
     uploader.on( 'uploadError', function( file ) {
         $( '#'+file.id ).find('p.state').text('上传出错');
     });
-    
+
     uploader.on( 'uploadComplete', function( file ) {
         $( '#'+file.id ).find('.progress').fadeOut();
     });
