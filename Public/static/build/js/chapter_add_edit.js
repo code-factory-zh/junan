@@ -53,13 +53,15 @@ $(function(){
     });
     // 当有文件被添加进队列的时候
     uploader.on( 'fileQueued', function( file ) {
+        $('#thelist').empty();
         $('#thelist').append( '<div id="' + file.id + '" class="item">' +
             '<h4 class="info">' + file.name + '</h4>' +
-            '<p class="state">等待上传...</p>' +
+            '<p class="state"></p>' +
         '</div>' );
+        uploader.upload();
     });
     // 文件上传过程中创建进度条实时显示。
-    uploader.on( 'uploadProgress', function( file, percentage ) {
+    /*uploader.on( 'uploadProgress', function( file, percentage ) {
         var $li = $( '#'+file.id ),
             $percent = $li.find('.progress .progress-bar');
 
@@ -74,7 +76,7 @@ $(function(){
         $li.find('p.state').text('上传中');
 
         $percent.css( 'width', percentage * 100 + '%' );
-    })
+    })*/
     uploader.on( 'uploadSuccess', function( file , response ) {
         if (response.code != undefined) {
             alert(response.msg);
@@ -82,6 +84,7 @@ $(function(){
         }
         $('#content').val(response.name);
         $( '#'+file.id ).find('p.state').text('已上传');
+        uploader.removeFile(file);
     });
     
     uploader.on( 'uploadError', function( file ) {
