@@ -51,7 +51,7 @@ class ExamController extends CommonController
 		$account_id = $this->u['id'];
 //		$this->e('account_id'.$account_id);
 //		$this->e($account_id);
-		$account_id = 1;
+//		$account_id = 1;
 
         //是否已学习完成
 
