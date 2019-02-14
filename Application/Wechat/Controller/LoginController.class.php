@@ -81,8 +81,11 @@ class LoginController extends CommonController {
 			$this -> rel([]) -> e($rel['errcode'], '效验获取open_id失败！');
 		}
 
-		// $rel['session_key'] = 'aaa';
-		// $rel['openid'] = 'xxx';
+		// $rel['session_key'] = 'aaxa';
+		// $rel['openid'] = 'xxxxx';
+		if ($user['open_id'] != '' && $user['open_id'] != $rel['openid']) {
+			$this -> e('登录失败，当前帐号已被其他用户绑定！');
+		}
 
 		// 绑定用户OPEN_ID
 		$token = md5(self::token_salt . $rel['session_key'] . $p['company_id'] . time());
