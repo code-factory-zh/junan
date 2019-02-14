@@ -31,25 +31,37 @@ class DetailController extends CommonController {
 
 		$this -> _get($p, ['course_id']);
 
+		// 取通用课
+		$sql = 'SELECT id FROM course WHERE type = 1';
+		$ids = M('course') -> where(['type' => 1]) -> getField('id', 200);
+		$ids[] = $p['course_id'];
+		$ids = array_unique($ids);
+
 		// 取章节目录
-		$list = $this -> account_course -> getCourseList(['cd.course_id' => $p['course_id']], 'cd.id, cd.type, cd.sort num, cd.chapter chapter_name');
+		$where['cd.course_id'] = ['in', $ids];
+		$list = $this -> account_course -> getCourseList($where, 'cd.id, c.id course_id, c.type course_type, c.name course_name, cd.type, cd.sort num, cd.chapter chapter_name');
 		if (!count($list)) {
 			$this -> e('没有章节数据！');
 		}
 
+		$detail = [];
 		foreach ($list as &$items) {
 			$items['num'] = '第' . $items['num'] . '章';
+			if (!count($detail) && $items['course_type'] == 0) {
+				$detail = $items;
+			}
+			$items['chapter_name'] = $items['course_name'] . '·' . $items['chapter_name'];
 		}
 
 
 		// 默认取第一条数据
 		$fields = ['cd.id', 'cd.course_id', 'c.detail course_detail', 'c.name course_name', 'cd.chapter chapter_name', 'cd.type', 'cd.content'];
 		$data = $this -> account_course -> getCourseList(['cd.id' => $list[0]['id']], $fields);
-		if (!count($data)) {
+		if (!$data || !count($data)) {
 			$this -> e('没有章节数据！');
 		}
 
-		$this -> rel(['detail' => $data[0], 'list' => $list]) -> e();
+		$this -> rel(['detail' => $detail, 'list' => $list]) -> e();
 	}
 
 

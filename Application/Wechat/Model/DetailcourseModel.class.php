@@ -24,9 +24,12 @@ class DetailcourseModel extends CommonModel {
     public function getCourseList($where, $fields = '*', $order = 'cd.sort asc') {
 
         $where['cd.is_deleted'] = 0;
-        return $this -> table('course_detail cd') -> field($fields) -> where($where) ->
-        join('join course c ON c.id = cd.course_id') ->
-        order($order) -> select();
+        return $this -> table('course_detail cd') ->
+                        field($fields) ->
+                        where($where) ->
+                        join('join course c ON c.id = cd.course_id') ->
+                        order($order) ->
+                        select();
     }
 
 

@@ -45,7 +45,7 @@ class IndexController extends CommonController {
 
 		$this -> _get($p);
 
-		$where = "cac.account_id = {$this -> u['id']}";
+		$where = "cac.account_id = {$this -> u['id']} AND c.type = 0";
 		$list = $this -> account_course -> getListCourses($where);
 		foreach ($list as &$items) {
 
