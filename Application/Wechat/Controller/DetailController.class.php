@@ -50,7 +50,7 @@ class DetailController extends CommonController {
 			if (!count($detail) && $items['course_type'] == 0) {
 				$detail = $items;
 			}
-			$items['chapter_name'] = $items['course_name'] . '·' . $items['chapter_name'];
+			$items['num'] = $items['course_name'] . '·' . $items['num'];
 		}
 
 
