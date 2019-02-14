@@ -54,6 +54,11 @@ class ExamController extends CommonController
 //		$account_id = 1;
 
         //是否已学习完成
+		//这门课程是否已经被删除
+		$course_info = $this->course->getOne('iid='.$g['course_id'] . ' and is_deleted=0');
+		if(!$course_info){
+			$this->e('课程不存在或者已经被删除');
+		}
 
 		//是否已经考过试
         $done = $this->member->findData(['account_id' => $account_id, 'course_id' => $g['course_id'], 'is_pass_exam' => 1]);
