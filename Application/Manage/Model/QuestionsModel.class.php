@@ -95,6 +95,10 @@ class QuestionsModel extends BaseModel {
             }
         }
 
+        if(count($return) != ($dx + $fx + $pd)){
+        	return false;
+		}
+
         return $return;
     }
 

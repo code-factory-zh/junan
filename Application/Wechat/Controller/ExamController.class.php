@@ -51,7 +51,7 @@ class ExamController extends CommonController
 		$account_id = $this->u['id'];
 //		$this->e('account_id'.$account_id);
 //		$this->e($account_id);
-//		$account_id = 1;
+		$account_id = 1;
 
         //是否已学习完成
 
@@ -89,6 +89,10 @@ class ExamController extends CommonController
 				//重新生成题库
 				$questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
 
+				if(!$questionIds){
+					$this->e('考试还未开始');
+				}
+
 				$data = [
 					'exam_id' => $exam_info['id'],
 					'account_id' => $account_id,
@@ -111,6 +115,10 @@ class ExamController extends CommonController
 				if(!$is_answerd_info){
 					//重新生成题库
 					$questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
+
+					if(!$questionIds){
+						$this->e('考试还未开始');
+					}
 
 					$data = [
 						'exam_id' => $exam_info['id'],
@@ -166,6 +174,10 @@ class ExamController extends CommonController
             //计算需要得出的考试类型题目数量
 			//查询课程对应的exam信
             $questionIds = $this->question->getIds($radioNum, $checkboxNum, $judgeNum, $g['course_id'], $common_course_id);
+
+			if(!$questionIds){
+				$this->e('考试还未开始');
+			}
 
 			$data = [
 				'exam_id' => $exam_info['id'],
