@@ -33,9 +33,13 @@ class AccountcourseModel extends CommonModel {
      */
     public function getListCourses($where) {
 
+        // 取通用课ID
+        $ids = $this -> table('course') -> where(['type' => 1]) -> getField('id', 100);
+        $ids = implode(',', $ids);
+
         $sql = "SELECT cac.id, cac.course_id, c.name, cac.is_pass_exam, 
-                (SELECT COUNT(*) FROM course_detail cd WHERE cd.course_id = cac.course_id OR cd.course_id IN (SELECT id FROM course WHERE type = 1)) total_chapter,
-                (SELECT COUNT(*) FROM company_account_course_chapter cacc WHERE cacc.status = 0 AND cacc.course_id = cac.course_id and cacc.account_id = cac.account_id) studied
+                (SELECT COUNT(*) FROM course_detail cd WHERE cd.course_id = cac.course_id OR cd.course_id IN ({$ids})) total_chapter,
+                (SELECT COUNT(*) FROM company_account_course_chapter cacc WHERE cacc.status = 0 AND (cacc.course_id = cac.course_id OR cacc.course_id IN({$ids})) and cacc.account_id = cac.account_id) studied
                 FROM company_account_course cac
                 JOIN course c ON c.id = cac.course_id
                 WHERE {$where}
